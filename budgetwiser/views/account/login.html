@@ -1,13 +1,14 @@
 <h3>LOGIN</h3>
 <form action="/login" method="post">
-    ID: <input type="text" name="id"><br>
+    <input type="hidden" name="next" value="{{next}}">
+    ID: <input type="text" name="username"><br>
     PW: <input type="password" name="password"><br>
     <input type="submit" value="login">
 </form>
 <br><br>
 <h3>REGISTER</h3>
 <form action="/register" method="post">
-    ID: <input type="text" name="id"><br>
+    ID: <input type="text" name="username"><br>
     PW: <input type="password" name="password"><br>
     <input type="submit" value="register">
 </form>

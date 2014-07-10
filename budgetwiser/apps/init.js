@@ -7,9 +7,28 @@ var express = require('express'),
     cookieParser = require('cookie-parser'),
     bodyParser = require('body-parser'),
     hoganExpress = require('hogan-express'),
-    mongoose = require('mongoose');
+    mongoose = require('mongoose'),
+    session = require('express-session'),
+    passport = require('passport'),
+    LocalStrategy = require('passport-local').Strategy;
 
 var app = express();
+
+/// session setup
+app.use(session({
+    secret: 'budgetwiser', // should it be hashed?
+    resave: true,
+    saveUninitialized: true
+}));
+
+/// passport setup
+app.use(passport.initialize());
+app.use(passport.session());
+
+var User = require(path.join(base_path, 'apps/account/models')).User;
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 /// view engine setup
 app.set('views', path.join(base_path, 'views'));
@@ -35,6 +54,7 @@ var apps = [
 apps.forEach(function(routePath){
     require(path.join(base_path, routePath))(app);
 });
+app.get('/', function(req, res){res.redirect('/factful/article/list')});
 
 /// models setup
 var db = mongoose.connection;
