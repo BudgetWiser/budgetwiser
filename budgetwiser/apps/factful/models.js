@@ -26,7 +26,7 @@ var rangeSchema = new Schema({
 
 var commentSchema = new Schema({
     user_id: ObjectId,
-    type: {type: Number, min: 0, max: 1}, // 0: quiestion, 1: answer
+    type: {type: Number, min: 0, max: 1}, // 0: question, 1: answer
     content: String,
     ref: String,
     comments: [ObjectId]
