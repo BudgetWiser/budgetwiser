@@ -26,7 +26,7 @@ var rangeSchema = new Schema({
 
 var commentSchema = new Schema({
     user_id: ObjectId,
-    type: Number, // 0: quiestion, 1: answer
+    type: {type: Number, min: 0, max: 1}, // 0: quiestion, 1: answer
     content: String,
     ref: String,
     comments: [ObjectId]
@@ -34,12 +34,12 @@ var commentSchema = new Schema({
 
 var factcheckSchema = new Schema({
     user_id: ObjectId,
-    score: Number,
+    score: {type: Number, min: 0, max: 5},
     ref: String,
-    ref_score: {
-        score: Number,
+    ref_score: [{
+        score: {type: Number, min: 0, max: 5},
         user_id: ObjectId
-    }
+    }]
 });
 
 module.exports = {
