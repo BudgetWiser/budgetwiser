@@ -1,9 +1,13 @@
-var express = require('express');
-var router = express.Router();
+var express = require('express'),
+    accountModels = require('./models');
 
-/* GET home page. */
-router.get('/', function(req, res) {
-  res.render('index', { title: 'Express' });
-});
+function index(req, res){
+    // index function
+}
 
-module.exports = router;
+// routes initialize
+function setup(app){
+    app.get('/', index);
+}
+
+module.exports = setup;
