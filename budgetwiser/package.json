@@ -16,6 +16,9 @@
     "mongoose": "*",
     "supervisor": "*",
     "hogan-express": "*",
-    "express-session": "*"
+    "express-session": "*",
+    "passport": "*",
+    "passport-local": "*",
+    "passport-local-mongoose": "*"
   }
 }
