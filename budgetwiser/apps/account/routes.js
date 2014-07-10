@@ -5,16 +5,23 @@ var express = require('express'),
 var User = accountModels.User;
 
 function index(req, res){
-    if(req.session.user){
-        res.redirect('back');
+    if(req.user){
+        res.send('already you are logged in - ' + req.user.username);
     }else{
-        res.render('account/login');
+        res.render('account/login', {
+            next: req.param('next')
+        });
     }
 }
 function login(req, res){
     passport.authenticate('local')(req, res, function(){
         console.log("logined user " + req.param('username'));
-        res.send('logined - ' + req.param('username'));
+
+        if(req.param('next') != ''){
+            res.redirect(req.param('next'));
+        }else{
+            res.send('logined - ' + req.param('username'));
+        }
     });
 }
 function register(req, res){

@@ -1,5 +1,6 @@
 <h3>LOGIN</h3>
 <form action="/login" method="post">
+    <input type="hidden" name="next" value="{{next}}">
     ID: <input type="text" name="username"><br>
     PW: <input type="password" name="password"><br>
     <input type="submit" value="login">
