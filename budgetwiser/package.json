@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "./node_modules/.bin/supervisor -e 'node, js, css, html' ./bin/www"
+    "start": "./node_modules/.bin/supervisor -e node,js,css,html ./bin/www"
   },
   "dependencies": {
     "express": "~4.2.0",
