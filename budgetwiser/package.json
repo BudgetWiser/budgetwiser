@@ -15,6 +15,7 @@
     "mongodb": "*",
     "mongoose": "*",
     "supervisor": "*",
-    "hogan-express": "*"
+    "hogan-express": "*",
+    "express-session": "*"
   }
 }

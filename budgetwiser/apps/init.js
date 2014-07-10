@@ -7,7 +7,8 @@ var express = require('express'),
     cookieParser = require('cookie-parser'),
     bodyParser = require('body-parser'),
     hoganExpress = require('hogan-express'),
-    mongoose = require('mongoose');
+    mongoose = require('mongoose'),
+    session = require('express-session');
 
 var app = express();
 
@@ -25,6 +26,14 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cookieParser());
+
+
+/// session setup
+app.use(session({
+    secret: 'budgetwiser', // should it be hashed?
+    resave: true,
+    saveUninitialized: true
+}));
 
 /// routes setup
 var apps = [
