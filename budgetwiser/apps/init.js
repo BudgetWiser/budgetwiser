@@ -8,9 +8,27 @@ var express = require('express'),
     bodyParser = require('body-parser'),
     hoganExpress = require('hogan-express'),
     mongoose = require('mongoose'),
-    session = require('express-session');
+    session = require('express-session'),
+    passport = require('passport'),
+    LocalStrategy = require('passport-local').Strategy;
 
 var app = express();
+
+/// session setup
+app.use(session({
+    secret: 'budgetwiser', // should it be hashed?
+    resave: true,
+    saveUninitialized: true
+}));
+
+/// passport setup
+app.use(passport.initialize());
+app.use(passport.session());
+
+var User = require(path.join(base_path, 'apps/account/models')).User;
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 /// view engine setup
 app.set('views', path.join(base_path, 'views'));
@@ -26,14 +44,6 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cookieParser());
-
-
-/// session setup
-app.use(session({
-    secret: 'budgetwiser', // should it be hashed?
-    resave: true,
-    saveUninitialized: true
-}));
 
 /// routes setup
 var apps = [
