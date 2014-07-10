@@ -12,7 +12,10 @@ function index(req, res){
     }
 }
 function login(req, res){
-    
+    passport.authenticate('local')(req, res, function(){
+        console.log("logined user " + req.param('username'));
+        res.send('logined - ' + req.param('username'));
+    });
 }
 function register(req, res){
     var username = req.param('username'),
@@ -31,8 +34,8 @@ function register(req, res){
         }else{
             console.log(account);
             passport.authenticate('local')(req, res, function(){
-                console.log("logined user " + username);
-                res.redirect('/login');
+                console.log("registered & logined user " + username);
+                res.send('registered & logined - ' + req.param('username'));
             });
         }
     });
