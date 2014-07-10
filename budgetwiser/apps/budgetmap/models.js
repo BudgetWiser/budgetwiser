@@ -1,8 +1,14 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
-var fooBudgetmapSchema = new Schema({
-    test: String
+var fooSchema = new Schema({
+    foo: String,
+    boo: {
+        a: String,
+        b: [Number]
+    }
 });
 
-mongoose.model('FooBudgetmap', fooBudgetmapSchema);
+module.exports = {
+    Foo: mongoose.model('Foo', fooSchema)
+};
