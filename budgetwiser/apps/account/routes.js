@@ -13,6 +13,7 @@ function index(req, res){
         });
     }
 }
+
 function login(req, res){
     passport.authenticate('local')(req, res, function(){
         console.log("logined user " + req.param('username'));
@@ -24,10 +25,12 @@ function login(req, res){
         }
     });
 }
+
 function logout(req, res){
     req.logout();
     res.redirect('/');
 }
+
 function register(req, res){
     var username = req.param('username'),
         password = req.param('password');
