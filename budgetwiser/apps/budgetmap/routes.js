@@ -1,5 +1,4 @@
-var express = require('express'),
-    budgetmapModels = require('./models');
+var express = require('express');
 
 function index(req, res){
     // index function

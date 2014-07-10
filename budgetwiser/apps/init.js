@@ -6,7 +6,8 @@ var express = require('express'),
     logger = require('morgan'),
     cookieParser = require('cookie-parser'),
     bodyParser = require('body-parser'),
-    hoganExpress = require('hogan-express');
+    hoganExpress = require('hogan-express'),
+    mongoose = require('mongoose');
 
 var app = express();
 
@@ -34,6 +35,23 @@ var apps = [
 apps.forEach(function(routePath){
     require(path.join(base_path, routePath))(app);
 });
+
+/// models setup
+var db = mongoose.connection;
+
+db.on('error', console.error.bind(console, 'connection error: '));
+db.once('open', function(){
+    var models = [
+        'apps/account/models',
+        'apps/budgetmap/models',
+        'apps/factful/models'
+    ];
+    models.forEach(function(modelPath){
+        require(path.join(base_path, modelPath));
+    });
+});
+
+mongoose.connect('mongodb://localhost/budgetwiser');
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {
