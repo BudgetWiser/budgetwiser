@@ -54,6 +54,7 @@ var apps = [
 apps.forEach(function(routePath){
     require(path.join(base_path, routePath))(app);
 });
+app.get('/', function(req, res){res.redirect('/factful/article/list')});
 
 /// models setup
 var db = mongoose.connection;
