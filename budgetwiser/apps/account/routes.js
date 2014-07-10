@@ -24,6 +24,10 @@ function login(req, res){
         }
     });
 }
+function logout(req, res){
+    req.logout();
+    res.redirect('/');
+}
 function register(req, res){
     var username = req.param('username'),
         password = req.param('password');
@@ -52,6 +56,7 @@ function register(req, res){
 function setup(app){
     app.get('/login', index);
     app.post('/login', login);
+    app.get('/logout', logout);
     app.post('/register', register);
 }
 
