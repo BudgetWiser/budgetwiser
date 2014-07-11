@@ -6,21 +6,23 @@ function index(req, res){
 }
 
 function article(req, res){
-    this.index = function(req, res){
+    function init(req, res){
         res.render('factful/article_add', {
             layout: 'factful/layout'
         });
-    };
-    this.add = function(req, res){
+    }
+
+    return {
+        init: init
     };
 }
 
 // routes initialize
-var article = new article();
+var article = article();
 
 function setup(app){
     app.get('/factful/article/list', index);
-    app.get('/factful/article/add', article.index);
+    app.get('/factful/article/add', article.init);
 }
 
 module.exports = setup;
