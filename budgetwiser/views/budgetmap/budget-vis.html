@@ -1,0 +1,33 @@
+<html>
+<head>
+    <script type="text/javascript" src="/static/javascripts/d3.v3.min.js"></script>
+    <script type="text/javascript" src="/static/javascripts/budgetmap/budget-vis.js"></script>
+    <script type="text/javascript" src="/static/javascripts/jquery-1.11.0.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/stylesheets/budgetmap/style.css">
+    <link rel="stylesheet" type="text/css" href="/static/stylesheets/budgetmap/budget-vis.css">
+    <title>{{title}}</title>
+    <script type="text/javascript">
+    $(document).ready(function(){
+        var container = d3.select("body").append("xhtml:div")
+        .attr("id", "budget-vis");
+
+        $.getJSON('/data', function(data){
+            console.log(data);
+            var vis = new BudgetVis();
+            vis.generate({
+                container : container,
+                size : { width: 900, height: 900, radius : 900},
+                data : data,
+                onSelect: function(d){
+                    console.log(d);
+                }            
+            });
+        });
+    });
+    </script>
+
+</head>
+<body>
+    <h2>{{title}}</h2>
+</body>
+</html>

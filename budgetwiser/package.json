@@ -13,6 +13,7 @@
     "body-parser": "~1.0.0",
     "debug": "~0.7.4",
     "mongodb": "*",
+    "mongoskin": "*",
     "mongoose": "*",
     "supervisor": "*",
     "hogan-express": "*"

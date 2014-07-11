@@ -1,0 +1,17 @@
+<html>
+    <head>
+        <script type="text/javascript" src="/static/javascripts/d3.v3.min.js"></script>
+        <script type="text/javascript" src="/javascripts/jquery-1.11.0.min.js"></script>
+        <script type="text/javascript" src="/javascripts/index.js"></script>
+        <link rel="stylesheet" type="text/css" href="/stylesheet/index.css">
+        <title>{{title}}</title>
+        <script type="text/javascript">
+            $(window).load(function() {
+                var get_url = '/budgetmap/data';
+                budgetMap.getdata(get_url);
+            });
+        </script>
+    </head>
+    <body>
+    </body>
+</html>
