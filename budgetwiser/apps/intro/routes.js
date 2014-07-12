@@ -1,4 +1,7 @@
-var express = require('express');
+var express = require('express'),
+    introModels = require('./models');
+
+var Members = introModels.Members;
 
 function index(req, res){
     res.render('intro', {
@@ -8,7 +11,8 @@ function index(req, res){
             about: 'intro_pages/about',
             prototypes: 'intro_pages/prototypes',
             members: 'intro_pages/members'
-        }
+        },
+        members: Members
     });
 }
 

@@ -209,4 +209,92 @@
 .intro-item.members{
     background: #bde4ff url('/static/res/bg_intro_04.png') 50% 50% no-repeat;
 }
-
+.intro-item.members .member-list{
+    width: 960px;
+}
+.intro-item.members .member-item{
+    width: 280px;
+    margin: 20px;
+    float: left;
+    text-align: center;
+}
+.intro-item.members .member-item .about{
+    width: 160px;
+    height: 160px;
+    margin: 0 auto;
+    position: relative;
+}
+.intro-item.members .member-item .about .image{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 160px;
+    z-index: 10;
+}
+.intro-item.members .member-item .about .out-link{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 160px;
+    z-index: 20;
+    background: rgba(0, 0, 0, .7);
+    padding: 62px 8px;
+    display: none;
+}
+.intro-item.members .member-item .about .out-link>li{
+    width: 36px;
+    height: 36px;
+    margin: 0 6px;
+    float: left;
+}
+.intro-item.members .member-item .about .out-link a{
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    text-indent: -9999px;
+}
+.intro-item.members .member-item .about .out-link a.email{
+    background: url('/static/res/btn_link_email.png') 0 0 no-repeat;
+}
+.intro-item.members .member-item .about .out-link a.linkedin{
+    background: url('/static/res/btn_link_linkedin.png') 0 0 no-repeat;
+}
+.intro-item.members .member-item .about .out-link a.more{
+    background: url('/static/res/btn_link_more.png') 0 0 no-repeat;
+}
+.intro-item.members .member-item .about .out-link a:hover{
+    background-position: 0 -36px;
+}
+.intro-item.members .member-item .about .out-link a.no-link{
+    opacity: .2;
+    cursor: default;
+}
+.intro-item.members .member-item .about .out-link a.no-link:hover{
+    background-position: 0 0;
+}
+.intro-item.members .member-item .name{
+    opacity: .5;
+    font-size: 20px;
+    line-height: 20px;
+    color: #fff;
+    display: block;
+    margin-top: 20px;
+}
+.intro-item.members .member-item .role{
+    opacity: .5;
+    font-size: 12px;
+    line-height: 12px;
+    color: rgba(255, 255, 255, .8);
+    display: block;
+    margin-top: 12px;
+}
+.intro-item.members .member-item:hover .name{
+    opacity: 1;
+}
+.intro-item.members .member-item:hover .role{
+    opacity: 1;
+}

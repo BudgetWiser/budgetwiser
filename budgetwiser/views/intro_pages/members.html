@@ -1,0 +1,22 @@
+<ul class="member-list">
+    {{#members}}
+    <li class="member-item">
+        <div class="about">
+            <img class="image" src="/static/res/{{image}}" alt="{{name}}" onerror="Members.onEmptyImage(this)">
+            <ul class="out-link">
+                <li>
+                    <a class="email" href="mailto:{{email}}" target="_blank" onclick="javascript:return false;">{{email}}</a>
+                </li>
+                <li class="linkedin">
+                    <a class="linkedin" href="{{linkedin}}" target="_blank">{{linkedin}}</a>
+                </li>
+                <li class="more">
+                    <a class="more" href="{{more}}" target="_blank">{{more}}</a>
+                </li>
+            </ul>
+        </div>
+        <b class="name">{{name}}</b>
+        <span class="role">{{role}}</span>
+    </li>
+    {{/members}}
+</ul>
