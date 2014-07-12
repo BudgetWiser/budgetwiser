@@ -7,7 +7,7 @@ Layout.initialize = function(){
     Layout.goto_top_btn = $('button.goto-top');
     Layout.title_box = $('.intro-title');
 
-    Layout.titles = ['', 'about', 'prototypes', 'members'];
+    Layout.titles = ['', 'about', 'prototypes', 'members', 'contact us'];
 
     Layout.resize();
     Layout.changeTitle();
