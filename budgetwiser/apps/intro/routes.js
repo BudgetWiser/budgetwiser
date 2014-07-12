@@ -1,8 +1,14 @@
 var express = require('express');
 
 function index(req, res){
-    res.render('index', {
-        layout: 'layout'
+    res.render('intro', {
+        layout: 'base',
+        partials: {
+            home: 'intro_pages/home',
+            about: 'intro_pages/about',
+            prototypes: 'intro_pages/prototypes',
+            members: 'intro_pages/members'
+        }
     });
 }
 
