@@ -314,3 +314,6 @@
 .intro-item.contact .contact-email span{
     color: rgba(255, 255, 255, .35);
 }
+.intro-item.contact .contact-email:hover{
+    background: rgba(0, 0, 0, .5);
+}
