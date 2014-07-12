@@ -6,7 +6,7 @@ function index(req, res){
 
 // routes initialize
 function setup(app){
-    app.get('/', index);
+    app.get('/budgetmap', index);
 }
 
 module.exports = setup;
