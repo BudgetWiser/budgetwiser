@@ -298,3 +298,19 @@
 .intro-item.members .member-item:hover .role{
     opacity: 1;
 }
+
+.intro-item.contact{
+    background: #5e5d59 url('/static/res/bg_intro_05.png') 50% 50% no-repeat;
+}
+.intro-item.contact .contact-email{
+    color: rgba(255, 255, 255, .9);
+    font-size: 20px;
+    box-sizing: content-box;
+    padding: 24px 60px;
+    background: rgba(0, 0, 0, .2);
+    border-radius: 100px;
+    letter-spacing: 0;
+}
+.intro-item.contact .contact-email span{
+    color: rgba(255, 255, 255, .35);
+}

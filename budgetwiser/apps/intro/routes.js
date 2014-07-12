@@ -10,7 +10,8 @@ function index(req, res){
             home: 'intro_pages/home',
             about: 'intro_pages/about',
             prototypes: 'intro_pages/prototypes',
-            members: 'intro_pages/members'
+            members: 'intro_pages/members',
+            contact: 'intro_pages/contact'
         },
         members: Members
     });
