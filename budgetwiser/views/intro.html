@@ -1,0 +1,51 @@
+{{#yield-stylesheets}}
+<link rel="stylesheet" type="text/css" href="/static/css/intro.css">
+{{/yield-stylesheets}}
+{{#yield-scripts}}
+<script type="text/javascript" src="/static/js/intro.js"></script>
+<script type="text/javascript">
+    $(window).bind('load', function(){
+        Layout.initialize();
+        Members.initialize();
+    });
+</script>
+{{/yield-scripts}}
+{{#yield-contents}}
+<div id="intro-wrapper">
+    <div class="intro-title"></div>
+    <ul class="lang-list">
+        <li class="lang-korean show">
+            <button>한국어</button>
+        </li>
+        <li class="lang-english">
+            <button>English</button>
+        </li>
+    </ul>
+    <ul class="intro-list">
+        <li class="intro-item home">
+            <div class="item-content-wrapper">
+                {{> home }}
+            </div>
+            <button class="next">about our project</button>
+        </li>
+        <li class="intro-item about">
+            <div class="item-content-wrapper">
+                {{> about }}
+            </div>
+            <button class="next">prototypes we do</button>
+        </li>
+        <li class="intro-item projects">
+            <div class="item-content-wrapper">
+                {{> prototypes }}
+            </div>
+            <button class="next">project members</button>
+        </li>
+        <li class="intro-item members">
+            <div class="item-content-wrapper">
+                {{> members }}
+            </div>
+            <button class="goto-top">go to top</button>
+        </li>
+    </ul>
+</div>
+{{/yield-contents}}
