@@ -1,6 +1,7 @@
 var Layout = {};
 
 Layout.initialize = function(){
+    //$('body').css('overflow', 'hidden');
     Layout.content_wrappers = $('.item-content-wrapper');
     Layout.intro_list = $('.intro-item');
     Layout.next_btn = $('button.next');
@@ -50,7 +51,7 @@ Layout.setPos = function(obj){
     });
 };
 
-Layout.nextPage = function(){
+Layout.nextPage = function(next){
     var scroll_pos = $(window).scrollTop(),
         scroll_unit = $(window).height();
 
@@ -58,11 +59,20 @@ Layout.nextPage = function(){
 
     if(scroll_pos < scroll_limit){
         var page_num = parseInt(scroll_pos / scroll_unit);
-        Layout.scrollAnimate($('body'), scroll_unit * (page_num + 1), 500);
+        Layout.scrollAnimate($('body'), scroll_unit * (page_num + 1), 350, function(){
+            if(typeof(next) === 'function'){
+                next();
+            }
+            console.log("next comp");
+        });
+    }else{
+        if(typeof(next) === 'function'){
+            next();
+        }
     }
 };
 
-Layout.prevPage = function(){
+Layout.prevPage = function(next){
     var scroll_pos = $(window).scrollTop(),
         scroll_unit = $(window).height();
 
@@ -70,18 +80,30 @@ Layout.prevPage = function(){
 
     if(scroll_pos > scroll_limit){
         var page_num = parseInt(scroll_pos / scroll_unit);
-        Layout.scrollAnimate($('body'), scroll_unit * (page_num - 1), 500);
+        Layout.scrollAnimate($('body'), scroll_unit * (page_num - 1), 350, function(){
+            if(typeof(next) === 'function'){
+                next();
+            }
+        });
+    }else{
+        if(typeof(next) === 'function'){
+            next();
+        }
     }
 };
 
-Layout.scrollAnimate = function(obj, scrollTo, _dur){
+Layout.scrollAnimate = function(obj, scrollTo, _dur, next){
     var dur = 1000;
     if(_dur){
         dur = _dur;
     }
     $(obj).animate({
         scrollTop: scrollTo
-    }, dur);
+    }, dur, function(){
+        if(typeof(next) === 'function'){
+            next();
+        }
+    });
 };
 
 Layout.changeTitle = function(){
