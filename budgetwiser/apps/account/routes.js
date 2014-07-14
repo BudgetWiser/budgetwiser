@@ -4,7 +4,7 @@ var express = require('express'),
 
 var User = accountModels.User;
 
-function index(req, res){
+function login_page(req, res){
     if(req.user){
         res.redirect('back');
     }else{
@@ -16,15 +16,16 @@ function index(req, res){
 }
 
 function login(req, res){
-    passport.authenticate('local')(req, res, function(){
-        console.log("logined user " + req.param('username'));
-
-        if(req.param('next') != ''){
-            res.redirect(req.param('next'));
-        }else{
-            res.send('logined - ' + req.param('username'));
-        }
-    });
+    passport.authenticate('local', function(err, user, info){
+        if(err){return res.send(500);}
+        if(!user){return res.send(500);}
+        req.login(user, function(err){
+            if(err){
+                return res.send(500);
+            }
+            return res.send(200);
+        });
+    })(req, res);
 }
 
 function logout(req, res){
@@ -32,35 +33,46 @@ function logout(req, res){
     res.redirect('/');
 }
 
+function register_page(req, res){
+    if(req.user){
+        res.redirect('back');
+    }else{
+        res.render('account/register', {
+            layout: 'layout',
+            next: req.param('next')
+        });
+    }
+}
+
 function register(req, res){
     var username = req.param('username'),
-        password = req.param('password');
+        password = req.param('password'),
+        nickname = req.param('nickname'),
+        email = req.param('email'),
+        next = req.param('next');
 
     User.register(
         new User({
             username: username,
             profile: {
-                nickname: username + '_nickname'
+                email: email,
+                nickname: nickname
             }
         }), password, function(err, account) {
         if (err) {
-            console.error(err);
-            return res.redirect('/login');
+            return res.send(500, {error: err.message});
         }else{
-            console.log(account);
-            passport.authenticate('local')(req, res, function(){
-                console.log("registered & logined user " + username);
-                res.send('registered & logined - ' + req.param('username'));
-            });
+            login(req, res);
         }
     });
 }
 
 // routes initialize
 function setup(app){
-    app.get('/login', index);
+    app.get('/login', login_page);
     app.post('/login', login);
     app.get('/logout', logout);
+    app.get('/register', register_page);
     app.post('/register', register);
 }
 

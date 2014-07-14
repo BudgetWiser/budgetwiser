@@ -1,7 +1,7 @@
 body{
     background: #484c54 url('/static/res/bg_login.png') 50% 50% no-repeat;
 }
-#wrapper-login{
+#wrapper-register{
     display: inline-block;
     margin: 0 auto;
 }
@@ -14,20 +14,17 @@ body{
     font-weight: 700;
     text-transform: uppercase;
 }
-.login-desc{
+.register-desc{
     margin-top: 32px;
     font-size: 20px;
     line-height: 24px;
     color: rgba(255, 255, 255, .8);
     letter-spacing: 0;
 }
-.login-form{
+.register-form{
     margin-top: 40px;
 }
-.login-form>*{
-    float: left;
-}
-.login-form .input{
+.register-form .input{
     width: 200px;
     height: 48px;
     background: rgba(51, 51, 44, .3);
@@ -40,18 +37,47 @@ body{
     margin-right: 8px;
     outline: none;
 }
-.login-form .input:focus{
+.register-form .input:focus{
     background: rgba(51, 51, 44, .6);
     border: 1px solid #2e2a24;
 }
-.login-form .input::-webkit-input-placeholder{
+.register-form .input::-webkit-input-placeholder{
     color: rgba(255, 255, 255, .5);
 }
-.login-form .input::-moz-placeholder{
+.register-form .input::-moz-placeholder{
     color: rgba(255, 255, 255, .5);
 }
-.login-form .submit{
+.register-form .input-group{
+}
+.register-form .input-group>div{
+    display: inline-block;
+    margin-bottom: 12px;
+}
+.register-form .username{
+    float: left;
+    margin-right: 8px;
+}
+.register-form .password{
+    float: left;
+}
+.register-form .password .input{
+    float: left;
+}
+.register-form .nickname{
+    margin-right: 8px;
+    float: left;
+}
+.register-form .email>.input{
+    width: 408px;
+}
+.register-form .label{
+    color: #fff;
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+.register-form .submit{
     height: 48px;
+    width: 200px;
     padding: 0 18px;
     background: #c85c42;
     border: 1px solid #a64831;
@@ -59,30 +85,31 @@ body{
     font-size: 16px;
     color: #fff;
     cursor: pointer;
-    margin-left: 8px;
+    margin-top: 20px;
+    float: right;
 }
-.login-form .submit.clicked{
+.register-form .submit.clicked{
     background: #43332f;
     border: 1px solid #2c201e;
     color: #837471;
     cursor: default;
 }
-.login-form .submit:hover{
+.register-form .submit:hover{
     background: #b24d34;
 }
-.login-form .submit.clicked:hover{
+.register-form .submit.clicked:hover{
     background: #43332f;
 }
-.login-other{
+.register-other{
     clear: both;
     color: rgba(255, 255, 255, .3);
     padding-top: 24px;
 }
-.login-other a{
+.register-other a{
     color: rgba(255, 255, 255, .8);
     display: inline;
 }
-.login-other a:hover{
+.register-other a:hover{
     color: rgba(255, 255, 255, 1);
 }
 
