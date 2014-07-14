@@ -1,14 +1,35 @@
-<h3>LOGIN</h3>
-<form action="/login" method="post">
-    <input type="hidden" name="next" value="{{next}}">
-    ID: <input type="text" name="username"><br>
-    PW: <input type="password" name="password"><br>
-    <input type="submit" value="login">
-</form>
-<br><br>
-<h3>REGISTER</h3>
-<form action="/register" method="post">
-    ID: <input type="text" name="username"><br>
-    PW: <input type="password" name="password"><br>
-    <input type="submit" value="register">
-</form>
+{{#yield-stylesheets}}
+<link rel="stylesheet" type="text/css" href="/static/css/login.css">
+{{/yield-stylesheets}}
+{{#yield-scripts}}
+<script type="text/javascript" src="/static/js/login.js"></script>
+<script type="text/javascript">
+    $(window).load(function(){
+        Layout.initialize();
+        Account.initialize();
+    });
+</script>
+{{/yield-scripts}}
+{{#yield-contents}}
+<div id="wrapper-login">
+    <h1 class="project-logo">Budgetwiser</h1>
+    <p class="login-desc">
+        For using our prototypes you need an account.<br>
+        Please sign in or register a new account, thank you.
+    </p>
+    <form class="login-form" action="javascript:;" method="post">
+        <input type="hidden" class="next" name="next" value="{{next}}">
+        <input class="input username" type="text" placeholder="username" name="username">
+        <input class="input password" type="password" placeholder="password" name="password">
+        <input class="submit" type="submit" value="sign in">
+    </form>
+    <div class="login-other">
+        <a href="/login/forgot">Forgot your password?</a> or <a href="/register">Don't have an account?</a>
+    </div>
+</div>
+<div id="wrapper-error">
+    <p class="error-desc">
+        Please check your username or password
+    </p>
+</div>
+{{/yield-contents}}

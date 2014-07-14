@@ -1,0 +1,51 @@
+{{#yield-stylesheets}}
+<link rel="stylesheet" type="text/css" href="/static/css/register.css">
+{{/yield-stylesheets}}
+{{#yield-scripts}}
+<script type="text/javascript" src="/static/js/register.js"></script>
+<script type="text/javascript">
+    $(window).load(function(){
+        Layout.initialize();
+        Account.initialize();
+    });
+</script>
+{{/yield-scripts}}
+{{#yield-contents}}
+<div id="wrapper-register">
+    <h1 class="project-logo">Budgetwiser</h1>
+    <p class="register-desc">
+        Register a new account.<br>
+        Please input all information, thank you.
+    </p>
+    <form class="register-form" action="javascript:;" method="post">
+        <input type="hidden" class="next" name="next" value="{{next}}">
+        <div class="input-group">
+            <div class="username">
+                <label class="label">Username</label>
+                <input class="input" type="text" placeholder="username" name="username">
+            </div>
+            <div class="password">
+                <label class="label">Password</label>
+                <input class="input" type="password" placeholder="password" name="password">
+                <input class="input" type="password" placeholder="password confirm" name="password">
+            </div>
+        </div>
+        <div class="input-group">
+            <div class="nickname">
+                <label class="label">Nickname</label>
+                <input class="input" type="text" placeholder="nickname" name="nickname">
+            </div>
+            <div class="email">
+                <label class="label">Email (for finding missed password)</label>
+                <input class="input email" type="text" placeholder="email" name="email">
+            </div>
+        </div>
+        <input class="submit" type="submit" value="register">
+    </form>
+</div>
+<div id="wrapper-error">
+    <p class="error-desc">
+        You should input all information, please check
+    </p>
+</div>
+{{/yield-contents}}

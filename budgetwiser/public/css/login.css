@@ -1,0 +1,101 @@
+body{
+    background: #484c54 url('/static/res/bg_login.png') 50% 50% no-repeat;
+}
+#wrapper-login{
+    display: inline-block;
+    margin: 0 auto;
+}
+.project-logo{
+    font-size: 30px;
+    line-height: 30px;
+    background: url('/static/res/img_logo_40_30.png') left 50% no-repeat;
+    padding-left: 52px;
+    color: #fff;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+.login-desc{
+    margin-top: 32px;
+    font-size: 20px;
+    line-height: 24px;
+    color: rgba(255, 255, 255, .8);
+    letter-spacing: 0;
+}
+.login-form{
+    margin-top: 40px;
+}
+.login-form>*{
+    float: left;
+}
+.login-form .input{
+    width: 200px;
+    height: 48px;
+    background: rgba(51, 51, 44, .3);
+    border-radius: 4px;
+    border: 1px solid #5f5a50;
+    color: #fff;
+    font-size: 16px;
+    padding: 0 18px;
+    font-weight: 400;
+    margin-right: 8px;
+    outline: none;
+}
+.login-form .input:focus{
+    background: rgba(51, 51, 44, .6);
+    border: 1px solid #2e2a24;
+}
+.login-form .input::-webkit-input-placeholder{
+    color: rgba(255, 255, 255, .5);
+}
+.login-form .input::-moz-placeholder{
+    color: rgba(255, 255, 255, .5);
+}
+.login-form .submit{
+    height: 48px;
+    padding: 0 18px;
+    background: #c85c42;
+    border: 1px solid #a64831;
+    border-radius: 4px;
+    font-size: 16px;
+    color: #fff;
+    cursor: pointer;
+    margin-left: 8px;
+}
+.login-form .submit.clicked{
+    background: #43332f;
+    border: 1px solid #2c201e;
+    color: #837471;
+    cursor: default;
+}
+.login-form .submit:hover{
+    background: #b24d34;
+}
+.login-form .submit.clicked:hover{
+    background: #43332f;
+}
+.login-other{
+    clear: both;
+    color: rgba(255, 255, 255, .3);
+    padding-top: 24px;
+}
+.login-other a{
+    color: rgba(255, 255, 255, .8);
+    display: inline;
+}
+.login-other a:hover{
+    color: rgba(255, 255, 255, 1);
+}
+
+#wrapper-error{
+    display: inline-block;
+}
+#wrapper-error .error-desc{
+    height: 48px;
+    background: rgba(0, 0, 0, .6);
+    border-radius: 0 0 8px 8px;
+    color: #fff;
+    font-size: 16px;
+    padding: 0 30px;
+    display: table-cell;
+    vertical-align: middle;
+}
