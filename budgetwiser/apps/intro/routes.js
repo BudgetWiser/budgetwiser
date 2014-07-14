@@ -5,7 +5,7 @@ var Members = introModels.Members;
 
 function index(req, res){
     res.render('intro', {
-        layout: 'base',
+        layout: 'layout',
         partials: {
             home: 'intro_pages/home',
             about: 'intro_pages/about',
