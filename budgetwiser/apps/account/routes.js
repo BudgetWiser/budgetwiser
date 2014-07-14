@@ -6,9 +6,10 @@ var User = accountModels.User;
 
 function index(req, res){
     if(req.user){
-        res.send('already you are logged in - ' + req.user.username);
+        res.redirect('back');
     }else{
         res.render('account/login', {
+            layout: 'layout',
             next: req.param('next')
         });
     }
