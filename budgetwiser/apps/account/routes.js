@@ -1,5 +1,6 @@
 var express = require('express'),
     passport = require('passport'),
+    session = require('./middleware');
     accountModels = require('./models');
 
 var User = accountModels.User;
@@ -34,14 +35,10 @@ function logout(req, res){
 }
 
 function register_page(req, res){
-    if(req.user){
-        res.redirect('back');
-    }else{
-        res.render('account/register', {
-            layout: 'layout',
-            next: req.param('next')
-        });
-    }
+    res.render('account/register', {
+        layout: 'layout',
+        next: req.param('next')
+    });
 }
 
 function register(req, res){
@@ -69,11 +66,11 @@ function register(req, res){
 
 // routes initialize
 function setup(app){
-    app.get('/login', login_page);
-    app.post('/login', login);
-    app.get('/logout', logout);
-    app.get('/register', register_page);
-    app.post('/register', register);
+    app.get('/account/login', session.isNotAuth, login_page);
+    app.post('/account/login', login);
+    app.get('/account/logout', session.isAuth, logout);
+    app.get('/account/register', session.isNotAuth, register_page);
+    app.post('/account/register', register);
 }
 
 module.exports = setup;
