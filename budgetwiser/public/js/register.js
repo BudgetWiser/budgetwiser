@@ -72,7 +72,7 @@ Account.register = function(){
     }
 
     if(check && pw_check && email_check){
-        var url = '/register?next=' + next;
+        var url = '/account/register?next=' + next;
 
         $.ajax({
             type: 'POST',

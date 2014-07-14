@@ -49,7 +49,7 @@ Account.login = function(){
         password = $(Account.password).val(),
         next = $(Account.next).val();
 
-    var url = '/login?next=' + next;
+    var url = '/account/login?next=' + next;
 
     $.ajax({
         type: 'POST',
