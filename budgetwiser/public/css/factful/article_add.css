@@ -1,0 +1,119 @@
+#wrapper-header{
+    width: 100%;
+    height: 40px;
+    margin-bottom: 60px;
+}
+#header{
+    width: 100%;
+    height: 100%;
+}
+.header-back{
+    display: inline-block;
+    height: 40px;
+    font-size: 16px;
+    line-height: 40px;
+    background: url("/static/res/factful/btn_back.png") 0 0 no-repeat;
+    padding-left: 56px;
+    float: left;
+    color: #afb3b8;
+}
+.header-profile{
+    height: 40px;
+    width: 40px;
+    text-indent: -9999px;
+    background: none;
+    float: right;
+    font-size: 0;
+}
+.header-profile img{
+    width: 100%;
+    height: 100%;
+    border-radius: 40px;
+}
+
+#wrapper-content{
+    width: 100%;
+    display: inline-block;
+}
+#content{
+    width: 100%;
+    display: inline-block;
+}
+form{
+    display: inline-block;
+    width: 670px;
+    float: left;
+}
+label{
+    font-size: 18px;
+    line-height: 18px;
+    color: #424649;
+    margin-bottom: 12px;
+    clear: both;
+}
+label.must{
+    color: #0074df;
+}
+.date-field-group, input, textarea{
+    margin-bottom: 30px;
+}
+.date-field-group{
+    display: inline-block;
+}
+
+.date-field-group>select{
+    float: left;
+    height: 48px;
+    display: block;
+    line-height: 48px;
+}
+.date-field-group>span{
+    font-size: 14px;
+    padding:0 20px 0 8px;
+    float: left;
+}
+input{
+    width: 100%;
+    height: 48px;
+    background: #fff;
+    border: 1px solid #d8dcdf;
+    border-radius: 4px;
+    outline: none;
+    padding: 0 10px;
+    font-size: 16px;
+}
+input:focus{
+    border: 1px solid #296399;
+}
+.label-sub{
+    font-size: 12px;
+}
+textarea{
+    width: 100%;
+    height: 400px;
+    background: #fff;
+    border: 1px solid #d8dcdf;
+    border-radius: 4px;
+    outline: none;
+    padding: 10px;
+    font-size: 16px;
+}
+textarea:focus{
+    border: 1px solid #296399;
+}
+.images-field{
+    cursor: pointer;
+    padding: 12px;
+}
+.submit{
+    background: #2e85d7;
+    border: 1px solid #2476c5;
+    cursor: pointer;
+    color: #fff;
+}
+.submit:hover{
+    background: #333;
+}
+.date-field.hour{
+    margin-left: 50px;
+}

@@ -1,3 +1,56 @@
+{{#yield-stylesheets}}
+<link rel="stylesheet" type="text/css" href="/static/css/factful/article_add.css">
+{{/yield-stylesheets}}
+{{#yield-scripts}}
+<script type="text/javascript" src="/static/js/factful/article_add.js"></script>
+<script type="text/javascript">
+    $(window).bind('load', function(){
+        Input.initialize();
+    });
+</script>
+{{/yield-scripts}}
 {{#yield-content}}
-asdfasdfasdfasdfasdfasdfsfadf
+<div id="wrapper-header">
+    <div id="header">
+        <a href="/factful/artile/list" class="header-back">기사 리스트</a>
+        <a href="/account/profile" class="header-profile">
+            <img src="/static/images/user/{{user_profile.image}}" alt="{{user_profile.nickname}}">
+            나의 프로필
+        </a>
+    </div>
+</div>
+<div id="wrapper-content">
+    <div id="content">
+        <form action="javascript:;" method="POST">
+            <label class="label must">날짜</label>
+            <div class="date-field-group">
+                <select name="year" class="date-field year"></select><span>년</span>
+                <select name="month" class="date-field month"></select><span>월</span>
+                <select name="day" class="date-field day"></select><span>일</span>
+                <select name="hour" class="date-field hour"></select><span>시</span>
+                <select name="minute" class="date-field minute"></select><span>분</span>
+            </div>
+            <label class="label must">언론사</label>
+            <input type="text" name="press" class="press-field">
+            <label class="label must">제목</label>
+            <input type="text" name="title" class="title-field">
+            <label class="label">
+                부제목
+                <span class="label-sub">(없다면 비워두세요.)</span>
+            </label>
+            <input type="text" name="subtitle" class="subtitle-field">
+            <label class="label must">
+                내용
+                <span class="label-sub">(이미지와 문단끼리는 한 줄 띄어서 구분해주세요.)</span>
+            </label>
+            <textarea name="content" class="content-field"></textarea>
+            <label class="label">
+                사진
+                <span class="label-sub">( &lt;image # | http://~&gt; )</span>
+            </label>
+            <input type="file" name="images" class="images-field">
+            <input type="submit" class="submit" value="기사 업로드">
+        </form>
+    </div>
+</div>
 {{/yield-content}}

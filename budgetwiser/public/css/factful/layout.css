@@ -43,5 +43,12 @@ button{
     outline: none;
 }
 body{
-    background: #1a1c1f;
+    background: #296399 url('/static/res/factful/bg_layout.png') 0 0 repeat;
+}
+#wrapper{
+    background: #fff;
+    border-radius: 8px;
+    padding: 60px;
+    width: 1120px;
+    margin: 30px auto 30px auto;
 }

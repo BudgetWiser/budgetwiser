@@ -1,4 +1,7 @@
-var express = require('express');
+var express = require('express'),
+    session = require('../account/middleware'),
+    fs = require('fs'),
+    parser = require('./parser');
 
 function index(req, res){
     // index function
@@ -6,14 +9,28 @@ function index(req, res){
 }
 
 function article(req, res){
-    function init(req, res){
+    function addPage(req, res){
         res.render('factful/article_add', {
-            layout: 'factful/layout'
+            layout: 'factful/layout',
+            user_profile: req.user.profile
         });
+    }
+    function addFunc(req, res){
+        var data = {
+            date: req.param('date'),
+            press: req.param('press'),
+            title: req.param('title'),
+            subtitle: req.param('subtitle'),
+            content: req.param('content')
+        };
+
+        var p_list = parser.paragraph(data.content);
+        parser.findMoney(p_list);
     }
 
     return {
-        init: init
+        addPage: addPage,
+        addFunc: addFunc
     };
 }
 
@@ -23,7 +40,8 @@ var article = article();
 function setup(app){
     app.get('/factful', function(req, res){res.redirect('/factful/article/list')});
     app.get('/factful/article/list', index);
-    app.get('/factful/article/add', article.init);
+    app.get('/factful/article/add', session.isAuth, article.addPage);
+    app.post('/factful/article/add', article.addFunc);
 }
 
 module.exports = setup;

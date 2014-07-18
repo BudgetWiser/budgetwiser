@@ -33,6 +33,7 @@ Account.initialize = function(){
     this.error_desc = $('.error-desc');
     this.error_popup = $('#wrapper-error');
 
+    $(Account.username).focus();
     Account.registerHandlers();
     $(Account.error_popup).hide();
 };

@@ -8,7 +8,7 @@
     box-sizing: border-box;
     font-family: "Nanum Gothic", sans-serif;
     font-weight: 400;
-    letter-spacing: -0.01em;
+    /*letter-spacing: -0.01em;*/
     outline: none;
 
     /* for better anti-aliasing(font) */

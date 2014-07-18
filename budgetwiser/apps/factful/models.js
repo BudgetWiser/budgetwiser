@@ -13,6 +13,7 @@ var articleSchema = new Schema({
 });
 
 var paragraphSchema = new Schema({
+    type: {type: Number, min: 0, max: 1}, // 0: text, 1: image
     content: String,
     ranges: [ObjectId]
 });
