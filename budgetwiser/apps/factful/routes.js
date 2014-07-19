@@ -40,7 +40,7 @@ var article = article();
 function setup(app){
     app.get('/factful', function(req, res){res.redirect('/factful/article/list')});
     app.get('/factful/article/list', index);
-    app.get('/factful/article/add', session.isAuth, article.addPage);
+    app.get('/factful/article/add', session.isAdmin, article.addPage);
     app.post('/factful/article/add', article.addFunc);
 }
 
