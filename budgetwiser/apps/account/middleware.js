@@ -17,7 +17,16 @@ function isNotAuth(req, res, next){
     }
 }
 
+function isAdmin(req, res, next){
+    if(req.user.username == 'admin'){
+        next();
+    }else{
+        res.send('You are not admin');
+    }
+}
+
 module.exports = {
     isAuth: isAuth,
-    isNotAuth: isNotAuth
+    isNotAuth: isNotAuth,
+    isAdmin : isAdmin
 };
