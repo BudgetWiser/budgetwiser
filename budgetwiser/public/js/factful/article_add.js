@@ -12,6 +12,7 @@ Input.initialize = function(){
     this.press = $('.press-field');
     this.content = $('.content-field');
     this.images = $('.images-field');
+    this.url = $('.url-field');
 
     this.submit = $('.submit');
 
@@ -88,16 +89,20 @@ Input.sendForm = function(){
         press: Input.press.val(),
         title: Input.title.val(),
         subtitle: Input.subtitle.val(),
-        content: Input.content.val()
+        content: Input.content.val(),
+        url: Input.url.val()
     };
 
     $.ajax({
         type: 'POST',
         url: '/factful/article/add',
         data: data,
-        success: function(){
+        success: function(obj){
+            console.log('success');
+            console.log(obj.article);
         },
         error: function(){
+            console.log('error!');
         }
     });
 };

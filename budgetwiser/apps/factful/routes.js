@@ -1,7 +1,14 @@
 var express = require('express'),
     session = require('../account/middleware'),
-    fs = require('fs'),
-    parser = require('./parser');
+    parser = require('./parser'),
+    factfulModels = require('./models');
+
+var Article = factfulModels.Article,
+    Paragraph = factfulModels.Paragraph,
+    Range = factfulModels.Range,
+    Comment = factfulModels.Comment,
+    Factcheck = factfulModels.Factcheck,
+    Rel = factfulModels.Rel;
 
 function index(req, res){
     // index function
@@ -21,11 +28,79 @@ function article(req, res){
             press: req.param('press'),
             title: req.param('title'),
             subtitle: req.param('subtitle'),
-            content: req.param('content')
+            content: req.param('content'),
+            url: req.param('url')
         };
 
+        var _article  = new Article({
+            user: req.user,
+            title: data.title,
+            subtitle: data.subtitle,
+            content: data.content,
+            date: data.date,
+            press: data.press,
+            url: data.url
+        });
+
         var p_list = parser.paragraph(data.content);
-        parser.findMoney(p_list);
+
+        p_list.map(function(p){
+            var _paragraph = new Paragraph({
+                type: p.type,
+                content: p.content
+            });
+            _article.paragraphs.push(_paragraph);
+
+            var m_list = parser.findMoney(p);
+            if (m_list.length != 0){
+                m_list.map(function(m){
+                    var _range = new Range({
+                        start: m.start,
+                        end: m.end
+                    });
+                    var _rel = new Rel({
+                        keyword: m.money,
+                        info: m.money + '원입니다.'
+                    });
+
+                    _range.rels.push(_rel);
+                    _paragraph.ranges.push(_range);
+
+                    _range.save(function(err){
+                        if (err){
+                            console.log('+++++ range save error');
+                            return handleError(err);
+                        }
+                        console.log('range ' + _range._id + ' is saved');
+                    });
+                    _rel.save(function(err){
+                        if (err){
+                            console.log('+++++ rel save error');
+                            return handleError(err);
+                        }
+                        console.log('rel ' + _rel._id + ' is saved');
+                    });
+                });//m_list.map end
+            }
+
+            _paragraph.save(function(err){
+                if (err){
+                    console.log('+++++ paragraph save error');
+                    return handleError(err);
+                }
+                console.log('paragraph ' + _paragraph._id + ' is saved');
+            });
+        });//p_list.map end
+
+        _article.save(function(err){
+            if (err){
+                console.log('+++++ article save error');
+                return handleError(err);
+            }
+            console.log('article ' + _article._id + ' is saved');
+
+            return res.send('200', {article: _article});
+        });
     }
 
     return {

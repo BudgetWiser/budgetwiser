@@ -18,10 +18,16 @@ function isNotAuth(req, res, next){
 }
 
 function isAdmin(req, res, next){
-    if(req.user.username == 'admin'){
-        next();
+    console.log(req.user);
+    if(req.user){
+        if(req.user.username == 'admin'){
+            next();
+        }else{
+            res.send('You are not admin');
+        }
     }else{
-        res.send('You are not admin');
+        var redirect = "/account/login?next=" + req.url;
+        res.redirect(redirect);
     }
 }
 
