@@ -47,9 +47,9 @@ app.use(cookieParser());
 
 /// routes setup
 var apps = [
-    'apps/account/routes',
-    'apps/budgetmap/routes',
-    'apps/factful/routes',
+    //'apps/account/routes',
+    //'apps/budgetmap/routes',
+    //'apps/factful/routes',
     'apps/intro/routes'
 ];
 apps.forEach(function(routePath){
@@ -63,8 +63,8 @@ db.on('error', console.error.bind(console, 'connection error: '));
 db.once('open', function(){
     var models = [
         'apps/account/models',
-        'apps/budgetmap/models',
-        'apps/factful/models'
+        //'apps/budgetmap/models',
+        //'apps/factful/models'
     ];
     models.forEach(function(modelPath){
         require(path.join(base_path, modelPath));
