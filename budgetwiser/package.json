@@ -19,6 +19,7 @@
     "express-session": "*",
     "passport": "*",
     "passport-local": "*",
-    "passport-local-mongoose": "*"
+    "passport-local-mongoose": "*",
+    "vhost": "*"
   }
 }
