@@ -7,44 +7,44 @@ var mongoose = require('mongoose'),
 
 // Factful schema
 var articleSchema = new Schema({
-    user: {type: ObjectId, ref: 'User'},
+    _user: {type: ObjectId, ref: 'User'},
     title: String,
     subtitle: String,
     date: Date,
     url: String,
-    press: String,
-    paragraphs: [{type: ObjectId, ref: 'Paragraph'}]
+    press: String
 });
 
 var paragraphSchema = new Schema({
+    _article: {type: ObjectId, ref: 'Article'},
     type: {type: Number, min: 0, max: 1}, // 0: text, 1: image
-    content: String,
-    ranges: [{type: ObjectId, ref: 'Range'}]
+    content: String
 });
 
 var rangeSchema = new Schema({
+    _paragraph: {type: ObjectId, ref: 'Paragraph'},
     start: Number,
-    end: Number,
-    comments: [{type: ObjectId, ref: 'Comment'}],
-    factchecks: [{type: ObjectId, ref: 'Factcheck'}],
-    rels: [{type: ObjectId, ref: 'Rel'}]
+    end: Number
 });
 
 var commentSchema = new Schema({
-    user: {type: ObjectId, ref: 'User'},
+    _user: {type: ObjectId, ref: 'User'},
+    _range: {type: ObjectId, ref: 'Range'},
+    _comment: {type: ObjectId, ref: 'Comment'},
     type: {type: Number, min: 0, max: 1}, // 0: question, 1: answer
     content: String,
-    ref: String,
-    comments: [{type: ObjectId, ref: 'Comment'}]
+    ref: String
 });
 
 var factcheckSchema = new Schema({
-    user: {type: ObjectId, ref: 'User'},
+    _user: {type: ObjectId, ref: 'User'},
+    _range: {type: ObjectId, ref: 'Range'},
     score: {type: Number, min: 0, max: 5},
     ref: String
 });
 
 var relSchema = new Schema({
+    _range: {type: ObjectId, ref: 'Range'},
     keyword: String, // number: money, string: keyword
     info: [Mixed]
 });
