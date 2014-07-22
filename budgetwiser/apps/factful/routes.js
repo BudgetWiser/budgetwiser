@@ -10,19 +10,29 @@ var Article = factfulModels.Article,
     Factcheck = factfulModels.Factcheck,
     Rel = factfulModels.Rel;
 
-function viewArticleList(req, res){
-    // index function
-    res.send('factful');
-}
 
-function addArticleView(req, res){
-    res.render('factful/article_add', {
+// Views
+var view = {};
+
+view.articleList = function(req, res){
+    // index function
+    return res.send('factful');
+};
+view.articleAdd = function(req, res){
+    return res.render('factful/article_add', {
         layout: 'factful/layout',
         user_profile: req.user.profile
     });
 }
+view.articleItem = function(req, res){
+    res.send(req.params.id + ' article item');
+}
 
-function addArticle(req, res){
+
+// Funcs
+var article = {};
+
+article.add = function(req, res){
     var data = {
         date: req.param('date'),
         press: req.param('press'),
@@ -32,91 +42,203 @@ function addArticle(req, res){
         url: req.param('url')
     };
 
-    var _article  = new Article({
-        user: req.user,
+    // save Article
+    var _article = new Article({
+        _user: req.user,
         title: data.title,
         subtitle: data.subtitle,
-        content: data.content,
         date: data.date,
-        press: data.press,
-        url: data.url
+        url: data.url,
+        press: data.press
     });
 
-    var p_list = parser.paragraph(data.content);
+    _article.save(function (err){
+        if (err) return handleError(err); // error
 
-    p_list.map(function(p){
+        console.log('An article object(' + _article._id + ') is saved.');
+    });
+
+    // save Paragraph, Range and Rel
+    var _paragraph_list = parser.paragraph(data.content);
+
+    _paragraph_list.map(function(p){
+        // save Paragraph
         var _paragraph = new Paragraph({
+            _article: _article,
             type: p.type,
             content: p.content
         });
-        _article.paragraphs.push(_paragraph);
 
-        var m_list = parser.findMoney(p);
-        if (m_list.length != 0){
-            m_list.map(function(m){
-                var _range = new Range({
-                    start: m.start,
-                    end: m.end
-                });
-                var _rel = new Rel({
-                    keyword: m.money,
-                    info: m.money + '원입니다.'
-                });
+        _paragraph.save(function (err){
+            if (err) return handleError(err); // error
 
-                _range.rels.push(_rel);
-                _paragraph.ranges.push(_range);
-
-                _range.save(function(err){
-                    if (err){
-                        console.log('+++++ range save error');
-                        return handleError(err);
-                    }
-                    console.log('range ' + _range._id + ' is saved');
-                });
-                _rel.save(function(err){
-                    if (err){
-                        console.log('+++++ rel save error');
-                        return handleError(err);
-                    }
-                    console.log('rel ' + _rel._id + ' is saved');
-                });
-            });//m_list.map end
-        }
-
-        _paragraph.save(function(err){
-            if (err){
-                console.log('+++++ paragraph save error');
-                return handleError(err);
-            }
-            console.log('paragraph ' + _paragraph._id + ' is saved');
+            console.log('|--- A paragraph object(' + _paragraph._id + ') is saved.');
         });
-    });//p_list.map end
 
-    _article.save(function(err){
+        // save Range and Rel
+        var _range_list = parser.findMoney(p);
+
+        _range_list.map(function(r){
+            // save Range
+            var _range = new Range({
+                _paragraph: _paragraph,
+                start: r.start,
+                end: r.end
+            });
+
+            _range.save(function (err){
+                if (err) return handleError(err); // error
+
+                console.log('   |--- A range object(' + _range._id + ') is saved.');
+            });
+
+            //save Rel
+            var _rel = new Rel({
+                _range: _range,
+                keyword: r.money,
+                info: []
+            });
+
+            _rel.save(function (err){
+                if (err) return handleError(err); // error
+
+                console.log('      |--- A rel object(' + _rel._id + ') is saved.');
+            });
+        });// _range_list.map
+    });// _paragraph_list.map
+
+    console.log('[ saved completed ]');
+
+    return res.send(200);
+};// article.add
+
+
+// REST API
+api = {};
+
+api.type = function(req, res){
+    var type = req.query.type;
+
+    switch (type){
+        case 'article':
+            api.getArticle(req, res);
+            break;
+        case 'paragraphs':
+            api.getParagraphs(req, res);
+            break;
+        case 'ranges':
+            api.getRanges(req, res);
+            break;
+        case 'factchecks':
+            api.getFactchecks(req, res);
+            break;
+        case 'comments':
+            api.getComments(req, res);
+            break;
+        case 'rels':
+            api.getRels(req, res);
+            break;
+        default:
+            res.send('factful restAPI Error: type(' + type + ')  doesn\'t exist');
+    }
+};
+
+api.getArticle = function(req, res){
+    var _article_id = req.query._id;
+    var obj = Article.findOne({'_id': _article_id});
+
+    obj.exec(function(err, _obj){
         if (err){
-            console.log('+++++ article save error');
-            return handleError(err);
+            res.send(500, 'getArticle Error');
+            return handleError(err); // error
         }
-        console.log('article ' + _article._id + ' is saved');
 
-        return res.send('200', {article: _article});
+        res.send(200, _obj);
     });
-}// END : addArticle(req, res)
+};
 
-function viewArticle(req, res){
-}// END : viewArticle(req, res)
+api.getParagraphs = function(req, res){
+    var _article_id = req.query._id;
+    var obj = Paragraph.find({'_article': _article_id});
 
-function getArticle(req, res){
-}// END : getArticle(req, res)
+    obj.exec(function(err, _obj){
+        if (err){
+            res.send(500, 'getParagraphs Error');
+            return handleError(err); // error
+        }
+
+        res.send(200, _obj);
+    });
+};
+
+api.getRanges = function(req, res){
+    var _paragraph_id = req.query._id;
+    var obj = Range.find({'_paragraph': _paragraph_id});
+
+    obj.exec(function(err, _obj){
+        if (err){
+            res.send(500, 'getRanges Error');
+            return handleError(err); // error
+        }
+
+        res.send(200, _obj);
+    });
+};
+
+api.getFactchecks = function(req, res){
+    var _range_id = req.query._id;
+    var obj = Factcheck.find({'_range': _range_id});
+
+    obj.exec(function(err, _obj){
+        if (err){
+            res.send(500, 'getFactchecks Error');
+            return handleError(err); // error
+        }
+
+        res.send(200, _obj);
+    });
+};
+
+api.getComments = function(req, res){
+    var _range_id = req.query._id;
+    var obj = Comment.find({'_range': _range_id});
+
+    obj.exec(function(err, _obj){
+        if (err){
+            res.send(500, 'getComments Error');
+            return handleError(err); // error
+        }
+
+        res.send(200, _obj);
+    });
+};
+
+api.getRels = function(req, res){
+    var _range_id = req.query._id;
+    var obj = Rel.find({'_range': _range_id});
+
+    obj.exec(function(err, _obj){
+        if (err){
+            res.send(500, 'getComments Error');
+            return handleError(err); // error
+        }
+
+        res.send(200, _obj);
+    });
+};
 
 
 // routes initialize
 function setup(app){
     app.get('/factful', function(req, res){res.redirect('/factful/article/list')});
-    app.get('/factful/article/list', viewArticleList);
-    app.get('/factful/article/add', session.isAdmin, addArticleView);
-    app.post('/factful/article/add', session.isAdmin, addArticle);
-    app.get('/factful/article/:id', viewArticle);
+
+    app.get('/factful/article/list', view.articleList);
+    app.get('/factful/article/add', session.isAdmin, view.articleAdd);
+    app.post('/factful/article/add', article.add);
+    app.get('/factful/article/item/:id', view.articleItem);
+
+    // rest api
+    app.get('/factful/api', api.type);
 }
 
 module.exports = setup;
