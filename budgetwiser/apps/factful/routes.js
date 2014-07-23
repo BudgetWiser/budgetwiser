@@ -16,17 +16,38 @@ var view = {};
 
 view.articleList = function(req, res){
     // index function
-    return res.send('factful');
+    res.send('factful');
 };
+
 view.articleAdd = function(req, res){
-    return res.render('factful/article_add', {
+    res.render('factful/article_add', {
         layout: 'factful/layout',
-        user_profile: req.user.profile
+        user: req.user.profile
     });
-}
+};
+
 view.articleItem = function(req, res){
-    res.send(req.params.id + ' article item');
-}
+    var user;
+
+    if (req.user){
+        user = req.user;
+        user.link = '/account/user/' + user._id;
+    }else{
+        user = {
+            _id: 'is-not-auth',
+            link: '/account/login?next=' + req.url,
+            profile: {
+                nickname: '로그인하기',
+                image: 'default_profile_image.png'
+            }
+        };
+    }
+
+    res.render('factful/article_view', {
+        layout: 'factful/layout',
+        user: user,
+    });
+};
 
 
 // Funcs
@@ -153,7 +174,7 @@ api.getArticle = function(req, res){
             return handleError(err); // error
         }
 
-        res.send(200, _obj);
+        res.json(200, _obj);
     });
 };
 
@@ -167,7 +188,7 @@ api.getParagraphs = function(req, res){
             return handleError(err); // error
         }
 
-        res.send(200, _obj);
+        res.json(200, _obj);
     });
 };
 
@@ -181,7 +202,7 @@ api.getRanges = function(req, res){
             return handleError(err); // error
         }
 
-        res.send(200, _obj);
+        res.json(200, _obj);
     });
 };
 
@@ -195,7 +216,7 @@ api.getFactchecks = function(req, res){
             return handleError(err); // error
         }
 
-        res.send(200, _obj);
+        res.json(200, _obj);
     });
 };
 
@@ -209,7 +230,7 @@ api.getComments = function(req, res){
             return handleError(err); // error
         }
 
-        res.send(200, _obj);
+        res.json(200, _obj);
     });
 };
 
@@ -223,7 +244,7 @@ api.getRels = function(req, res){
             return handleError(err); // error
         }
 
-        res.send(200, _obj);
+        res.json(200, _obj);
     });
 };
 
