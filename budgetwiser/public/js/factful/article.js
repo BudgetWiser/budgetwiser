@@ -24,7 +24,12 @@ Factful.Article = function(model){
 /*
  * Generate Article DOMobjects
  */
-Factful.Article.prototype.generateView = function(container){
-    if(!container){
-    }
+Factful.Article.prototype.generateView = function(articleView){
+    this.view_ = articleView;
+    this.view_.addClass('factful-article');
+
+    var _title_view = Factful.createElement('h2', {
+        'class': 'factful-article-title'
+    });
+    this.view_.appendChild(_title_view);
 };

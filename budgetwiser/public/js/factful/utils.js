@@ -21,14 +21,16 @@ Factful.createElement = function(tag, opts){
     }else{
         var elm = document.createElement(tag);
 
-        if(opts.id){
-            elm.id = opts.id;
-        }
-        if(opts.class){
-            var classList = (opts.class).split(" ");
-            classList.map(function(val){
-                elm.classList.add(val);
-            });
+        if(opts){
+            if(opts.id){
+                elm.id = opts.id;
+            }
+            if(opts.class){
+                var classList = (opts.class).split(" ");
+                classList.map(function(val){
+                    elm.classList.add(val);
+                });
+            }
         }
 
         /* element function */
