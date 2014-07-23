@@ -17,26 +17,26 @@
          url('/static/fonts/NanumGothic-Bold.ttf) format('truetype');
 }
 @font-face{
-    font-family: 'Noto Sans';
+    font-family: 'NotoSansKR';
     font-style: normal;
     font-weight: 400;
-    src: url('/static/fonts/NotoSansKR-Regular.eot') format('embedded-opentpe');
+    src: url('/static/fonts/NotoSansKR-Regular.eot') format('embedded-opentype');
     src: url('/ststic/fonts/NotoSansKR-Regular.woff') format('woff'),
          url('/static/fonts/NotoSansKR-Regular.ttf) format('truetype');
 }
 @font-face{
-    font-family: 'Noto Sans';
+    font-family: 'NotoSansKR';
     font-style: normal;
     font-weight: 700;
-    src: url('/static/fonts/NotoSansKR-Medium.eot') format('embedded-opentpe');
+    src: url('/static/fonts/NotoSansKR-Medium.eot') format('embedded-opentype');
     src: url('/ststic/fonts/NotoSansKR-Medium.woff') format('woff'),
          url('/static/fonts/NotoSansKR-Medium.ttf) format('truetype');
 }
 @font-face{
-    font-family: 'Noto Sans';
+    font-family: 'NotoSansKR';
     font-style: normal;
-    font-weight: 900;
-    src: url('/static/fonts/NotoSansKR-Bold.eot') format('embedded-opentpe');
+    font-weight: 800;
+    src: url('/static/fonts/NotoSansKR-Bold.eot') format('embedded-opentype');
     src: url('/ststic/fonts/NotoSansKR-Bold.woff') format('woff'),
          url('/static/fonts/NotoSansKR-Bold.ttf) format('truetype');
 }

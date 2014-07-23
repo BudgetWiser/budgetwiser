@@ -1,0 +1,143 @@
+#wrapper-header{
+    width: 100%;
+    height: 40px;
+    margin: 0 0 60px 0;
+}
+#header{
+    width: 100%;
+    height: 100%;
+}
+.header-left{
+    float: left;
+    height: 100%;
+}
+.header-left>*{
+    float: left;
+    height: 100%;
+}
+.header-right{
+    float: right;
+    height: 100%;
+}
+.header-right>*{
+    float: right;
+    height: 100%;
+}
+.header-back{
+    display: inline-block;
+    height: 100%:
+    font-size: 16px;
+    line-height: 42px;
+    background: url('/static/res/factful/btn_back.png') 0 0 no-repeat;
+    padding-left: 56px;
+    color: #c4cacf;
+}
+.header-back:hover{
+    background-position: 0 -40px;
+    text-decoration: none;
+    color: #afb3b8;
+}
+.header-right>*{
+    margin-left: 16px;
+}
+.header-bookmark{
+    background: url('/static/res/factful/btn_bookmark.png') 0 0 no-repeat;
+    width: 40px;
+    height: 40px;
+    text-indent: -9999em;
+    cursor: pointer;
+}
+.header-bookmark:hover{
+    background-position: 0 -40px;
+}
+.header-viewmode{
+    background: url('/static/res/factful/btn_viewmode.png') 0 0 no-repeat;
+    width: 40px;
+    height: 40px;
+    text-indent: -9999em;
+    cursor: pointer;
+}
+.header-viewmode:hover{
+    background-position: 0 -40px;
+}
+.header-profile{
+    width: 40px;
+    height: 40px;
+    font-size: 0;
+    overflow: hidden;
+}
+.header-profile>img{
+    width: 40px;
+    height: 40px;
+    border-radius: 40px;
+    opacity: .6;
+}
+.header-profile:hover>img{
+    opacity: 1;
+}
+.header-profile.is-not-auth{
+    background: url('/static/res/factful/btn_login.png') 0 0 no-repeat;
+}
+.header-profile.is-not-auth:hover{
+    background-position: 0 -40px;
+}
+.header-profile.is-not-auth>img{
+    display: none;
+}
+
+/* CONTENT */
+
+#wrapper-content{
+    display: inline-block;
+    width: 100%;
+}
+#content{
+    display: inline-block;
+    width: 100%;
+}
+.content-left{
+    float: left;
+    width: 670px;
+    margin: 0 16px 0 0;
+    display: inline-block;
+}
+.content-right{
+    float: right;
+    width: 314px;
+    display: inline-block;
+}
+
+/* ARTICLE */
+
+.factful-article-title{
+    font-size: 36px;
+    color: #424649;
+    font-weight: 700;
+    margin-bottom: 30px;
+}
+.factful-article-info{
+    font-size: 15px;
+    margin-bottom: 50px;
+}
+.factful-article-press{
+    color: #296399;
+    margin-right: 10px;
+    display: inline;
+}
+.factful-article-date{
+    color: #a6aaae;
+}
+.factful-article-paragraph{
+    font-size: 18px;
+    color: #424649;
+    line-height: 30px;
+    margin-bottom: 30px;
+}
+.factful-article-rel{
+    color: #1e85e5;
+    cursor: pointer;
+    font-weight: 400;
+}
+.factful-article-rel:hover{
+    box-shadow: 0 0 3px rgba(0, 0, 0, .3);
+}

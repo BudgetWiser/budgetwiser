@@ -1,0 +1,48 @@
+{{#yield-stylesheets}}
+<link rel="stylesheet" type="text/css" href="/static/css/factful/article_view.css">
+{{/yield-stylesheets}}
+{{#yield-scripts}}
+{{/yield-scripts}}
+{{#yield-content}}
+<div id="wrapper-header">
+    <div id="header">
+        <div class="header-left">
+            <a href="/factful/article/list" class="header-back">기사 리스트</a>
+        </div>
+        <div class="header-right">
+            <a href="{{user.link}}" class="header-profile {{user._id}}">
+                <img src="/static/images/user/{{user.profile.image}}" alt="{{user.profile.nickname}}">
+                {{user.profile.nickname}}
+            </a>
+            <button class="header-bookmark">기사 즐겨찾기</button>
+            <button class="header-viewmode">보는 방식 바꾸기</button>
+        </div>
+    </div>
+</div>
+<div id="wrapper-content">
+    <div id="content">
+        <div class="content-left">
+            <h2 class="factful-article-title">
+                서울 자치구 기초연금 예산 확보 63%뿐
+            </h2>
+            <div class="factful-article-info">
+                <a href="#" class="factful-article-press">서울신문</a>
+                <span class="factful-article-date">2014년 7월 16일</span>
+            </div>
+            <div class="factful-article-paragraphs">
+                <p id="aaa" class="factful-article-paragraph">
+                기초연금 지급이 열흘 앞으로 다가왔지만 예산 확보가 제대로 이뤄지지 않아 9월이면 재원이 바닥을 보일 전망이다.
+                </p>
+                <p id="bbb" class="factful-article-paragraph">
+                올 하반기 기초연금 지급을 위해 25개 자치구가 필요로 하는 예산은 모두 <b id="asdf" class="factful-article-rel">1458억 6000만원</b>. 하지만 지금까지 확보된 예산은 <b id="" class="factful-article-rel">889억 3000만원</b>으로 <b id="" class="factful-article-rel">569억여원</b>이 모자란다. 시 관계자는 “지난해 사업이 확정되지 않아 시는 물론 자치구들도 예산을 편성하지 못해 이런 상황이 벌어졌다”면서 “하반기 추가경정예산과 특별교부금 등을 활용하면 기초연금을 지급하지 못하는 사태는 발생하지 않을 것”이라고 설명했다. 특히 금천구와 성동, 강서구는 기초연금 예산 확보율이 50%도 안 되는 것으로 나타났다. 금천구는 <b id="" class="factful-article-rel">40억 9000만원</b>의 예산 중 <b id="" class="factful-article-rel">17억 3000만원</b>(42%)을 확보하는 데 그쳤고 성동구의 예산 확보액은 <b id="" class="factful-article-rel">19억원</b>(45%), 강서구는 <b id="" class="factful-article-rel">42억 8000만원</b>(49%)에 불과하다. 올해 예산을 100% 확보한 구는 종로구, 중구, 송파구 등 3곳뿐이다. 이들 6개구를 제외한 19개 구의 예산 확보율은 53~66%에 그쳤다.
+                </p>
+                <p id="ccc" class="factful-article-paragraph">
+                예산 확보율이 60%대에 그친 가장 큰 이유는 정부가 지자체에 재원 부담을 전가했기 때문이다. 지자체의 예산 부담률은 당초 25.5%에서 30.8%로 높아졌다.
+                </p>
+            </div>
+        </div>
+        <div class="content-right">
+        </div>
+    </div>
+</div>
+{{/yield-content}}

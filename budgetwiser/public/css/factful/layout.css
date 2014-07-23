@@ -17,9 +17,11 @@
     -moz-box-sizing: border-box;
 }
 ::selection{
+    color: rgba(255, 255, 255, .7);
     background: rgba(29, 70, 111, .5);
 }
 ::-moz-selection{
+    color: rgba(255, 255, 255, .7);
     background: rgba(29, 70, 111, .5);
 }
 html, body{
