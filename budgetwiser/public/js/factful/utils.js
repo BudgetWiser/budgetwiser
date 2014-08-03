@@ -16,7 +16,7 @@ Factful.assert = function(cond, msg){
  * Create DOM element
  */
 Factful.createElement = function(tag, opts){
-    if (typeof(opts) !== 'object'){
+    if (typeof(opts) !== 'object' && typeof(opts) !== 'undefined'){
         throw Error("createElement Fail : given opts param is not an object");
     }else{
         var elm = document.createElement(tag);
@@ -57,5 +57,28 @@ Factful.createElement = function(tag, opts){
         };
 
         return elm;
+    }
+};
+
+/*
+ * Find Objects by ID
+ */
+Factful.findParagraphById = function(_id){
+    var pList = Factful.article.paragraphs;
+    for(var i=0; i<pList.length; i++){
+        if(pList[i]._id == _id){
+            return pList[i];
+        }
+    }
+};
+Factful.findRangeById = function(_id){
+    var pList = Factful.article.paragraphs;
+    for(var i=0; i<pList.length; i++){
+        var rList = pList[i].ranges;
+        for(var j=0; j<rList.length; j++){
+            if(rList[j]._id == _id){
+                return rList[j];
+            }
+        }
     }
 };
