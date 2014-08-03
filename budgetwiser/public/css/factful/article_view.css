@@ -98,25 +98,32 @@
 .content-left{
     float: left;
     width: 670px;
-    margin: 0 16px 0 0;
+    margin: 0 20px 0 0;
     display: inline-block;
 }
 .content-right{
     float: right;
-    width: 314px;
+    width: 310px;
     display: inline-block;
+    overflow: hidden;
+    position: relative;
 }
 
 /* ARTICLE */
 
+.factful-article, .factful-article>*{
+    position: relative;
+    z-index: 10;
+}
 .factful-article-title{
-    font-size: 36px;
+    font-size: 34px;
     color: #424649;
-    font-weight: 700;
+    font-weight: 800;
     margin-bottom: 30px;
+    line-height: 45px;
 }
 .factful-article-info{
-    font-size: 15px;
+    font-size: 14px;
     margin-bottom: 50px;
 }
 .factful-article-press{
@@ -128,7 +135,7 @@
     color: #a6aaae;
 }
 .factful-article-paragraph{
-    font-size: 18px;
+    font-size: 17px;
     color: #424649;
     line-height: 30px;
     margin-bottom: 30px;
@@ -140,4 +147,166 @@
 }
 .factful-article-rel:hover{
     box-shadow: 0 0 3px rgba(0, 0, 0, .4);
+}
+.factful-article-image{
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 30px;
+}
+.factful-article-ranges{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    z-index: 20;
+}
+.factful-article-range{
+    position: absolute;
+    z-index: 20;
+    background: transparent;
+    border: 1px dashed #babcbe;
+    cursor: pointer;
+    border-radius: 2px;
+}
+.factful-article-range-rel{
+    border-color: #51a0ea;
+}
+.factful-article-ranges-backview{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    z-index: 5;
+}
+.factful-article-range-backview{
+    position: absolute;
+    z-index: 5;
+    border-radius: 2px;
+}
+.range-rect-start{
+    border-right: none;
+    border-radius: 2px 0 0 2px;
+}
+.range-rect-end{
+    border-left: none;
+    border-radius: 0 2px 2px 0;
+}
+.range-rect-mid{
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
+}
+/*.factful-article-ranges-menu{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    z-index: 20;
+}*/
+.factful-article-range-menu{
+    position: absolute;
+    width: 120px;
+    height: 40px;
+    background: #5c5c5c;
+    border-radius: 2px;
+    margin-top: 8px;
+    z-index: 1000;
+    display: none;
+}
+.factful-article-range-menu:before{
+    content: '';
+    display: block;
+    position: absolute;
+    width: 16px;
+    height: 8px;
+    background: transparent url('/static/res/factful/deco_range_menu.png') 0 0 no-repeat;
+    top: -8px;
+    left: 50%;
+    margin-left: -8px;
+}
+.factful-article-range-menu>button{
+    width: 40px;
+    height: 40px;
+    float: left;
+    background-position: 0 0;
+    background-color: transparent;
+    cursor: pointer;
+    text-indent: -9999em;
+}
+.factful-article-range-menu>button:hover{
+    background-position: 0 -40px;
+}
+.range-add-comment{
+    background-image: url('/static/res/factful/btn_add_comment.png');
+}
+.range-add-factcheck{
+    background-image: url('/static/res/factful/btn_add_factcheck.png');
+}
+.range-add-factcheck-req{
+    background-image: url('/static/res/factful/btn_add_factcheck_req.png');
+}
+
+.range-add-comment-view{
+    width: 300px;
+    height: 300px;
+    position: absolute;
+    background: #fff;
+    border: 1px solid #0bdc7c;
+    border-radius: 2px;
+    z-index: 1000;
+    margin-top: 8px;
+    padding: 16px 12px;
+    display: none;
+}
+.range-add-comment-view:before{
+    content: '';
+    display: block;
+    position: absolute;
+    width: 16px;
+    height: 9px;
+    background: transparent url('/static/res/factful/deco_add_comment_view.png') 0 0 no-repeat;
+    top: -9px;
+    left: 50%;
+    margin-left: -8px;
+    z-index: 1100;
+}
+.range-add-comment-view>h4{
+    color: 585c5f;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    line-height: 16px;
+}
+.range-add-comment-textarea{
+    width: 100%;
+    height: 186px;
+    border: none;
+    font-size: 15px;
+    line-height: 20px;
+    color: #585c5f;
+    margin-bottom: 16px;
+    font-weight: 400;
+    outline: none;
+    resize: none;
+}
+.range-add-comment-submit{
+    height: 34px;
+    background: #0bdc7c;
+    box-shadow: inset 0 -2px 0 #06b464;
+    padding: 0 10px;
+    font-size: 16px;
+    font-weight: 400;
+    color: #fff;
+    line-height: 34px;
+    float: right;
+    cursor: pointer;
+}
+.range-add-comment-submit:hover{
+    background: #05c56d;
 }
