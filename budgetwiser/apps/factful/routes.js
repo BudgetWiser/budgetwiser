@@ -27,7 +27,7 @@ view.articleAdd = function(req, res){
 };
 
 view.articleItem = function(req, res){
-    var user;
+    var _article_id = req.params.id;
 
     if (req.user){
         user = req.user;
@@ -45,7 +45,8 @@ view.articleItem = function(req, res){
 
     res.render('factful/article_view', {
         layout: 'factful/layout',
-        user: user,
+        article_id: _article_id,
+        user: user
     });
 };
 
@@ -166,6 +167,7 @@ api.type = function(req, res){
 
 api.getArticle = function(req, res){
     var _article_id = req.query._id;
+    console.log(_article_id);
     var obj = Article.findOne({'_id': _article_id});
 
     obj.exec(function(err, _obj){
