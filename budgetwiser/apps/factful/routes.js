@@ -64,6 +64,9 @@ article.add = function(req, res){
         url: req.param('url')
     };
 
+    var _category = parser.categorize(data.content);
+    console.log('\nArticle Category : ', _category);
+
     // save Article
     var _article = new Article({
         _user: req.user,
@@ -71,7 +74,8 @@ article.add = function(req, res){
         subtitle: data.subtitle,
         date: data.date,
         url: data.url,
-        press: data.press
+        press: data.press,
+        category: _category
     });
 
     _article.save(function (err){
