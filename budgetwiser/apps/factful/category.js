@@ -10,7 +10,9 @@ fs.readFile('services_2013.tsv', 'utf8', function(err, data){
     var lines = data.split('\n');
     var exc = [' ', '', '.', ',', 'U+00B7', '및'], exc_cand = [];
 
-    var regexp = new RegExp('[0-9]+', 'g');
+    var regexp = new RegExp('[0-9]+');
+    var post = new RegExp('은|는|이|가$');
+
     for(var i=1; i<lines.length; i++){
         var line = lines[i].split('\t');
         var category_name = line[1], category_index = output.category.indexOf(category_name);
@@ -53,10 +55,14 @@ fs.readFile('services_2013.tsv', 'utf8', function(err, data){
                     }*/
 
                     var word_list = word.match(/[가-힣]+/g);
+
                     if(word_list){
                         word_list.map(function(word_item){
-                            if(!regexp.test(word) && exc.indexOf(word) == -1 && output.keywords[category_index].indexOf(word) == -1){
-                                output.keywords[category_index].push(word);
+                            if(post.test(word_item)){
+                                word_item = word_item.slice(0, -1);
+                            }
+                            if(!regexp.test(word_item) && exc.indexOf(word_item) == -1 && output.keywords[category_index].indexOf(word_item) == -1){
+                                output.keywords[category_index].push(word_item);
                             }
                         });
                     }
