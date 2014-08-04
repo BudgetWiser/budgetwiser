@@ -165,7 +165,7 @@ Factful.Range.prototype.generateView = function(offset){
         var rect_style = {
             'top': rect.top - offset.top - 2 + $(document).scrollTop(),
             'left': rect.left - offset.left,
-            'width': rect.width,
+            'width': rect.width + 1,
             'height': rect.height + 4
         };
         var _view = Factful.createElement('div');
