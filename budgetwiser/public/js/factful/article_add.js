@@ -95,11 +95,10 @@ Input.sendForm = function(){
 
     $.ajax({
         type: 'POST',
-        url: '/factful/article/add',
+        url: '/factful/add/article',
         data: data,
         success: function(obj){
-            console.log('success');
-            console.log(obj.article);
+            console.log('success', obj.article);
         },
         error: function(){
             console.log('error!');

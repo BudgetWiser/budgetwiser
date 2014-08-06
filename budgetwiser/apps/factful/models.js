@@ -31,7 +31,6 @@ var commentSchema = new Schema({
     _user: {type: ObjectId, ref: 'User'},
     _range: {type: ObjectId, ref: 'Range'},
     _comment: {type: ObjectId, ref: 'Comment'},
-    type: {type: Number, min: 0, max: 1}, // 0: question, 1: answer
     content: String,
     ref: String
 });
@@ -43,11 +42,24 @@ var factcheckSchema = new Schema({
     ref: String
 });
 
+var factcheckreqSchema = new Schema({
+    _user: {type: ObjectId, ref: 'User'},
+    _range: {type: ObjectId, ref: 'Range'}
+});
+
 var relSchema = new Schema({
     _range: {type: ObjectId, ref: 'Range'},
     keyword: String, // number: money, string: keyword
     info: [Mixed]
 });
+
+var budgetSchema = new Schema({
+    _parent: ObjectId,
+    year: Number,
+    category: {type: Number, min: 0, max: 3},
+    money: Number
+});
+
 
 // DB model initialize
 var Article = mongoose.model('Article', articleSchema),
@@ -55,7 +67,9 @@ var Article = mongoose.model('Article', articleSchema),
     Range= mongoose.model('Range', rangeSchema),
     Comment= mongoose.model('Comment', commentSchema),
     Factcheck= mongoose.model('Factcheck', factcheckSchema),
-    Rel = mongoose.model('Rel', relSchema);
+    FactcheckReq = mongoose.model('FactcheckReq', factcheckreqSchema),
+    Rel = mongoose.model('Rel', relSchema),
+    Budget = mongoose.model('Budget', budgetSchema);
 
 module.exports = {
     Article: Article,
@@ -63,5 +77,7 @@ module.exports = {
     Range: Range,
     Comment: Comment,
     Factcheck: Factcheck,
-    Rel: Rel
+    FactcheckReq: FactcheckReq,
+    Rel: Rel,
+    Budget: Budget,
 };

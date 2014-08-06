@@ -223,7 +223,7 @@ body{
     height: 40px;
     background: #5c5c5c;
     border-radius: 2px;
-    margin-top: 8px;
+    margin-top: 6px;
     z-index: 1000;
     display: none;
 }
@@ -231,12 +231,12 @@ body{
     content: '';
     display: block;
     position: absolute;
-    width: 16px;
-    height: 8px;
+    width: 12px;
+    height: 6px;
     background: transparent url('/static/res/factful/deco_range_menu.png') 0 0 no-repeat;
-    top: -8px;
+    top: -6px;
     left: 50%;
-    margin-left: -8px;
+    margin-left: -6px;
 }
 .factful-article-range-menu>button{
     width: 40px;
@@ -268,7 +268,7 @@ body{
     border: 1px solid #0bdc7c;
     border-radius: 2px;
     z-index: 1000;
-    margin-top: 8px;
+    margin-top: 6px;
     padding: 16px 12px;
     display: none;
 }
@@ -276,16 +276,17 @@ body{
     content: '';
     display: block;
     position: absolute;
-    width: 16px;
-    height: 9px;
+    width: 12px;
+    height: 10px;
     background: transparent url('/static/res/factful/deco_add_comment_view.png') 0 0 no-repeat;
-    top: -9px;
+    top: -7px;
     left: 50%;
-    margin-left: -8px;
+    margin-left: -6px;
     z-index: 1100;
+
 }
 .range-add-comment-view>h4{
-    color: 585c5f;
+    color: #585c5f;
     font-size: 16px;
     font-weight: 700;
     margin-bottom: 16px;
@@ -317,4 +318,74 @@ body{
 }
 .range-add-comment-submit:hover{
     background: #05c56d;
+}
+.range-add-factcheck-view{
+    width: 240px;
+    position: absolute;
+    background: #fff;
+    border: 1px solid #0bdc7c;
+    border-radius: 2px;
+    z-index: 1000;
+    margin-top: 6px;
+    padding: 16px 12px;
+    display: none;
+}
+.range-add-factcheck-view:before{
+    content: '';
+    display: block;
+    position: absolute;
+    width: 12px;
+    height: 10px;
+    background: transparent url('/static/res/factful/deco_add_comment_view.png') 0 0 no-repeat;
+    top: -7px;
+    left: 50%;
+    margin-left: -6px;
+    z-index: 1100;
+}
+.range-add-factcheck-submit{
+    height: 34px;
+    background: #0bdc7c;
+    box-shadow: inset 0 -2px 0 #06b464;
+    padding: 0 10px;
+    font-size: 16px;
+    font-weight: 400;
+    color: #fff;
+    line-height: 34px;
+    float: right;
+    cursor: pointer;
+}
+.range-add-factcheck-submit:hover{
+    background: #05c56d;
+}
+.range-add-factcheck-view>h4{
+    color: #585c5f;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    line-height: 16px;
+}
+.range-add-factcheck-view>span{
+    color: #585c5f;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 12px;
+    margin-bottom: 8px;
+    display: block;
+}
+.range-add-factcheck-score{
+    width: 100%;
+    height: 36px;
+    margin-bottom: 16px;
+}
+.range-add-factcheck-link{
+    width: 100%;
+    height: 36px;
+    border: 0;
+    outline: none;
+    background: #fafafa;
+    margin-bottom: 16px;
+    padding: 0 8px;
+}
+.range-add-factcheck-link:focus{
+    border: 1px solid #e3e3e3;
 }

@@ -8,6 +8,7 @@ var Article = factfulModels.Article,
     Range = factfulModels.Range,
     Comment = factfulModels.Comment,
     Factcheck = factfulModels.Factcheck,
+    FactcheckReq = factfulModels.FactcheckReq,
     Rel = factfulModels.Rel;
 
 
@@ -138,6 +139,126 @@ article.add = function(req, res){
     return res.send(200);
 };// article.add
 
+article.addRange = function(req, res){
+    _paragraph = req.param('_paragraph');
+    start = req.param('start');
+    end = req.param('end');
+
+    var q = Range.findOne({
+        '_paragraph': _paragraph,
+        'start': start,
+        'end': end
+    });
+
+    q.exec(function(err, _r){
+        if (err){
+            res.send(500);
+            return handleError(err);
+        }else{
+            if(_r){
+                res.send(200, {
+                    statusCode: 1,
+                    range: _r
+                });
+                return;
+            }else{
+                var _range = new Range({
+                    _paragraph: _paragraph,
+                    start: start,
+                    end: end
+                });
+
+                _range.save(function(err, _saved){
+                    if (err){
+                        res.send(500);
+                        return handleError(err);
+                    }else{
+                        res.send(200, {
+                            statusCode: 0,
+                            range: _saved
+                        });
+                    }
+                });
+            }
+        }
+    });
+};
+
+article.addComment = function(req, res){
+    var _range = req.param('_range');
+    var content = req.param('content');
+
+    var _comment = new Comment({
+        _user: req.user,
+        _range: _range,
+        content: content
+    });
+
+    _comment.save(function(err, _saved){
+        if (err){
+            res.send(500);
+            return handleError(err);
+        }else{
+            res.send(200, {
+                comment: _saved
+            });
+        }
+    });
+};
+
+article.addFactcheck = function(req, res){
+    var _range = req.param('_range');
+    var score = req.param('score');
+    var ref = req.param('ref');
+
+    var _factcheck = new Factcheck({
+        _user: req.user,
+        _range: _range,
+        score: score,
+        ref: ref
+    });
+
+    _factcheck.save(function(err, _saved){
+        if (err){
+            res.send(500);
+            return handleError(err);
+        }else{
+            res.send(200, {
+                factcheck: _saved
+            });
+        }
+    });
+};
+
+article.addFactcheckReq = function(req, res){
+    var _range = req.param('_range');
+
+    var q = FactcheckReq.findOne({
+        '_user': req.user,
+        '_range': _range
+    });
+
+    q.exec(function(err, _fr){
+        if(err){
+            res.send(500);
+            return handleError(err);
+        }else{
+            if(_fr){
+                res.send(200, {statusCode: 1});
+                return;
+            }else{
+                var _factcheckReq = new FactcheckReq({
+                    _user: req.user,
+                    _range: _range
+                });
+                _factcheckReq.save(function(err){
+                    res.send(200, {statusCode: 0});
+                    return;
+                });
+            }
+        }
+    });
+};
 
 // REST API
 api = {};
@@ -259,13 +380,20 @@ api.getRels = function(req, res){
 function setup(app){
     app.get('/factful', function(req, res){res.redirect('/factful/article/list')});
 
+    // view
     app.get('/factful/article/list', view.articleList);
-    app.get('/factful/article/add', session.isAdmin, view.articleAdd);
-    app.post('/factful/article/add', article.add);
     app.get('/factful/article/item/:id', view.articleItem);
 
-    // rest api
+    // rest
     app.get('/factful/api', api.type);
+
+    // article add
+    app.get('/factful/add/article', session.isAdmin, view.articleAdd);
+    app.post('/factful/add/article', article.add);
+    app.post('/factful/add/range', article.addRange);
+    app.post('/factful/add/comment', article.addComment);
+    app.post('/factful/add/factcheck', article.addFactcheck);
+    app.post('/factful/add/factcheckreq', article.addFactcheckReq);
 }
 
 module.exports = setup;

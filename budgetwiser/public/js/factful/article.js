@@ -164,7 +164,7 @@ Factful.Range.prototype.generateView = function(offset){
         var rect = rects[i];
         var rect_style = {
             'top': rect.top - offset.top - 2 + $(document).scrollTop(),
-            'left': rect.left - offset.left,
+            'left': rect.left - offset.left + $(document).scrollLeft(),
             'width': rect.width + 1,
             'height': rect.height + 4
         };
@@ -199,14 +199,14 @@ Factful.Range.prototype.generateView = function(offset){
     }
 
 
-    // Range Menu + rightSide views.
+    // Range Menu
     var last_rect = rects[rects.length - 1];
 
     var _menuView = Factful.createElement('div');
     _menuView.addClass('factful-article-range-menu');
     $(_menuView).css({
         'top': last_rect.top - offset.top + $(document).scrollTop() + last_rect.height + 4,
-        'left': last_rect.left + last_rect.width/2 - 60 - offset.left
+        'left': last_rect.left + last_rect.width/2 - 60 - offset.left + $(document).scrollLeft()
     });
 
     var _addCommentBtn = Factful.createElement('button');
@@ -232,7 +232,7 @@ Factful.Range.prototype.generateView = function(offset){
     _addCommentView.innerHTML = '<h4>댓글 입력하기</h4>';
     $(_addCommentView).css({
         'top': last_rect.top - offset.top + $(document).scrollTop() + last_rect.height + 4,
-        'left': last_rect.left + last_rect.width/2 - 150 - offset.left
+        'left': last_rect.left + last_rect.width/2 - 150 - offset.left + $(document).scrollLeft()
     });
 
     var _addCommentTextarea = Factful.createElement('textarea');
@@ -247,6 +247,40 @@ Factful.Range.prototype.generateView = function(offset){
     _addCommentView.appendChild(_addCommentSubmit);
     Factful.article.rangesView_.appendChild(_addCommentView);
 
+    var _addFactcheckView = Factful.createElement('div');
+    _addFactcheckView.addClass('range-add-factcheck-view');
+    $(_addFactcheckView).css({
+        'top': last_rect.top - offset.top + $(document).scrollTop() + last_rect.height + 4,
+        'left': last_rect.left + last_rect.width/2 - 120 - offset.left + $(document).scrollLeft()
+    });
+
+    var _addFactcheckScore = Factful.createElement('select');
+    _addFactcheckScore.addClass('range-add-factcheck-score');
+    _addFactcheckScore.innerHTML = '<option value=0>☆☆☆☆☆</option>\
+                                    <option value=1>★☆☆☆☆</option>\
+                                    <option value=2>★★☆☆☆</option>\
+                                    <option value=3>★★★☆☆</option>\
+                                    <option value=4>★★★★☆</option>\
+                                    <option value=5>★★★★★</option>';
+
+    var _addFactcheckLink = Factful.createElement('input');
+    _addFactcheckLink.addClass('range-add-factcheck-link');
+    _addFactcheckLink.setAttribute('type', 'text');
+
+    var _addFactcheckSubmit = Factful.createElement('button');
+    _addFactcheckSubmit.addClass('range-add-factcheck-submit');
+    _addFactcheckSubmit.innerHTML = '남기기';
+
+    _addFactcheckView.innerHTML = '<h4>신뢰 점수 추가하기</h4>\
+                                   <span>이 부분이 사실에 기반한 내용인가요?</span>';
+    _addFactcheckView.appendChild(_addFactcheckScore);
+    _addFactcheckView.innerHTML += '<h4>그리고,</h4>\
+                                    <span>무엇을 근거로 들어 위와 같은 점수를 매겼는지, 링크로 남겨주세요.</span>';
+    _addFactcheckView.appendChild(_addFactcheckLink);
+    _addFactcheckView.appendChild(_addFactcheckSubmit);
+
+    Factful.article.rangesView_.appendChild(_addFactcheckView);
+
     this.menuView_ = {
         view_: _menuView,
         addComment: {
@@ -257,7 +291,10 @@ Factful.Range.prototype.generateView = function(offset){
         },
         addFactcheck: {
             open_: _addFactcheckBtn,
-            //view_: _addFactcheckVeiw
+            view_: _addFactcheckView,
+            score_: _addFactcheckScore,
+            link_: _addFactcheckLink,
+            submit_: _addFactcheckSubmit
         },
         addFactcheckReq: {
             open_: _addFactcheckReqBtn,
