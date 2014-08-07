@@ -85,7 +85,7 @@ parser.match = function(str, c){
 };
 
 parser.categorize = function(str){
-    var f = fs.readFileSync(__dirname + '/data/category.json', 'utf8');
+    var f = fs.readFileSync(__dirname + '/category.json', 'utf8');
 
     var service = JSON.parse(f);
     var category = service.category,

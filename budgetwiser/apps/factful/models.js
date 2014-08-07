@@ -56,6 +56,7 @@ var relSchema = new Schema({
 var budgetSchema = new Schema({
     _parent: ObjectId,
     year: Number,
+    name: String,
     category: {type: Number, min: 0, max: 3},
     money: Number
 });

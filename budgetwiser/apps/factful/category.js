@@ -2,7 +2,7 @@ var fs = require('fs'),
     parser = require('./parser');
 
 var year = '2013';
-fs.readFile('data/services_' + year + '.tsv', 'utf8', function(err, data){
+fs.readFile(__dirname + '/data/services_' + year + '.tsv', 'utf8', function(err, data){
     if(err) return console.log(err);
 
     var output = {};
