@@ -1,4 +1,4 @@
 budgetwiser
 ===========
 
-Budgetwiser project with budgetmap and factful services
+Budgetwiser project with budgetmap and factful services.
