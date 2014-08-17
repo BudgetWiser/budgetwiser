@@ -86,7 +86,6 @@ years.map(function(year){
 });
 
 saveData(budgetData);
-process.exit(0);
 
 /*
  * functions

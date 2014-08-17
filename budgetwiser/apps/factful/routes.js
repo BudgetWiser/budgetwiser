@@ -10,6 +10,7 @@ var Article = factfulModels.Article,
     Factcheck = factfulModels.Factcheck,
     FactcheckReq = factfulModels.FactcheckReq,
     Rel = factfulModels.Rel;
+    Budget = factfulModels.Budget;
 
 
 // Views
@@ -264,7 +265,7 @@ article.addFactcheckReq = function(req, res){
 api = {};
 
 api.type = function(req, res){
-    var type = req.query.type;
+    var type = req.param('type');
 
     switch (type){
         case 'article':
@@ -284,6 +285,9 @@ api.type = function(req, res){
             break;
         case 'rels':
             api.getRels(req, res);
+            break;
+        case 'budget':
+            api.getBudget(req, res);
             break;
         default:
             res.send('factful restAPI Error: type(' + type + ')  doesn\'t exist');
@@ -373,6 +377,143 @@ api.getRels = function(req, res){
 
         res.json(200, _obj);
     });
+};
+
+api.getBudget = function(req, res){
+    var _budget = req.param('budget');
+    var _ctg = req.param('ctg');
+
+    switch (_ctg){
+    case 'all':
+        var ctg_1 = Budget.find({
+            'name': _budget,
+            'category': 1
+        }).sort('-year');
+        ctg_1.exec(function(err, _ctg_1){
+            if(err){
+                res.send(500, 'getBudget Error');
+                return handleError(err); // error
+            }
+            if(_ctg_1.length > 0){
+                var ctg_2 = Budget.find({
+                    '_parent': _ctg_1[0]._id,
+                    'category': 2
+                });
+                ctg_2.exec(function(err, _ctg_2){
+                    var query = [];
+                    _ctg_2.map(function(obj){
+                        query.push({
+                            '_parent': obj._id,
+                            'category': 3
+                        });
+                    });
+                    var ctg_3 = Budget.find({$or: query}).sort('-money');
+                    ctg_3.exec(function(err, _ctg_3){
+                        var result = {};
+                        result.ctg_1 = [];
+                        _ctg_1.map(function(obj){
+                            result.ctg_1.push({
+                                '_id': obj._id,
+                                'year': obj.year,
+                                'name': obj.name,
+                                'money': obj.money,
+                            });
+                        });
+                        result.ctg_2 = [];
+                        _ctg_2.map(function(obj){
+                            result.ctg_2.push({
+                                '_id': obj._id,
+                                'year': obj.year,
+                                'name': obj.name,
+                                'money': obj.money,
+                            });
+                        });
+                        result.ctg_3 = [];
+                        _ctg_3.map(function(obj){
+                            result.ctg_3.push({
+                                '_id': obj._id,
+                                'year': obj.year,
+                                'name': obj.name,
+                                'money': obj.money,
+                            });
+                        });
+                        res.json(200, result);
+                    });
+                });
+            }else{
+                res.send(500, 'incorrect ctg_1 name : ' + _budget);
+            }
+        });
+        break;
+    case '1':
+    case '2':
+    case '3':
+        var budgets = Budget.find({
+            'name': _budget,
+            'category': _ctg,
+        }).sort('-year');
+        budgets.exec(function(err, _budgets){
+            if(err){
+                res.send(500, 'error');
+                return handleError(err);
+            }
+            if(_budgets.length > 0){
+                var result = [];
+                _budgets.map(function(obj){
+                    result.push({
+                        '_id': obj._id,
+                        'year': obj.year,
+                        'name': obj.name,
+                        'money': obj.money,
+                        'category': obj.category
+                    });
+                });
+                res.json(200, result);
+            }else{
+                res.send(500, 'cannot find ctg_' + _ctg + ' named [' + _budget + ']');
+            }
+        });
+        break;
+    case 'money':
+        var bound = 10, year = 2013;
+        var budgets = Budget.find({
+            'money': {
+                $gt: parseInt(_budget)*(100-bound)/100,
+                $lt: parseInt(_budget)*(100+bound)/100
+            },
+            'year': year
+        }).sort('name');
+        budgets.exec(function(err, _budgets){
+            if(err){
+                res.send(500, 'case money ERROR');
+                return handleError(err);
+            }
+            if(_budgets.length > 0){
+                var result = [];
+                _budgets.map(function(obj){
+                    result.push({
+                        '_id': obj._id,
+                        'year': obj.year,
+                        'name': obj.name,
+                        'money': obj.money,
+                        'category': obj.category
+                    });
+                });
+                res.json(200, result);
+            }else{
+                res.send('no budget matched with money ' + _budget + 'won (bound: ' + bound + '%)');
+            }
+        });
+        break;
+    default:
+        res.send(500, 'incorrect ctg');
+    }
+
+    if(isNaN(parseInt(_budget))){
+    }else{
+        //budget money
+        res.json(200);
+    }
 };
 
 
