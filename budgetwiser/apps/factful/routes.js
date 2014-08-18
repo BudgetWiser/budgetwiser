@@ -508,12 +508,6 @@ api.getBudget = function(req, res){
     default:
         res.send(500, 'incorrect ctg');
     }
-
-    if(isNaN(parseInt(_budget))){
-    }else{
-        //budget money
-        res.json(200);
-    }
 };
 
 
