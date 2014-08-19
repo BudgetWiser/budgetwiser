@@ -29,14 +29,40 @@ Factful.initArticle = function(_id){
         type: 'GET',
         data: { _id: _id, type: 'article' },
         success: function(obj){
+            console.log(obj);
             Factful.article = new Factful.Article(obj);
             Factful.article.generateView(Factful.leftSide);
+            Factful.initBudgetInfo(Factful.article.category);
+        },
+        error: function(xhr){
+            throw Error(xhr);
+        }
+    });
+};
+
+Factful.initBudgetInfo = function(ctg){
+    console.log(ctg);
+    $.ajax({
+        url: '/factful/api',
+        type: 'GET',
+        data: { type: 'budget', ctg: 'all', budget: ctg },
+        success: function(obj){
+            var data = {
+                'name': ctg,
+                'ctg_1': obj.ctg_1,
+                'ctg_3': obj.ctg_3
+            };
+            var info = new Factful.Info(data),
+                article = Factful.article;
+
+            info.generateView(article.infoView_);
             Factful.initParagraphs(Factful.article._id);
         },
         error: function(xhr){
             throw Error(xhr);
         }
     });
+
 };
 
 Factful.initParagraphs = function(_id){

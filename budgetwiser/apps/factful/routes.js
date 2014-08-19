@@ -18,7 +18,21 @@ var view = {};
 
 view.articleList = function(req, res){
     // index function
-    res.send('factful');
+    var articles = Article.find().sort('upload');
+    articles.exec(function(err, _objList){
+        if(_objList.length > 0){
+            var articleList = '<ul>';
+            _objList.map(function(_obj){
+                var link = '/factful/article/item/' + _obj._id;
+                articleList += '<li><a href="' + link + '">' + _obj.title + '</a></li>';
+            });
+            articleList += '</ul>';
+
+            res.send(200, articleList);
+        }else{
+            res.send(200, 'No article <a href="/factful/add/article">MOVE TO ADD ARTICLE</a>');
+        }
+    });
 };
 
 view.articleAdd = function(req, res){
@@ -63,7 +77,8 @@ article.add = function(req, res){
         title: req.param('title'),
         subtitle: req.param('subtitle'),
         content: req.param('content'),
-        url: req.param('url')
+        url: req.param('url'),
+        upload: Date.now()
     };
 
     var _category = parser.categorize(data.content);
@@ -475,14 +490,14 @@ api.getBudget = function(req, res){
         });
         break;
     case 'money':
-        var bound = 10, year = 2013;
+        var bound = 10, year = 2014;
         var budgets = Budget.find({
             'money': {
                 $gt: parseInt(_budget)*(100-bound)/100,
                 $lt: parseInt(_budget)*(100+bound)/100
             },
             'year': year
-        }).sort('name');
+        }).sort('category');
         budgets.exec(function(err, _budgets){
             if(err){
                 res.send(500, 'case money ERROR');

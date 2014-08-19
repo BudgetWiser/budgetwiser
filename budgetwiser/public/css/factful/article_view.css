@@ -148,6 +148,9 @@ body{
     line-height: 30px;
     margin-bottom: 30px;
 }
+.factful-article-paragraph:last-child{
+    margin-bottom: 0;
+}
 .factful-article-rel{
     color: #1e85e5;
     cursor: pointer;
@@ -388,4 +391,153 @@ body{
 }
 .range-add-factcheck-link:focus{
     border: 1px solid #e3e3e3;
+}
+.factful-budget-info{
+    display: inline-block;
+    width: 100%;
+    padding: 24px 19px;
+    border: 1px dashed #d7d9db;
+    border-radius: 4px;
+    margin-bottom: 36px;
+    z-index: 40;
+    overflow: visible;
+}
+.factful-budget-header{
+    width: 630px;
+    height: 24px;
+}
+.factful-budget-title{
+    display: inline-block;
+    float: left;
+    font-size: 20px;
+    font-weight: 700;
+    color: #454749;
+    margin-right: 12px;
+    line-height: 24px;
+}
+.factful-budget-other{
+    width: 24px;
+    height: 24px;
+    float: left;
+    background: url('/static/res/factful/btn_other_category.png') 0 0 no-repeat;
+    text-indent: -9999em;
+    cursor: pointer;
+}
+.factful-budget-other:hover{
+    background-position: 0 -24px;
+}
+.factful-budget-fold{
+    width: 10px;
+    height: 24px;
+    float: right;
+    text-indent: -9999em;
+    cursor: pointer;
+}
+.factful-budget-fold.to-close{
+    background: url('/static/res/factful/btn_fold_category_close.png') 0 0 no-repeat;
+}
+.factful-budget-fold.to-open{
+    background: url('/static/res/factful/btn_fold_category_open.png') 0 0 no-repeat;
+}
+.factful-budget-fold:hover{
+    background-position: 0 -24px;
+}
+.factful-budget-delta{
+    margin-top: 24px;
+}
+.factful-budget-delta-title{
+    font-size: 16px;
+    color: #616365;
+    font-weight: 700;
+    line-height: 16px;
+}
+.factful-budget-delta-graph{
+    margin-top: 16px;
+    display: inline-block;
+}
+.factful-budget-delta-year{
+    margin-top: 12px;
+    width: 100%;
+}
+.factful-budget-delta-year>div{
+    float: left;
+    margin-right: 120px;
+    width: 30px;
+    height: 12px;
+    font-size: 12px;
+    color: #919394;
+    text-align: center;
+}
+.factful-budget-delta-year>div:last-child{
+    margin-right: 0;
+}
+.factful-budget-delta-money{
+    position: absolute;
+    font-size: 13px;
+    color: #0cacd9;
+    background: #fff;
+    border: 1px solid #d2d4d5;
+    line-height: 36px;
+    height: 36px;
+    padding: 0 12px;
+    z-index: 50;
+    white-space: nowrap;
+    display: none;
+}
+.factful-budget-delta-money:before{
+    content: '';
+    display: block;
+    position: absolute;
+    width: 8px;
+    height: 12px;
+    background: transparent url('/static/res/factful/deco_budget_delta_money.png') 0 0 no-repeat;
+    top: 50%;
+    left: -7px;
+    margin-top: -6px;
+    z-index: 60;
+}
+.factful-budget-more-title{
+    font-size: 16px;
+    color: #616365;
+    font-weight: 700;
+    line-height: 16px;
+}
+.factful-budget-more{
+    margin-top: 32px;
+}
+.factful-budget-more-graph{
+    margin-top: 16px;
+}
+.factful-budget-more-list{
+    margin-top: 12px;
+}
+.factful-budget-more-item{
+    margin-bottom: 8px;
+    display: block;
+}
+.factful-budget-more-item:last-child{
+    margin-bottom: 0;
+}
+.factful-budget-more-item-rect{
+    display: block;
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+    float: left;
+}
+.factful-budget-more-item-rect.sel{
+    background: #ffbf24;
+}
+.factful-budget-more-item-blah{
+    display: block;
+    height: 16px;
+    line-height: 16px;
+    font-size: 14px;
+    color: #454749;
+}
+.factful-budget-more-item-blah>span{
+    font-weight: 700;
+}
+.factful-budget-more-item-blah.sel>span{
+    color: #ff8624;
 }

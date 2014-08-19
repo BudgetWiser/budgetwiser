@@ -101,6 +101,7 @@ parser.categorize = function(str){
 
     for(i=0; i<category.length; i++){
         weight[i] = 0;
+        keywords[i].push = category[i];
         var matched = [];
         for(j=0; j<keywords[i].length; j++){
             var keyword = keywords[i][j];

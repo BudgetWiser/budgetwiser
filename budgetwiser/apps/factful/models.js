@@ -12,7 +12,9 @@ var articleSchema = new Schema({
     subtitle: String,
     date: Date,
     url: String,
-    press: String
+    press: String,
+    category: String,
+    upload: Date
 });
 
 var paragraphSchema = new Schema({

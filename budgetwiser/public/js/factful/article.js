@@ -14,6 +14,7 @@ Factful.Article = function(data){
         this.date = data.date;
         this.url = data.url;
         this.press = data.press;
+        this.category = data.category;
 
         this.paragraphs = [];
     }
@@ -54,6 +55,11 @@ Factful.Article.prototype.generateView = function(articleView){
         _date.getDate() + '일 ' +
         _date.getHours() + ':' + _date.getMinutes();
     $(_info_view).append(_date_view);
+
+    var _info_view = Factful.createElement('div');
+    _info_view.addClass('factful-budget-info');
+    $(this.view_).append(_info_view);
+    this.infoView_ = _info_view;
 
     var _paragraphs_view = Factful.createElement('div');
     _paragraphs_view.addClass('factful-article-paragraphs');
@@ -424,3 +430,351 @@ Factful.Rel.prototype.eventHandlers = function(){
         });*/
     });
 };
+
+/*
+ * Info Object
+ */
+Factful.Info = function(data){
+    if(typeof(data) == 'object'){
+        this.name = data.name;
+        this.ctg_1 = data.ctg_1;
+        this.ctg_3 = data.ctg_3;
+        this.graph = {};
+        this.st = 'open';
+    }
+};
+
+Factful.Info.prototype.generateView = function(infoView){
+    var _view = infoView;
+
+    var _headerView = Factful.createElement('div');
+    _headerView.addClass('factful-budget-header');
+
+    var _titleView = Factful.createElement('h3');
+    _titleView.addClass('factful-budget-title');
+    _titleView.innerHTML = this.name;
+
+    var _otherBtn = Factful.createElement('button');
+    _otherBtn.addClass('factful-budget-other');
+    _otherBtn.innerHTML = '이상해요!';
+
+    var _foldBtn = Factful.createElement('button');
+    _foldBtn.addClass('factful-budget-fold to-close');
+    _foldBtn.innerHTML = '접기';
+
+    _headerView.appendChild(_titleView);
+    _headerView.appendChild(_otherBtn);
+    _headerView.appendChild(_foldBtn);
+
+    var _deltaView = Factful.createElement('div');
+    _deltaView.addClass('factful-budget-delta');
+
+    var _deltaTitleView = Factful.createElement('h4');
+    _deltaTitleView.addClass('factful-budget-delta-title');
+    _deltaTitleView.innerHTML = '연간 예산 변화';
+
+    var _deltaYearView = Factful.createElement('div');
+    _deltaYearView.addClass('factful-budget-delta-year');
+    for(var i=this.ctg_1.length-1; i>=0; i--){
+        var _yearView = Factful.createElement('div');
+        _yearView.innerHTML = this.ctg_1[i].year;
+        _deltaYearView.appendChild(_yearView);
+    }
+
+    // Draw 2D delta graph
+    var _deltaGraphView = Factful.createElement('div');
+    _deltaGraphView.addClass('factful-budget-delta-graph');
+
+    var _deltaStage = new Kinetic.Stage({
+        container: _deltaGraphView,
+        width: 630,
+        height: 120
+    });
+    var _deltaLayer = new Kinetic.Layer();
+
+    // ctg_1 2014,2013,2012,2011,2010
+    var pointPos = [], deltaPercent = [];
+    var max_money = 0,
+        min_money = 0;
+
+    this.ctg_1.forEach(function(obj, i, arr){
+        var money = parseInt(obj.money);
+        if(money>max_money){
+            max_money=money;
+        }
+        if(money<min_money || min_money==0){
+            min_money=money;
+        }
+        if(i < arr.length - 1){
+            var delta = (parseInt(arr[i].money) - parseInt(arr[i+1].money)) / parseInt(arr[i+1].money) * 100;
+            if(delta > 0){
+                deltaPercent.push('+ ' + Math.abs(delta).toFixed(2) + '%');
+            }else{
+                deltaPercent.push('- ' + Math.abs(delta).toFixed(2) + '%');
+            }
+        }
+    });
+    this.ctg_1.map(function(obj){
+        var centerX = 15 + 150 * (obj.year - 2010),
+            centerY = 120 - (8 + (parseInt(obj.money) - min_money) / (max_money - min_money) * (120 - 16));
+        pointPos.push([centerX, centerY]);
+    });
+    // Draw line & delta percent
+    for(var i=0; i<pointPos.length-1; i++){
+        console.log(deltaPercent[i]);
+        var startPos = {
+            x: pointPos[i][0],
+            y: pointPos[i][1]
+        };
+        var endPos = {
+            x: pointPos[i+1][0],
+            y: pointPos[i+1][1]
+        };
+
+        var line = new Kinetic.Line({
+            points: [startPos.x, startPos.y, endPos.x, endPos.y],
+            stroke: '#afb4b6',
+            strokeWidth: 3,
+            lineJoin: 'round'
+        });
+
+        var text = new Kinetic.Text({
+            x: (startPos.x + endPos.x)/2 - 32,
+            y: (startPos.y + endPos.y)/2 - 6,
+            text: deltaPercent[i],
+            fontSize: 13,
+            fontFamily: 'Nanum Gothic',
+            fill: '#02c7ff',
+            width: 64,
+            height: 16
+        });
+        var textStroke = new Kinetic.Text({
+            x: (startPos.x + endPos.x)/2 - 32,
+            y: (startPos.y + endPos.y)/2 - 6,
+            text: deltaPercent[i],
+            fontSize: 13,
+            fontFamily: 'Nanum Gothic',
+            stroke: '#fff',
+            strokeWidth: 5,
+            width: 80,
+            height: 24
+        });
+
+        _deltaLayer.add(line);
+        _deltaLayer.add(textStroke);
+        _deltaLayer.add(text);
+    };
+    // Draw point
+    this.ctg_1.forEach($.proxy(function(obj, i, arr){
+        var obj_money = '', obj_calc = obj.money;
+        if(parseInt(obj_calc/1000000000000) != 0){obj_money += (parseInt(obj_calc/1000000000000) + '조 ');}
+        obj_calc = obj_calc % 1000000000000;
+        if(parseInt(obj_calc/100000000) != 0){obj_money += (parseInt(obj_calc/100000000) + '억 ');}
+        obj_calc = obj_calc % 100000000;
+        if(parseInt(obj_calc/10000) != 0){obj_money += (parseInt(obj_calc/10000) + '만');}
+
+        var centerX = pointPos[i][0],
+            centerY = pointPos[i][1],
+            radius = 6;
+
+        var point = new Kinetic.Circle({
+            x: centerX,
+            y: centerY,
+            radius: radius,
+            fill: '#fff',
+            stroke: '#02c7ff',
+            strokeWidth: 4
+        });
+
+        var pointInfo = Factful.createElement('div');
+        pointInfo.addClass('factful-budget-delta-money');
+        pointInfo.innerHTML = '약 ' + obj_money + '원';
+        console.log(centerX, centerY);
+        $(pointInfo).css({
+            'left': centerX,
+            'top': centerY
+        });
+        _view.appendChild(pointInfo);
+
+        point.on('mouseover', function(){
+            this.stroke('#676d6f');
+            $(pointInfo).stop();
+            $(pointInfo).fadeIn(100);
+            _deltaLayer.draw();
+        });
+        point.on('mouseout', function(){
+            this.stroke('#02c7ff');
+            $(pointInfo).stop();
+            $(pointInfo).fadeOut(100, function(){$(this).hide()});
+            _deltaLayer.draw();
+        });
+
+        _deltaLayer.add(point);
+    }, this));
+    _deltaStage.add(_deltaLayer);
+
+    _deltaGraphView.appendChild(_deltaYearView);
+
+    _deltaView.appendChild(_deltaTitleView);
+    _deltaView.appendChild(_deltaGraphView);
+
+    // More information about budgets ctg_1
+    var _moreView = Factful.createElement('div');
+    _moreView.addClass('factful-budget-more');
+
+    var _moreTitleView = Factful.createElement('h4');
+    _moreTitleView.addClass('factful-budget-more-title');
+    _moreTitleView.innerHTML = "올해 '" + this.name + "' 예산 정보";
+
+    var _moreGraphView = Factful.createElement('div');
+    _moreGraphView.addClass('factful-budget-more-graph');
+
+    var _moreListView = Factful.createElement('ul');
+    _moreListView.addClass('factful-budget-more-list');
+
+    // Draw bar graph
+    var _moreStage = new Kinetic.Stage({
+        container: _moreGraphView,
+        width: 630,
+        height: 40
+    });
+    var _moreLayer = new Kinetic.Layer();
+    var _moreRect = new Kinetic.Rect({
+        x: 0,
+        y: 0,
+        width: 630,
+        height: 40,
+        fill: '#d9d9d9'
+    });
+    _moreLayer.add(_moreRect);
+
+    this.ctg_3.sort(function(a, b){
+        return b.money - a.money;
+    });
+    var nextPos = 0, nextColor = {h:193, s:100, v:100};
+    var thisYear = this.ctg_1[0];
+    this.ctg_3.map($.proxy(function(obj){
+        var rgb  = this.HSVtoRGB(nextColor);
+        var moneyPercent = parseInt(obj.money) / parseInt(thisYear.money) * 100;
+        moneyPercent = moneyPercent.toFixed(2) + '%';
+        var obj_money = '', obj_calc = obj.money;
+        if(parseInt(obj_calc/1000000000000) != 0){obj_money += (parseInt(obj_calc/1000000000000) + '조 ');}
+        obj_calc = obj_calc % 1000000000000;
+        if(parseInt(obj_calc/100000000) != 0){obj_money += (parseInt(obj_calc/100000000) + '억 ');}
+        obj_calc = obj_calc % 100000000;
+        if(parseInt(obj_calc/10000) != 0){obj_money += (parseInt(obj_calc/10000) + '만');}
+        console.log(obj_money);
+
+        // generate moreListView
+        var _item = Factful.createElement('li');
+        _item.addClass('factful-budget-more-item');
+
+        var _rect = Factful.createElement('span');
+        _rect.addClass('factful-budget-more-item-rect');
+        $(_rect).css('background', 'rgb(' + rgb.join(',') + ')');
+
+        var _blah = Factful.createElement('span');
+        _blah.addClass('factful-budget-more-item-blah');
+        _blah.innerHTML =
+            '<span>' + obj.name + '</span>' +
+            '(약 ' + obj_money + '원), ' +
+            moneyPercent;
+
+        _item.appendChild(_rect), _item.appendChild(_blah);
+        _moreListView.appendChild(_item);
+
+        // generate moreGraphView
+        var width = parseInt(parseInt(obj.money) / parseInt(thisYear.money) * 630);
+        var rect = new Kinetic.Rect({
+            x: nextPos,
+            y: 0,
+            width: width,
+            height: 40,
+            fill: 'rgb(' + rgb.join(',') + ')'
+        });
+
+        rect.on('mouseover', function(){
+            this.fill('#ffbf24');
+            $(_rect).css('background', '#ffbf24');
+            _blah.addClass('sel');
+            _moreLayer.draw();
+        });
+        rect.on('mouseout', function(){
+            this.fill('rgb(' + rgb.join(',') + ')');
+            $(_rect).css('background', 'rgb(' + rgb.join(',') + ')');
+            _blah.removeClass('sel');
+            _moreLayer.draw();
+        });
+
+        $(_item).bind('mouseover', function(){
+            rect.fill('#ffbf24');
+            $(_rect).css('background', '#ffbf24');
+            _blah.addClass('sel');
+            _moreLayer.draw();
+        });
+        $(_item).bind('mouseout', function(){
+            rect.fill('rgb(' + rgb.join(',') + ')');
+            $(_rect).css('background', 'rgb(' + rgb.join(',') + ')');
+            _blah.removeClass('sel');
+            _moreLayer.draw();
+        });
+
+
+        _moreLayer.add(rect);
+
+        nextPos += width, nextColor.v -= 15;
+    },this));
+
+    _moreStage.add(_moreLayer);
+
+    _moreView.appendChild(_moreTitleView);
+    _moreView.appendChild(_moreGraphView);
+    _moreView.appendChild(_moreListView);
+
+    _view.appendChild(_headerView);
+    _view.appendChild(_deltaView);
+    _view.appendChild(_moreView);
+
+    $('.factful-budget-delta-money').each(function(){
+        // posY
+        var _obj = $(this);
+        var posY = parseFloat(_obj.css('top').split('px').join('')),
+            posX = parseFloat(_obj.css('left').split('px').join(''));
+
+        posX = posX + 19 + 16;
+        posY = posY + $(_headerView).height() + $(_deltaTitleView).height() + 64 - 18;
+
+        $(this).css({
+            'top': posY,
+            'left': posX
+        });
+    });
+
+    this.view_ = _view;
+
+    //for font aliasing, just draw one more.
+    _deltaLayer.draw();
+    _moreLayer.draw();
+};
+
+Factful.Info.prototype.HSVtoRGB = function(h, s, v){
+    var r, g, b, i, f, p, q, t;
+    if (h && s === undefined && v === undefined) {
+        s = h.s, v = h.v, h = h.h;
+    }
+    h = h/360.0, s = s/100.0, v = v/100.0;
+    i = Math.floor(h * 6);
+    f = h * 6 - i;
+    p = v * (1 - s);
+    q = v * (1 - f * s);
+    t = v * (1 - (1 - f) * s);
+    switch (i % 6) {
+        case 0: r = v, g = t, b = p; break;
+        case 1: r = q, g = v, b = p; break;
+        case 2: r = p, g = v, b = t; break;
+        case 3: r = p, g = q, b = v; break;
+        case 4: r = t, g = p, b = v; break;
+        case 5: r = v, g = p, b = q; break;
+    }
+    return [Math.floor(r * 255), Math.floor(g * 255), Math.floor(b * 255)];
+}

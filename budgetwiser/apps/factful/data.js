@@ -7,7 +7,7 @@ mongoose.connect('mongodb://localhost/budgetwiser');
 
 var Budget = factfulModels.Budget;
 var budgetData = [];
-var years = [2010, 2011, 2012, 2013];
+var years = [2010, 2011, 2012, 2013, 2014];
 
 years.map(function(year){
     var cf = fs.readFileSync(__dirname + '/data/category_' + year + '.tsv');
