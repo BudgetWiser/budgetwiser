@@ -544,3 +544,58 @@ body{
 .factful-budget-more-item-blah.sel>span{
     color: #ff8624;
 }
+
+/* COMMENT */
+.factful-comments-group{
+    margin-bottom: 16px;
+    position:relative;
+}
+.factful-range-info{
+    width: 100%;
+    padding: 16px 12px;
+    border: 1px solid #9bcbf7;
+    background: #fff;
+    border-radius: 2px;
+}
+.factful-range-info-title{
+    display: inline-block;
+    font-size: 16px;
+    color: #454749;
+    font-weight: 700;
+    float: left;
+    line-height: 18px;
+}
+.factful-range-info-title>span{
+    font-size: 14px;
+    color: #454749;
+    font-weight: 400;
+}
+.factful-range-info-subtitle{
+    display: inline-block;
+    font-size: 14px;
+    color: #02c7ff;
+    font-weight: 700;
+    float: left;
+    line-height: 18px;
+}
+.factful-range-info-list{
+    display: block;
+    clear: both;
+    width: 100%;
+    padding-top: 16px;
+    font-size: 13px;
+    color: #999999;
+}
+.factful-range-info-item{
+    display: block;
+    margin-left: ;
+    font-size: 13px;
+    line-height: 20px;
+    color: #555555;
+    background: url('/static/res/factful/deco_range_info_item.png') 0 0 no-repeat;
+    padding-left: 16px;
+}
+.factful-range-info-item>b{
+    font-size: 16px;
+    font-weight: 700;
+}

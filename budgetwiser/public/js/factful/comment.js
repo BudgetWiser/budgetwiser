@@ -66,12 +66,14 @@ Factful.RangeInfo.prototype.generateView = function(commentsView){
 
     var _titleView = Factful.createElement('h4');
     _titleView.addClass('factful-range-info-title');
-    _titleView.innerHTML = '약 ' + Factful.moneyToStr(this.money) + '원';
-
+    _titleView.innerHTML =
+        '"약 ' + Factful.moneyToStr(this.money) + '원"' +
+        '<span>과 관련된 예산들</span>';
+    /*
     var _subtitleView = Factful.createElement('h5');
     _subtitleView.addClass('factful-range-info-subtitle');
-    _subtitleView.innerHTML = '관련 예산';
-
+    _subtitleView.innerHTML = '과 관련된 예산들';
+    */
     var _listView = Factful.createElement('ul');
     _listView.addClass('factful-range-info-list');
 
@@ -94,7 +96,7 @@ Factful.RangeInfo.prototype.generateView = function(commentsView){
 
     _view.appendChildren([
         _titleView,
-        _subtitleView,
+        //_subtitleView,
         _listView
     ]);
     $(_parentView).prepend(_view);
