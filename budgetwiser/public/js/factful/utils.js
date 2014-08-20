@@ -82,3 +82,33 @@ Factful.findRangeById = function(_id){
         }
     }
 };
+
+/*
+ * Money to String
+ */
+Factful.moneyToStr = function(money){
+    var mStr = [], obj_calc = money;
+    if(parseInt(obj_calc/1000000000000) != 0){
+        mStr.push(parseInt(obj_calc/1000000000000) + '조');
+    }
+    obj_calc = obj_calc % 1000000000000;
+    if(parseInt(obj_calc/100000000) != 0){
+        mStr.push(parseInt(obj_calc/100000000) + '억');
+    }
+    obj_calc = obj_calc % 100000000;
+    if(parseInt(obj_calc/10000) != 0){
+        mStr.push(parseInt(obj_calc/10000) + '만');
+    }
+    mStr = mStr.join(' ');
+
+    return mStr;
+};
+
+/*
+ * Appendchild to ParentView
+ */
+Element.prototype.appendChildren = function(children){
+    for(var i=0; i<children.length; i++){
+        this.appendChild(children[i]);
+    }
+};

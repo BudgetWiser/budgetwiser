@@ -283,29 +283,14 @@ api.type = function(req, res){
     var type = req.param('type');
 
     switch (type){
-        case 'article':
-            api.getArticle(req, res);
-            break;
-        case 'paragraphs':
-            api.getParagraphs(req, res);
-            break;
-        case 'ranges':
-            api.getRanges(req, res);
-            break;
-        case 'factchecks':
-            api.getFactchecks(req, res);
-            break;
-        case 'comments':
-            api.getComments(req, res);
-            break;
-        case 'rels':
-            api.getRels(req, res);
-            break;
-        case 'budget':
-            api.getBudget(req, res);
-            break;
-        default:
-            res.send('factful restAPI Error: type(' + type + ')  doesn\'t exist');
+        case 'article': api.getArticle(req, res);break;
+        case 'paragraphs': api.getParagraphs(req, res);break;
+        case 'ranges': api.getRanges(req, res);break;
+        case 'factchecks': api.getFactchecks(req, res);break;
+        case 'comments': api.getComments(req, res);break;
+        case 'rels': api.getRels(req, res);break;
+        case 'budget': api.getBudget(req, res);break;
+        default: res.send('factful restAPI Error: type(' + type + ')  doesn\'t exist');
     }
 };
 
@@ -368,7 +353,7 @@ api.getFactchecks = function(req, res){
 
 api.getComments = function(req, res){
     var _range_id = req.query._id;
-    var obj = Comment.find({'_range': _range_id});
+    var obj = Comment.find({'_range': _range_id}).sort('date');
 
     obj.exec(function(err, _obj){
         if (err){
@@ -516,7 +501,7 @@ api.getBudget = function(req, res){
                 });
                 res.json(200, result);
             }else{
-                res.send('no budget matched with money ' + _budget + 'won (bound: ' + bound + '%)');
+                res.json(200, 'no budget matched with money ' + _budget + 'won (bound: ' + bound + '%)');
             }
         });
         break;

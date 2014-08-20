@@ -12,6 +12,7 @@ Factful.initialize = function(_id){
     this.content = $('#content');
     this.leftSide = Factful.createElement('div', {'class': 'content-left'});
     this.rightSide = Factful.createElement('div', {'class': 'content-right'});
+    this.comments = {'view_': this.rightSide, 'groups': {}};
 
     this.content.append(this.leftSide).append(this.rightSide);
 
@@ -134,7 +135,12 @@ Factful.initRanges = function(_id){
                 range.eventHandlers();
                 paragraph.ranges.push(range);
 
-                Factful.initRels(range._id);
+                var commentsView = Factful.createElement('div');
+                commentsView.addClass(range._id + ' factful-comments-group');
+                Factful.comments.view_.appendChild(commentsView);
+                Factful.comments.groups[range._id] = {'view_': commentsView};
+
+                Factful.initComments(range._id, commentsView);
             });
         },
         error: function(xhr){
@@ -143,19 +149,52 @@ Factful.initRanges = function(_id){
     });
 };
 
-Factful.initRels = function(_id){
+Factful.initComments = function(_id, commentsView){
+    $.ajax({
+        url: '/factful/api',
+        type: 'GET',
+        data: { _id: _id, type: 'comments' },
+        success: function(objList){
+            objList.map(function(obj){
+                var data = {
+                    _id: obj._id,
+                    _comment: obj._comment,
+                    _user: obj._user,
+                    _range: _id,
+                    date: obj.date,
+                    content: obj.date,
+                    ref: obj.ref
+                };
+
+                var comment = new Factful.Comment(data);
+                comment.generateView(commentsView);
+            });
+            Factful.initRangeInfo(_id, commentsView);
+        },
+        error: function(xhr){
+            throw Error(xhr);
+        }
+    });
+};
+
+Factful.initRangeInfo = function(_id, commentsView){
     $.ajax({
         url: '/factful/api',
         type: 'GET',
         data: { _id: _id, type: 'rels' },
         success: function(objList){
             objList.map(function(obj){
-                var rel = new Factful.Rel(obj),
-                    range = Factful.findRangeById(obj._range);
+                var data = {
+                    _range: _id,
+                    money: obj.keyword
+                };
+                var rangeInfo = new Factful.RangeInfo(data);
+                rangeInfo.getRelated(function(){
+                    rangeInfo.generateView(commentsView);
+                });
 
-                range.rels.push(rel);
-                rel.generateView(range);
-                rel.eventHandlers();
+                var range = Factful.findRangeById(_id);
+                range.info = rangeInfo;
             });
         },
         error: function(xhr){
@@ -163,3 +202,4 @@ Factful.initRels = function(_id){
         }
     });
 };
+

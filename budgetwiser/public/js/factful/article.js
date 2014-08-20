@@ -752,6 +752,29 @@ Factful.Info.prototype.generateView = function(infoView){
 
     this.view_ = _view;
 
+    var orig = parseInt($(_view).height()) + 50;
+    $(_foldBtn).bind('click', $.proxy(function(){
+        if(this.st == 'open'){
+            $(_view).css('overflow', 'hidden');
+            $(_view).animate({
+                height: '72px'
+            }, 500, $.proxy(function(){
+                $(_foldBtn).removeClass('to-close').addClass('to-open');
+                this.st = 'close';
+                $(_view).addClass('closed');
+            }, this));
+        }else if(this.st == 'close'){
+            $(_view).animate({
+                height: orig
+            }, 500, $.proxy(function(){
+                $(_view).css('overflow', 'visible');
+                $(_foldBtn).removeClass('to-open').addClass('to-close');
+                this.st = 'open';
+                $(_view).removeClass('closed');
+            }, this));
+        }
+    }, this));
+
     //for font aliasing, just draw one more.
     _deltaLayer.draw();
     _moreLayer.draw();

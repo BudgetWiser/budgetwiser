@@ -33,6 +33,7 @@ var commentSchema = new Schema({
     _user: {type: ObjectId, ref: 'User'},
     _range: {type: ObjectId, ref: 'Range'},
     _comment: {type: ObjectId, ref: 'Comment'},
+    date: Date,
     content: String,
     ref: String
 });

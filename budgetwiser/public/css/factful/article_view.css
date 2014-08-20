@@ -402,6 +402,9 @@ body{
     z-index: 40;
     overflow: visible;
 }
+.factful-budget-info.closed:hover{
+    background: #fdfdfd;
+}
 .factful-budget-header{
     width: 630px;
     height: 24px;
