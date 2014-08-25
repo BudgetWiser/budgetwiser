@@ -287,6 +287,7 @@ api.type = function(req, res){
         case 'paragraphs': api.getParagraphs(req, res);break;
         case 'ranges': api.getRanges(req, res);break;
         case 'factchecks': api.getFactchecks(req, res);break;
+        case 'factcheckreq': api.getFactcheckReq(req, res);break;
         case 'comments': api.getComments(req, res);break;
         case 'rels': api.getRels(req, res);break;
         case 'budget': api.getBudget(req, res);break;
@@ -348,6 +349,20 @@ api.getFactchecks = function(req, res){
         }
 
         res.json(200, _obj);
+    });
+};
+
+api.getFactcheckReq = function(req, res){
+    var _range_id = req.query._id;
+    var obj = FactcheckReq.find({'_range': _range_id});
+
+    obj.exec(function(err, _obj){
+        if (err){
+            res.send(500, 'getFactcheckReq Error');
+            return handleError(err); // error
+        }
+
+        res.json(_obj);
     });
 };
 

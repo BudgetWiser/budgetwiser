@@ -12,16 +12,17 @@ Factful.initialize = function(_id){
     this.content = $('#content');
     this.leftSide = Factful.createElement('div', {'class': 'content-left'});
     this.rightSide = Factful.createElement('div', {'class': 'content-right'});
-    this.comments = {'view_': this.rightSide, 'groups': {}};
+    this.commentsView = Factful.createElement('div', {'class': 'content-comment'});
+    this.comments = {'view_': this.commentsView, 'groups': {}};
 
     this.content.append(this.leftSide).append(this.rightSide);
+    this.rightSide.appendChild(this.commentsView);
 
     this.initArticle(_id);
     this.registerHandlers();
 };
 
 Factful.registerHandlers = function(){
-    
 };
 
 Factful.initArticle = function(_id){
@@ -136,9 +137,11 @@ Factful.initRanges = function(_id){
                 paragraph.ranges.push(range);
 
                 var commentsView = Factful.createElement('div');
-                commentsView.addClass(range._id + ' factful-comments-group');
+                commentsView.addClass(range._id + ' factful-comments-group closed');
                 Factful.comments.view_.appendChild(commentsView);
                 Factful.comments.groups[range._id] = {'view_': commentsView};
+
+                $(commentsView).bind('click', {_range: range},  Factful.e.gotoRange);
 
                 Factful.initComments(range._id, commentsView);
             });
@@ -155,19 +158,27 @@ Factful.initComments = function(_id, commentsView){
         type: 'GET',
         data: { _id: _id, type: 'comments' },
         success: function(objList){
-            objList.map(function(obj){
+            var index = 1000, pre = 0;
+            Factful.comments.groups[_id].items = [];
+            objList.forEach(function(obj, i, arr){
                 var data = {
                     _id: obj._id,
                     _comment: obj._comment,
                     _user: obj._user,
                     _range: _id,
                     date: obj.date,
-                    content: obj.date,
-                    ref: obj.ref
+                    content: obj.content,
+                    ref: obj.ref,
+                    index: index,
+                    pre: pre
                 };
+                index -= 1;
 
                 var comment = new Factful.Comment(data);
                 comment.generateView(commentsView);
+                pre = $(comment.view_).height() + 26;
+
+                Factful.comments.groups[_id].items.push(comment);
             });
             Factful.initRangeInfo(_id, commentsView);
         },
@@ -192,9 +203,13 @@ Factful.initRangeInfo = function(_id, commentsView){
                 rangeInfo.getRelated(function(){
                     rangeInfo.generateView(commentsView);
                 });
+                Factful.comments.groups[_id].items.unshift(rangeInfo);
 
                 var range = Factful.findRangeById(_id);
+                $(range.view_).addClass('factful-article-range-rel');
                 range.info = rangeInfo;
+
+                Factful.initFactcheckReq(_id, commentsView);
             });
         },
         error: function(xhr){
@@ -203,3 +218,27 @@ Factful.initRangeInfo = function(_id, commentsView){
     });
 };
 
+Factful.initFactcheckReq = function(_id, commentsView){
+    $.ajax({
+        url: '/factful/api',
+        type: 'GET',
+        data: { _id: _id, type: 'factcheckreq' },
+        success: function(objList){
+            if(objList.length > 0){
+                var fcReq = new Factful.FactcheckReq({
+                    _range: _id
+                });
+                fcReq._userList = [];
+                objList.map(function(obj){
+                    fcReq._userList.push(obj._user);
+                });
+                fcReq.generateView(commentsView);
+                Factful.comments.groups[_id].items.unshift(fcReq);
+                console.log(fcReq);
+            }
+        },
+        error: function(xhr){
+            throw Error(xhr);
+        }
+    });
+}
