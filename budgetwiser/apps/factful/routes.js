@@ -103,8 +103,10 @@ article.add = function(req, res){
 
     // save Paragraph, Range and Rel
     var _paragraph_list = parser.paragraph(data.content);
+    var moneyList = [];
 
-    _paragraph_list.map(function(p){
+    for(i=0; i<_paragraph_list.length; i++){
+        p = _paragraph_list[i];
         // save Paragraph
         var _paragraph = new Paragraph({
             _article: _article,
@@ -119,7 +121,9 @@ article.add = function(req, res){
         });
 
         // save Range and Rel
-        var _range_list = parser.findMoney(p);
+        console.log('money', moneyList);
+        var _parserMoney = parser.findMoney(p, moneyList);
+        var _range_list = _parserMoney[0], moneyList = _parserMoney[1];
 
         _range_list.map(function(r){
             // save Range
@@ -148,6 +152,8 @@ article.add = function(req, res){
                 console.log('      |--- A rel object(' + _rel._id + ') is saved.');
             });
         });// _range_list.map
+    }
+    _paragraph_list.map(function(p){
     });// _paragraph_list.map
 
     console.log('[ saved completed ]');

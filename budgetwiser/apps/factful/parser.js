@@ -27,7 +27,7 @@ parser.paragraph = function(str){
     return p_list;
 };
 
-parser.findMoney = function(p){
+parser.findMoney = function(p, moneyList){
     var moneyRegex = new RegExp('(([0-9,]+)조( )?)?(([0-9,]+)억( )?)?(([0-9,]+)만( )?)?(여)?원', 'g');
     var regArray, output = [];
 
@@ -65,7 +65,36 @@ parser.findMoney = function(p){
         }
     }//end while
 
-    return output;
+    for(var i=0; i<output.length; i++){
+        var m1 = output[i].money;
+
+        if(moneyList.length == 0){
+            moneyList.push(m1);
+        }else{
+            var vv = 0;
+            for(j=0; j<moneyList.length; j++){
+                var m2 = moneyList[j];
+                var min = m2 * 0.8, max = m2 * 1.2;
+                if(m1 > min && m1 < max){
+                    vv += 1;
+                }
+            }
+            if(vv > 0){
+                output[i] = null;
+            }else{
+                moneyList.push(m1);
+            }
+        }
+    }
+
+    var refined_output = [];
+    output.map(function(obj){
+        if(obj != null){
+            refined_output.push(obj);
+        }
+    });
+
+    return [refined_output, moneyList];
 };
 
 parser.match = function(str, c){

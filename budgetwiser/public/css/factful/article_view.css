@@ -556,11 +556,16 @@ body{
     margin-bottom: 16px;
     position:relative;
 }
+.factful-comments-group.closed{
+    opacity: .15;
+}
+.factful-comments-group.closed:hover{
+    opacity: .7 !important;
+}
 .factful-comments-group:last-child{
     margin-bottom: 0;
 }
 .factful-comments-group.closed:hover>div{
-    background: #fffbf3;
     cursor: pointer;
 }
 .factful-comments-group.opened>div{

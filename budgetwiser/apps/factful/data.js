@@ -11,7 +11,6 @@ var years = [2010, 2011, 2012, 2013, 2014];
 
 years.map(function(year){
     var cf = fs.readFileSync(__dirname + '/data/category_' + year + '.tsv');
-    var sf = fs.readFileSync(__dirname + '/data/services_' + year + '.tsv');
 
     var cLines = String(cf).split('\n');
     for(var i=1; i<cLines.length; i++){
@@ -60,9 +59,12 @@ years.map(function(year){
         }
         ctg_1.money += ctg_3.money, ctg_2.money += ctg_3.money;
     }
+});
+years.map(function(year){
+    var sf = fs.readFileSync(__dirname + '/data/services_' + year + '.tsv');
 
     var sLines = String(sf).split('\n');
-    for(var i=i; i<sLines.length; i++){
+    for(var i=0; i<sLines.length; i++){
         if(sLines[i] == '') continue;
 
         var data = sLines[i].split('\t');
@@ -74,6 +76,7 @@ years.map(function(year){
          * save data - services.
          */
         var ctg_3 = dataSearch(year, data[3], 3, budgetData);
+        console.log(ctg_3);
         if(ctg_3){
             ctg_3.children.push({
                 'year': year,
@@ -85,6 +88,8 @@ years.map(function(year){
     }
 });
 
+fs.writeFile('asdf.json', JSON.stringify(budgetData), 'utf8');
+
 saveData(budgetData);
 
 /*
@@ -94,15 +99,15 @@ function dataSearch(year, name, category, data){
     for(var i=0; i<data.length; i++){
         if(data[i].category == category){
             if(data[i].year == year && data[i].name == name){
+                console.log('aaa');
                 return data[i];
             }
         }else{
-            if(data[i].children){
-                return dataSearch(year, name, category, data[i].children);
+            if(data[i].children.length > 0){
+                dataSearch(year, name, category, data[i].children);
             }
         }
     }
-    return;
 }
 
 function saveData(data, _parent){
@@ -119,10 +124,15 @@ function saveData(data, _parent){
         budget.save(function(err){
             if(err) return err;
 
-            console.log(budget._id, 'saved // category : ', budget.category);
+            //console.log(budget._id, 'saved // category : ', budget.category);
         });
         if(budget.category < 4){
+            if(budget.category == 3){
+            //console.log(data[i].children.length);
+            }
             saveData(data[i].children, budget);
+        }else{
+            console.log(budget.name, budget.category);
         }
     }
 }

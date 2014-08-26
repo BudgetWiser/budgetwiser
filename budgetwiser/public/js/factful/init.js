@@ -243,12 +243,17 @@ Factful.initRangeInfo = function(_id, commentsView){
                 var rangeInfo = new Factful.RangeInfo(data);
                 rangeInfo.getRelated(function(){
                     rangeInfo.generateView(commentsView);
-                });
-                Factful.comments.groups[_id].items.unshift(rangeInfo);
+                    if(rangeInfo.view_ != null){
+                        Factful.comments.groups[_id].items.unshift(rangeInfo);
 
-                var range = Factful.findRangeById(_id);
-                $(range.view_).addClass('factful-article-range-rel');
-                range.info = rangeInfo;
+                        var range = Factful.findRangeById(_id);
+                        $(range.view_).addClass('factful-article-range-rel');
+                        range.info = rangeInfo;
+                    }else{
+                        var range = Factful.findRangeById(_id);
+                        $(range.view_).remove();
+                    }
+                });
             });
             Factful.initFactcheckReq(_id, commentsView);
         },

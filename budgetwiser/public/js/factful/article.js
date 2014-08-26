@@ -452,7 +452,7 @@ Factful.Info.prototype.generateView = function(infoView){
 
     var _titleView = Factful.createElement('h3');
     _titleView.addClass('factful-budget-title');
-    _titleView.innerHTML = this.name;
+    _titleView.innerHTML = '서울시 "' + this.name + '" 예산과 관련된 기사입니다.';
 
     var _otherBtn = Factful.createElement('button');
     _otherBtn.addClass('factful-budget-other');

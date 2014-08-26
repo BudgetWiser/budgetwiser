@@ -142,7 +142,7 @@ Factful.RangeInfo.prototype.generateView = function(commentsView){
     _titleView.addClass('factful-range-info-title');
     _titleView.innerHTML =
         '"약 ' + Factful.moneyToStr(this.money) + '원"' +
-        '<span>과 관련된 예산들</span>';
+        '<span>과 비슷한 크기의 예산들</span>';
     /*
     var _subtitleView = Factful.createElement('h5');
     _subtitleView.addClass('factful-range-info-subtitle');
@@ -164,22 +164,24 @@ Factful.RangeInfo.prototype.generateView = function(commentsView){
         }
         _listView.appendChild(_itemView);
     });
-    if(this.related.length == 0){
-        _listView.innerHTML = '관련된 항목이 없습니다.';
-    }
 
     var _addItemView = Factful.createElement('button');
     _addItemView.addClass('factful-range-info-add');
     _addItemView.innerHTML = '정보 추가하기';
 
-    _view.appendChildren([
-        _titleView,
-        _listView,
-        _addItemView
-    ]);
-    $(_parentView).prepend(_view);
+    if(this.related.length == 0){
+        _listView.innerHTML = '관련된 항목이 없습니다.';
+        this.view_ = null
+    }else{
+        _view.appendChildren([
+            _titleView,
+            _listView
+            //_addItemView
+        ]);
+        $(_parentView).prepend(_view);
 
-    this.view_ = _view;
+        this.view_ = _view;
+    }
 };
 
 /*
