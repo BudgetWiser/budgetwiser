@@ -27,6 +27,8 @@ Factful.Comment = function(data){
         this.ref = data.ref;
         this.index = data.index;
         this.pre = data.pre;
+        this.symp = data.symp;
+        this.child = data.child;
     }
 };
 
@@ -77,12 +79,31 @@ Factful.Comment.prototype.generateView = function(commentsView){
     _refView.addClass('factful-comment-ref');
     _refView.innerHTML = this.ref;
 
+    var _buttonView = Factful.createElement('div');
+    _buttonView.addClass('factful-comment-button');
+
+    var _sympBtn = Factful.createElement('button');
+    _sympBtn.addClass('factful-comment-button-symp');
+    _sympBtn.innerHTML = '<span>공감하기</span> ' + this.symp.length + '명';
+
+    var _addBtn = Factful.createElement('button');
+    _addBtn.addClass('factful-comment-button-add');
+    _addBtn.innerHTML = '<span>댓글달기</span> ' + this.child + '명';
+
+    this.buttonView_ = _buttonView;
+    _buttonView.appendChild(_sympBtn);
+    this.sympBtn_ = _sympBtn;
+    if(!this._comment){
+        _buttonView.appendChild(_addBtn);
+        this.addBtn_ = _addBtn;
+    }
 
     _view.appendChildren([
         _profileView,
         _contentView
     ]);
     if(typeof(this.ref) !== 'undefined') _view.appendChild(_refView);
+    _view.appendChild(_buttonView);
 
     _parentView.appendChild(_view);
 

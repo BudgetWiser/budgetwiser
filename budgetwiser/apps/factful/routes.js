@@ -213,7 +213,9 @@ article.addComment = function(req, res){
     var _comment = new Comment({
         _user: req.user,
         _range: _range,
-        content: content
+        content: content,
+        symp: [],
+        child: 0
     });
 
     _comment.save(function(err, _saved){

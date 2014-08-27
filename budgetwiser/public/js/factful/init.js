@@ -18,11 +18,39 @@ Factful.initialize = function(_id){
     this.content.append(this.leftSide).append(this.rightSide);
     this.rightSide.appendChild(this.commentsView);
 
+    this.initUser();
     this.initArticle(_id);
     this.registerHandlers();
 };
 
 Factful.registerHandlers = function(){
+};
+
+Factful.initUser = function(){
+    $.ajax({
+        url: '/account/init',
+        type: 'GET',
+        success: function(obj){
+            console.log(obj);
+            Factful.User = {
+                _id: obj._id,
+                username: obj.username,
+                nickname: obj.profile.nickname,
+                image: '/static/images/user/' + obj.profile.image,
+                email: obj.profile.email
+            };
+            console.log(Factful.User);
+        },
+        error: function(xhr){
+            Factful.User = {
+                _id: '',
+                username: 'anonymous',
+                nickname: 'anonymous',
+                image: '/static/images/user/default_profile_image.png'
+            };
+            console.log(Factful.User);
+        }
+    });
 };
 
 Factful.initArticle = function(_id){
@@ -99,43 +127,6 @@ Factful.initRanges = function(_id){
         _rangesView.addClass('factful-article-ranges');
         Factful.article.view_.appendChild(_rangesView);
 
-        /*
-        var dragging = false;
-        $(_rangesView).mousedown(function(){
-            $(Factful.leftSide).unbind('mouseup', Factful.e.checkRange);
-            $(Factful.leftSide).bind('mouseup', Factful.e.checkRange);
-            dragging = true;
-        }).mousemove(function(){
-            if(dragging == false) return;
-
-            $(_rangesView).css('z-index', 5);
-        });
-        $(document).mouseup(function(){
-            dragging = false;
-            $(_rangesView).css('z-index', 20);
-        });
-        */
-        /*
-        var onDrag = false;
-        $(_rangesView).mousedown(function(){
-            $(window).mousemove(function(){
-                onDrag = true;
-                $(Factful.leftSide).unbind('mouseup', Factful.e.checkRange);
-                $(Factful.leftSide).bind('mouseup', Factful.e.checkRange);
-                $(_rangesView).css('z-index', 5);
-                $(window).unbind('mousemove');
-            });
-        }).mouseup(function(){
-            var wasDrag = onDrag;
-            onDrag = false;
-            $(window).unbind('mousemove');
-            if(!wasDrag){
-                $(_rangesView).css('z-index', 20);
-            }else{
-            }
-        });
-        */
-        // With jQuery UI - draggable
         var onDrag = false;
         $(_rangesView).mousedown(function(e){
             $(Factful.leftSide).unbind('mouseup', Factful.e.checkRange);
@@ -183,6 +174,8 @@ Factful.initRanges = function(_id){
                 Factful.comments.groups[range._id] = {'view_': commentsView};
 
                 $(commentsView).bind('click', {_range: range},  Factful.e.gotoRange);
+                $(commentsView).bind('mouseenter', {_view: commentsView}, Factful.e.inCommentsGroup);
+                $(commentsView).bind('mouseleave', {_view: commentsView}, Factful.e.outCommentsGroup);
 
                 Factful.initComments(range._id, commentsView);
             });
@@ -211,7 +204,9 @@ Factful.initComments = function(_id, commentsView){
                     content: obj.content,
                     ref: obj.ref,
                     index: index,
-                    pre: pre
+                    pre: pre,
+                    symp: obj.symp,
+                    child: obj.child
                 };
                 index -= 1;
 
@@ -250,8 +245,10 @@ Factful.initRangeInfo = function(_id, commentsView){
                         $(range.view_).addClass('factful-article-range-rel');
                         range.info = rangeInfo;
                     }else{
-                        var range = Factful.findRangeById(_id);
-                        $(range.view_).remove();
+                        if(Factful.comments.groups[_id].items.length == 0){
+                            var range = Factful.findRangeById(_id);
+                            $(range.view_).remove();
+                        }
                     }
                 });
             });

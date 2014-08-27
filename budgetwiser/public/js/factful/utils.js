@@ -112,3 +112,15 @@ Element.prototype.appendChildren = function(children){
         this.appendChild(children[i]);
     }
 };
+
+/*
+ * Remove item from list
+ */
+Array.prototype.removeItem = function(item){
+    var index = this.indexOf(item);
+    if(index > -1){
+        this.splice(index, 1);
+    }else{
+        throw Error(item + ' is not contained in this list');
+    }
+};

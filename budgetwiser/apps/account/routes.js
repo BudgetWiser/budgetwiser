@@ -64,6 +64,14 @@ function register(req, res){
     });
 }
 
+function initialize(req, res){
+    if(req.user){
+        res.send(200, req.user);
+    }else{
+        res.send(500);
+    }
+}
+
 // routes initialize
 function setup(app){
     app.get('/account/login', session.isNotAuth, login_page);
@@ -71,6 +79,7 @@ function setup(app){
     app.get('/account/logout', session.isAuth, logout);
     app.get('/account/register', session.isNotAuth, register_page);
     app.post('/account/register', register);
+    app.get('/account/init', initialize);
 }
 
 module.exports = setup;

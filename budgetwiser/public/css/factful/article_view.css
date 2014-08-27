@@ -559,9 +559,6 @@ body{
 .factful-comments-group.closed{
     opacity: .15;
 }
-.factful-comments-group.closed:hover{
-    opacity: .7 !important;
-}
 .factful-comments-group:last-child{
     margin-bottom: 0;
 }
@@ -684,7 +681,7 @@ body{
     float: left;
 }
 .factful-comment-content{
-    font-size: 15px;
+    font-size: 14px;
     line-height: 20px;
     color: #404447;
     margin-top: 10px;
@@ -710,4 +707,27 @@ body{
 .factful-factcheck-req-content>span{
     color: #02c7ff;
     font-weight: 700;
+}
+.factful-comment-button{
+    display: none;
+}
+.factful-comment-button>button{
+    color: #aaafb3;
+    font-size: 13px;
+    line-height: 13px;
+    cursor: pointer;
+    background: none;
+    margin-top: 16px;
+    margin-right: 16px;
+    float: left;
+}
+.factful-comment-button>button>span{
+    color: #10b468;
+    font-size: 13px;
+    cursor: pointer;
+    background: none;
+    margin-top: 16px;
+}
+.factful-comment-button>button:hover>span{
+    color: #02c7ff;
 }

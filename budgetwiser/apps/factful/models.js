@@ -35,7 +35,9 @@ var commentSchema = new Schema({
     _comment: {type: ObjectId, ref: 'Comment'},
     date: Date,
     content: String,
-    ref: String
+    ref: String,
+    symp: [String],
+    child: Number
 });
 
 var factcheckSchema = new Schema({
