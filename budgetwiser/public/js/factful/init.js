@@ -170,12 +170,11 @@ Factful.initRanges = function(_id){
 
                 var commentsView = Factful.createElement('div');
                 commentsView.addClass(range._id + ' factful-comments-group closed');
+                var range_pos = parseInt($(range.view_[0]).css('top')) - 20;
+
+                $(commentsView).css('top', range_pos);
                 Factful.comments.view_.appendChild(commentsView);
                 Factful.comments.groups[range._id] = {'view_': commentsView};
-
-                $(commentsView).bind('click', {_range: range},  Factful.e.gotoRange);
-                $(commentsView).bind('mouseenter', {_view: commentsView}, Factful.e.inCommentsGroup);
-                $(commentsView).bind('mouseleave', {_view: commentsView}, Factful.e.outCommentsGroup);
 
                 Factful.initComments(range._id, commentsView);
             });
@@ -192,7 +191,6 @@ Factful.initComments = function(_id, commentsView){
         type: 'GET',
         data: { _id: _id, type: 'comments' },
         success: function(objList){
-            var index = 1000, pre = 0;
             Factful.comments.groups[_id].items = [];
             objList.forEach(function(obj, i, arr){
                 var data = {
@@ -203,17 +201,12 @@ Factful.initComments = function(_id, commentsView){
                     date: obj.date,
                     content: obj.content,
                     ref: obj.ref,
-                    index: index,
-                    pre: pre,
                     symp: obj.symp,
                     child: obj.child
                 };
-                index -= 1;
 
                 var comment = new Factful.Comment(data);
                 comment.generateView(commentsView);
-                pre = $(comment.view_).height() + 26;
-
                 Factful.comments.groups[_id].items.push(comment);
             });
             Factful.initRangeInfo(_id, commentsView);

@@ -209,11 +209,13 @@ article.addRange = function(req, res){
 article.addComment = function(req, res){
     var _range = req.param('_range');
     var content = req.param('content');
+    var date = new Date();
 
     var _comment = new Comment({
         _user: req.user,
         _range: _range,
         content: content,
+        date: date,
         symp: [],
         child: 0
     });
@@ -376,7 +378,7 @@ api.getFactcheckReq = function(req, res){
 
 api.getComments = function(req, res){
     var _range_id = req.query._id;
-    var obj = Comment.find({'_range': _range_id}).sort('date');
+    var obj = Comment.find({'_range': _range_id}).sort('-date');
 
     obj.exec(function(err, _obj){
         if (err){

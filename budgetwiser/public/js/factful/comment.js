@@ -25,9 +25,7 @@ Factful.Comment = function(data){
         this.date = data.date;
         this.content = data.content;
         this.ref = data.ref;
-        this.index = data.index;
-        this.pre = data.pre;
-        this.symp = data.symp;
+        this.symp = data.symp;//list
         this.child = data.child;
     }
 };
@@ -37,11 +35,6 @@ Factful.Comment.prototype.generateView = function(commentsView){
 
     var _view = Factful.createElement('div');
     _view.addClass('factful-comment-item');
-
-    $(_view).css({
-        'z-index': this.index,
-        'margin-top': 0
-    });
 
     var _profileView = Factful.createElement('div');
     _profileView.addClass('factful-comment-profile');
@@ -68,12 +61,6 @@ Factful.Comment.prototype.generateView = function(commentsView){
     var _contentView = Factful.createElement('div');
     _contentView.addClass('factful-comment-content');
     _contentView.innerHTML = this.content;
-    if(this.pre != 0){
-        $(_contentView).css({
-            'height': '20px',
-            'overflow': 'hidden'
-        });
-    }
 
     var _refView = Factful.createElement('div');
     _refView.addClass('factful-comment-ref');
@@ -106,13 +93,6 @@ Factful.Comment.prototype.generateView = function(commentsView){
     _view.appendChild(_buttonView);
 
     _parentView.appendChild(_view);
-
-    if(this.pre != 0){
-        var _mt = $(_view).height() + 26;
-        $(_view).css({
-            'margin-top': -_mt,
-        });
-    }
 
     this.view_ = _view;
 };
@@ -153,22 +133,13 @@ Factful.RangeInfo.prototype.generateView = function(commentsView){
 
     var _view = Factful.createElement('div');
     _view.addClass('factful-range-info');
-    $(_view).css('z-index', '1001');
-    if(commentsView.innerHTML){
-        var children = $(commentsView).children();
-        $(children[0]).css('margin-top', -($(children[0]).height() + 26));
-    }
 
     var _titleView = Factful.createElement('h4');
     _titleView.addClass('factful-range-info-title');
     _titleView.innerHTML =
         '"약 ' + Factful.moneyToStr(this.money) + '원"' +
         '<span>과 비슷한 크기의 예산들</span>';
-    /*
-    var _subtitleView = Factful.createElement('h5');
-    _subtitleView.addClass('factful-range-info-subtitle');
-    _subtitleView.innerHTML = '과 관련된 예산들';
-    */
+
     var _listView = Factful.createElement('ul');
     _listView.addClass('factful-range-info-list');
 

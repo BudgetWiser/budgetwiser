@@ -124,3 +124,52 @@ Array.prototype.removeItem = function(item){
         throw Error(item + ' is not contained in this list');
     }
 };
+
+/*
+ * Alert system
+ */
+Factful.feedback = function(code, msg){
+    var alertStyle = [];
+    switch(code){
+        case 200:
+            alertStyle[0] = '#00b6ea', alertStyle[1] = '#0096c1';
+            break;
+        case 300:
+            alertStyle[0] = '#ffb400', alertStyle[1] = '#e5a200';
+            break;
+        case 500:
+            alertStyle[0] = '#ff5b13', alertStyle[1] = '#db4300';
+            break;
+        default:
+            alertStyle[0] = '#ff5b13', alertStyle[1] = '#db4300';
+            break;
+    };
+
+    var popup = Factful.createElement('div');
+    popup.innerHTML = msg;
+    $(popup).css({
+        'padding': '12px 20px',
+        'position': 'fixed',
+        'top': 0,
+        'left': '50%',
+        'margin-left': -200,
+        'border-radius': '0 0 4px 4px',
+        'background': alertStyle[0],
+        'display': 'none',
+        'z-index': 1000,
+        'color': '#fff',
+        'font-size': 15,
+        'font-weight': 700,
+        'text-align': 'center',
+        'border': '1px solid ' + alertStyle[1],
+        'border-top': 0,
+        'box-shadow': '0 2px 2px rgba(0,0,0,.2)'
+    });
+    $('body').append(popup);
+    $(popup).css('margin-left', -$(popup).width()/2);
+    $(popup).fadeIn(300, function(){
+        $(this).delay(1000).fadeOut(500, function(){
+            $(this).remove();
+        });
+    });
+};
