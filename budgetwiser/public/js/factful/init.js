@@ -24,6 +24,20 @@ Factful.initialize = function(_id){
 };
 
 Factful.registerHandlers = function(){
+    $(this.rightSide).mouseenter(function(){
+        Factful.m.commentScroll = true;
+    });
+    $(this.rightSide).mouseleave(function(){
+        Factful.m.commentScroll = false;
+    });
+    $(window).bind('mousewheel', function(e){
+        if(Factful.m.commentScroll && Factful.e.activeRange_){
+            if(e.preventDefault) e.preventDefault();
+            e.returnValue = false;
+            return false;
+        }
+    });
+    $(this.rightSide).bind('mousewheel', function(e){Factful.e.scroll(e)});
 };
 
 Factful.initUser = function(){
@@ -174,7 +188,7 @@ Factful.initRanges = function(_id){
 
                 $(commentsView).css('top', range_pos);
                 Factful.comments.view_.appendChild(commentsView);
-                Factful.comments.groups[range._id] = {'view_': commentsView};
+                Factful.comments.groups[range._id] = {'view_': commentsView, 'move': 0};
 
                 Factful.initComments(range._id, commentsView);
             });
@@ -269,7 +283,6 @@ Factful.initFactcheckReq = function(_id, commentsView){
                 });
                 fcReq.generateView(commentsView);
                 Factful.comments.groups[_id].items.unshift(fcReq);
-                console.log(fcReq);
             }
         },
         error: function(xhr){
