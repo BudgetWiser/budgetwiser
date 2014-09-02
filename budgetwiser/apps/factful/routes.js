@@ -210,9 +210,12 @@ article.addComment = function(req, res){
     var _range = req.param('_range');
     var content = req.param('content');
     var date = new Date();
+    date = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes();
 
     var _comment = new Comment({
         _user: req.user,
+        username: req.user.username,
+        nickname: req.user.profile.nickname,
         _range: _range,
         content: content,
         date: date,
@@ -278,10 +281,94 @@ article.addFactcheckReq = function(req, res){
                     _range: _range
                 });
                 _factcheckReq.save(function(err){
-                    res.send(200, {statusCode: 0});
+                    res.send(200, {statusCode: 0, factcheckreq: _factcheckReq});
                     return;
                 });
             }
+        }
+    });
+};
+
+// Comment
+comment = {};
+
+comment.addCommentSymp = function(req, res){
+    var _comment = req.param('_comment'),
+        _status = req.param('st'),
+        user = req.user;
+    console.log(_status);
+    var c = Comment.findOne({
+        '_id': _comment
+    });
+
+    c.exec(function(err, _c){
+        if(err){
+            res.send(500);
+            return handleError(err);
+        }else{
+            console.log(_status);
+            if(_status == 'true'){
+                _c.symp.push(user.username);
+                _c.save(function(err){
+                    if(err){
+                        res.send(500);
+                        return handleError(err);
+                    }else{
+                        var result = {
+                            'username': user.username
+                        };
+                        res.send(200, result);
+                    }
+                });
+            }else{
+                var index = _c.symp.indexOf(user.username);
+                if(index > -1){
+                    _c.symp.splice(index, 1);
+                    _c.save(function(err){
+                        if(err){
+                            res.send(500);
+                            return handleError(err);
+                        }else{
+                            var result = {
+                                'username': user.username
+                            };
+                            res.send(200, result);
+                        }
+                    });
+                }else{
+                    res.send(500);
+                }
+            }
+        }
+    });
+};
+
+comment.addComment = function(req, res){
+    var _parentComment = req.param('_comment');
+    var _range = req.param('_range');
+    var content = req.param('content');
+    var date = new Date();
+    date = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes();
+
+    var _comment = new Comment({
+        _user: req.user,
+        username: req.user.username,
+        nickname: req.user.profile.nickname,
+        _range: _range,
+        _comment: _parentComment,
+        content: content,
+        date: date,
+        symp: []
+    });
+
+    _comment.save(function(err, _saved){
+        if (err){
+            res.send(500);
+            return handleError(err);
+        }else{
+            res.send(200, {
+                cocomment: _saved
+            });
         }
     });
 };
@@ -299,6 +386,7 @@ api.type = function(req, res){
         case 'factchecks': api.getFactchecks(req, res);break;
         case 'factcheckreq': api.getFactcheckReq(req, res);break;
         case 'comments': api.getComments(req, res);break;
+        case 'cocomments': api.getCoComments(req, res);break;
         case 'rels': api.getRels(req, res);break;
         case 'budget': api.getBudget(req, res);break;
         default: res.send('factful restAPI Error: type(' + type + ')  doesn\'t exist');
@@ -322,7 +410,7 @@ api.getArticle = function(req, res){
 
 api.getParagraphs = function(req, res){
     var _article_id = req.query._id;
-    var obj = Paragraph.find({'_article': _article_id});
+    var obj = Paragraph.find({'_article': _article_id}).sort('_id');
 
     obj.exec(function(err, _obj){
         if (err){
@@ -336,7 +424,7 @@ api.getParagraphs = function(req, res){
 
 api.getRanges = function(req, res){
     var _paragraph_id = req.query._id;
-    var obj = Range.find({'_paragraph': _paragraph_id});
+    var obj = Range.find({'_paragraph': _paragraph_id}).sort('_id');
 
     obj.exec(function(err, _obj){
         if (err){
@@ -358,6 +446,7 @@ api.getFactchecks = function(req, res){
             return handleError(err); // error
         }
 
+        console.log('asdfasdf', _obj);
         res.json(200, _obj);
     });
 };
@@ -378,12 +467,26 @@ api.getFactcheckReq = function(req, res){
 
 api.getComments = function(req, res){
     var _range_id = req.query._id;
-    var obj = Comment.find({'_range': _range_id}).sort('-date');
+    var obj = Comment.find({'_range': _range_id, '_comment': null}).sort('_id');
 
     obj.exec(function(err, _obj){
         if (err){
             res.send(500, 'getComments Error');
             return handleError(err); // error
+        }
+
+        res.json(200, _obj);
+    });
+};
+
+api.getCoComments = function(req, res){
+    var _comment_id = req.query._id;
+    var obj = Comment.find({'_comment': _comment_id}).sort('_id');
+
+    obj.exec(function(err, _obj){
+        if (err){
+            res.send(500, 'getCoComments Error');
+            return handleError(err);
         }
 
         res.json(200, _obj);
@@ -507,7 +610,7 @@ api.getBudget = function(req, res){
                 $lt: parseInt(_budget)*(100+bound)/100
             },
             'year': year
-        }).sort('category');
+        }).sort('category').limit(3);
         budgets.exec(function(err, _budgets){
             if(err){
                 res.send(500, 'case money ERROR');
@@ -554,6 +657,10 @@ function setup(app){
     app.post('/factful/add/comment', article.addComment);
     app.post('/factful/add/factcheck', article.addFactcheck);
     app.post('/factful/add/factcheckreq', article.addFactcheckReq);
+
+    // comment add
+    app.post('/factful/add/commentsymp', comment.addCommentSymp);
+    app.post('/factful/add/cocomment', comment.addComment);
 }
 
 module.exports = setup;

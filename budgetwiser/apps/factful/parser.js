@@ -64,7 +64,7 @@ parser.findMoney = function(p, moneyList){
             });
         }
     }//end while
-
+/*
     for(var i=0; i<output.length; i++){
         var m1 = output[i].money;
 
@@ -86,7 +86,7 @@ parser.findMoney = function(p, moneyList){
             }
         }
     }
-
+*/
     var refined_output = [];
     output.map(function(obj){
         if(obj != null){
@@ -130,7 +130,7 @@ parser.categorize = function(str){
 
     for(i=0; i<category.length; i++){
         weight[i] = 0;
-        keywords[i].push = category[i];
+        //keywords[i].push = category[i];
         var matched = [];
         for(j=0; j<keywords[i].length; j++){
             var keyword = keywords[i][j];
@@ -149,13 +149,22 @@ parser.categorize = function(str){
         console.log(category[obj[2]], obj);
     });
 
-    for(var i=0; i<3; i++){
+    for(var i=0; i<5; i++){
         var cnt = weight[i][0], num = weight[i][1], len = keywords[weight[i][2]].length;
-        weight[i][0] = cnt * (cnt + num) / len;
+        weight[i][0] = cnt * num;
 
         if(weight[i][0] > weight_comp){
-            category_index = weight[i][2];
-            weight_comp = weight[i][0];
+            //except category_index = 1;...일반공공행정
+            if(weight[i][2] != 1){
+                category_index = weight[i][2];
+                weight_comp = weight[i][0];
+            }else{
+                if(weight[i][0] > weight_comp * 1.5){
+                    console.log('aa');
+                    category_index = weight[i][2];
+                    weight_comp = weight[i][0];
+                }
+            }
         }
     }
 

@@ -106,7 +106,6 @@ Factful.initBudgetInfo = function(ctg){
             throw Error(xhr);
         }
     });
-
 };
 
 Factful.initParagraphs = function(_id){
@@ -211,6 +210,8 @@ Factful.initComments = function(_id, commentsView){
                     _id: obj._id,
                     _comment: obj._comment,
                     _user: obj._user,
+                    username: obj.username,
+                    nickname: obj.nickname,
                     _range: _id,
                     date: obj.date,
                     content: obj.content,
@@ -221,9 +222,43 @@ Factful.initComments = function(_id, commentsView){
 
                 var comment = new Factful.Comment(data);
                 comment.generateView(commentsView);
+                comment.eventHandlers();
                 Factful.comments.groups[_id].items.push(comment);
+
+                Factful.initCoComments(comment._id, comment);
             });
             Factful.initRangeInfo(_id, commentsView);
+        },
+        error: function(xhr){
+            throw Error(xhr);
+        }
+    });
+};
+
+Factful.initCoComments = function(_id, comment){
+    $.ajax({
+        url: '/factful/api',
+        type: 'GET',
+        data: { _id: _id, type: 'cocomments' },
+        success: function(objList){
+            objList.forEach(function(obj, i, arr){
+                var data = {
+                    _id: obj._id,
+                    _comment: obj._comment,
+                    _user: obj._user,
+                    username: obj.username,
+                    nickname: obj.nickname,
+                    date: obj.date,
+                    content: obj.content,
+                    ref: obj.ref,
+                    symp: obj.symp
+                };
+
+                var cocomment = new Factful.CoComment(data);
+                cocomment.generateView(comment.groupsView_);
+                cocomment.eventHandlers();
+                comment.comments.push(cocomment);
+            });
         },
         error: function(xhr){
             throw Error(xhr);
@@ -259,7 +294,42 @@ Factful.initRangeInfo = function(_id, commentsView){
                     }
                 });
             });
-            Factful.initFactcheckReq(_id, commentsView);
+            Factful.initFactcheck(_id, commentsView);
+        },
+        error: function(xhr){
+            throw Error(xhr);
+        }
+    });
+};
+
+Factful.initFactcheck = function(_id, commentsView){
+    $.ajax({
+        url: '/factful/api',
+        type: 'GET',
+        data: { _id: _id, type: 'factchecks' },
+        success: function(objList){
+            if(objList.length > 0){
+                var data = {
+                    '_range': objList[0]._range,
+                    '_userList': [],
+                    'fcList': []
+                };
+                objList.map(function(obj){
+                    data._userList.push(obj._user);
+                    data.fcList.push({
+                        'user': obj._user,
+                        'score': obj.score,
+                        'ref': obj.ref
+                    });
+                });
+
+                var factcheck = new Factful.Factcheck(data);
+                factcheck.generateView(commentsView);
+                Factful.comments.groups[_id].items.unshift(factcheck);
+                console.log(Factful.comments.groups[_id].items[0]);
+            }else{
+                Factful.initFactcheckReq(_id, commentsView);
+            }
         },
         error: function(xhr){
             throw Error(xhr);

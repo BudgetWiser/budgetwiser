@@ -463,7 +463,7 @@ Factful.Info.prototype.generateView = function(infoView){
     _foldBtn.innerHTML = '접기';
 
     _headerView.appendChild(_titleView);
-    _headerView.appendChild(_otherBtn);
+    //_headerView.appendChild(_otherBtn);
     _headerView.appendChild(_foldBtn);
 
     var _deltaView = Factful.createElement('div');
@@ -548,6 +548,9 @@ Factful.Info.prototype.generateView = function(infoView){
             width: 64,
             height: 16
         });
+        if(deltaPercent[i][0] == '-'){
+            text.fill('#555');
+        }
         var textStroke = new Kinetic.Text({
             x: (startPos.x + endPos.x)/2 - 32,
             y: (startPos.y + endPos.y)/2 - 6,

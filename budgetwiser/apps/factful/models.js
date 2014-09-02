@@ -10,7 +10,7 @@ var articleSchema = new Schema({
     _user: {type: ObjectId, ref: 'User'},
     title: String,
     subtitle: String,
-    date: Date,
+    date: String,
     url: String,
     press: String,
     category: String,
@@ -33,7 +33,9 @@ var commentSchema = new Schema({
     _user: {type: ObjectId, ref: 'User'},
     _range: {type: ObjectId, ref: 'Range'},
     _comment: {type: ObjectId, ref: 'Comment'},
-    date: Date,
+    username: String,
+    nickname: String,
+    date: String,
     content: String,
     ref: String,
     symp: [String],
@@ -62,7 +64,7 @@ var budgetSchema = new Schema({
     _parent: ObjectId,
     year: Number,
     name: String,
-    category: {type: Number, min: 0, max: 3},
+    category: {type: Number, min: 1, max: 4},
     money: Number
 });
 
