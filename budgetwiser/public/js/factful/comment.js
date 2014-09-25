@@ -84,6 +84,8 @@ Factful.Comment.prototype.generateView = function(commentsView){
     _addBtn.addClass('factful-comment-button-add');
     _addBtn.innerHTML = '<span>댓글달기</span> ' + this.child + '명';
 
+    this.addBtn_ = _addBtn;
+
     this.buttonView_ = _buttonView;
     _buttonView.appendChild(_sympBtn);
     this.sympBtn_ = _sympBtn;
@@ -275,10 +277,26 @@ Factful.RangeInfo.prototype.generateView = function(commentsView){
     _titleView.addClass('factful-range-info-title');
     _titleView.innerHTML =
         '"약 ' + Factful.moneyToStr(this.money) + '원"' +
-        '<span>과 비슷한 크기의 예산들</span>';
+        '<span>과 비슷한 크기의 서울시 예산들</span>';
 
     var _listView = Factful.createElement('ul');
     _listView.addClass('factful-range-info-list');
+
+    //delete same money
+    console.log(this.related);
+    var dupList = [], related = this.related;
+    this.related.forEach(function(val, i, arr){
+        if(val.category == 3){
+            for(var j=0; j<related.length; j++){
+                if(related[j]._id == val._parent && related[j].money == val.money){
+                    dupList.push(j);
+                }
+            }
+        }
+    });
+    dupList.map($.proxy(function(dupIndex){
+        this.related.splice(dupIndex, 1);
+    }, this));
 
     this.related.map(function(obj){
         var _itemView = Factful.createElement('li');
@@ -291,6 +309,11 @@ Factful.RangeInfo.prototype.generateView = function(commentsView){
             case 2: _itemView.innerHTML += '중분류)'; break;
             case 3: _itemView.innerHTML += '소분류)'; break;
             case 4: _itemView.innerHTML += '사업)'; break;
+        }
+        if(obj.category == 4){
+            _itemView.innerHTML =
+                '<b><a target="_blank" href="http://opengov.seoul.go.kr/search?searchKeyword=' + obj.name + '">' + obj.name + '</a></b><br>' +
+                '(약 ' + Factful.moneyToStr(obj.money) + '원, 사업)';
         }
         _listView.appendChild(_itemView);
     });

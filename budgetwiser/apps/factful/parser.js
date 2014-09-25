@@ -1,4 +1,9 @@
-var fs = require('fs');
+var fs = require('fs'),
+    express = require('express'),
+    factfulModels = require('./models');
+
+var Service = factfulModels.Service,
+    Word = factfulModels.Word;
 
 var parser = {};
 
@@ -63,30 +68,7 @@ parser.findMoney = function(p, moneyList){
                 money: money_1t + money_100m + money_10k
             });
         }
-    }//end while
-/*
-    for(var i=0; i<output.length; i++){
-        var m1 = output[i].money;
-
-        if(moneyList.length == 0){
-            moneyList.push(m1);
-        }else{
-            var vv = 0;
-            for(j=0; j<moneyList.length; j++){
-                var m2 = moneyList[j];
-                var min = m2 * 0.8, max = m2 * 1.2;
-                if(m1 > min && m1 < max){
-                    vv += 1;
-                }
-            }
-            if(vv > 0){
-                output[i] = null;
-            }else{
-                moneyList.push(m1);
-            }
-        }
     }
-*/
     var refined_output = [];
     output.map(function(obj){
         if(obj != null){
@@ -97,7 +79,27 @@ parser.findMoney = function(p, moneyList){
     return [refined_output, moneyList];
 };
 
+parser.findFuckingMoney = function(p){
+    var moneyRegex = new RegExp('([0-9,]+)여억원', 'g');
+
+    var regArray, output = [];
+
+    while((reqArray = moneyRegex.exec(p.content)) != null){
+        var money = parseInt(reqArray[1].replace(",", "")) * 100000000;
+        console.log(money);
+        output.push({
+            start: p.content.search(reqArray[0]),
+            end: p.content.search(reqArray[0]) + reqArray[0].length,
+            money: money
+        });
+    }
+
+    return output;
+};
+
 parser.match = function(str, c){
+    if(c.length == 0) return [];
+
     var m_list = [];
 
     while(str.indexOf(c) != -1){
@@ -145,9 +147,6 @@ parser.categorize = function(str){
 
     var weight = weight.sort(function(a, b){return b[0]-a[0]});
     var weight_comp = 0;
-    weight.map(function(obj){
-        console.log(category[obj[2]], obj);
-    });
 
     for(var i=0; i<5; i++){
         var cnt = weight[i][0], num = weight[i][1], len = keywords[weight[i][2]].length;
@@ -160,7 +159,6 @@ parser.categorize = function(str){
                 weight_comp = weight[i][0];
             }else{
                 if(weight[i][0] > weight_comp * 1.5){
-                    console.log('aa');
                     category_index = weight[i][2];
                     weight_comp = weight[i][0];
                 }
@@ -168,7 +166,73 @@ parser.categorize = function(str){
         }
     }
 
-    return category[category_index];
+    var sortWeight = weight.sort(function(a, b){return b[0] * b[1] - a[0] * a[1]});
+    sortWeight.map(function(obj){
+        console.log(category[obj[2]], obj);
+    });
+
+    return [category[sortWeight[0][2]], category[sortWeight[1][2]]];
+};
+
+parser.findServices = function(str){
+    console.log('\n\n--- start find services ---')
+    var words = JSON.parse(fs.readFileSync(__dirname + '/services_word.json', 'utf8'));
+        services = JSON.parse(fs.readFileSync(__dirname + '/services_info.json', 'utf8'));
+    console.log('read file : OK');
+
+    var word_list = [], serv_list = [];
+
+    words.map(function(_word){
+        var word = _word.word,
+            match = parser.match(str, word),
+            count = match.length;
+
+        word_list.push([word, count * _word.weight]);
+    });
+    console.log('word matching : OK');
+
+    var except = ['서울', '서울시', '사람', '사회', '문제', '문화', '경우', '우리', '소리', '함께', '시간', '인간', '사실', '시대', '다음', '세계', '설계', '공사', '시설', '사업'];
+
+    services.map(function(_service){
+        var calc_name = _service.calc_name, weight = 0, check = [];
+        calc_name.map(function(_name){
+            for(var i=0; i<word_list.length; i++){
+                if(_name == word_list[i][0] && _name.length > 1 && except.indexOf(_name) == -1){
+                    var _w = word_list[i][1];
+                    _w = _w * _name.length * 0.7;
+                    if(_name.length == 2){
+                        _w = _w / 2;
+                    }
+                    weight += _w;
+
+                    check.push(word_list[i]);
+                    continue;
+                }
+            }
+        });
+
+        serv_list.push({
+            name: _service.orig_name,
+            list: _service.calc_name,
+            ctg1: _service.ctg1,
+            weight: weight,
+            check: check
+        });
+    });
+    console.log('service matching : OK');
+    serv_list.sort(function(a, b){ return b.weight - a.weight });
+    console.log('service sorting : OK');
+
+    var output = [], output_ctg = [];
+
+    for(var i=0; i<5; i++){
+        output.push(serv_list[i].name);
+        output_ctg.push(serv_list[i].ctg1);
+        //console.log(serv_list[i].name, serv_list[i].check, serv_list[i].weight);
+    }
+
+    console.log('--- finish find services ---\n\n')
+    return [output, output_ctg];
 };
 
 module.exports = parser;

@@ -112,8 +112,9 @@ body{
     float: right;
     width: 310px;
     display: inline-block;
-    overflow: hidden;
+    overflow: visible;
     position: relative;
+    z-index: 5;
 }
 .content-comment{
     position: absolute;
@@ -631,6 +632,17 @@ body{
     font-size: 16px;
     font-weight: 700;
 }
+.factful-range-info-item>b>a{
+    display: inline;
+    line-height: 20px;
+    font-size: 16px;
+    font-weight: 700;
+    text-decoration: none;
+    color: #555555;
+}
+.factful-range-info-item>b>a:hover{
+    color: orange;
+}
 .factful-range-info-add{
     color: #10b468;
     font-size: 13px;
@@ -864,4 +876,49 @@ body{
 .factful-factcheck-item>a:hover{
     text-decoration: none;
     color: red;
+}
+
+
+/* Service Information */
+.factful-article-services{
+    position: absolute;
+    z-index: 10;
+    background: #fff;
+    padding: 24px 12px;
+    width: 100%;
+    border: 1px solid #dedfe0;
+    display: inline-block;
+    border-radius: 2px;
+}
+.factful-article-services.closed:hover{
+    background: #fdfdfd;
+}
+.factful-article-services-title{
+    font-size: 20px;
+    color: #454749;
+    margin-bottom: 24px;
+    line-height: 24px;
+    font-weight: 700;
+    float: left;
+}
+.factful-article-services-list{
+    display: inline-block;
+}
+.factful-article-services-item{
+    margin-bottom: 20px;
+}
+.factful-article-services-item:last-child{
+    margin-bottom: 0;
+}
+.factful-article-services-item-link{
+    font-size: 16px;
+    color: #02c7ff;
+    text-decoration: underline;
+    margin-bottom: 4px;
+    line-height: 22px;
+}
+.factful-article-services-item-info{
+    font-size: 14px;
+    color: #616365;
+    line-height: 20px;
 }

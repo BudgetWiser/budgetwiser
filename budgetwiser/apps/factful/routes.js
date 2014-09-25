@@ -10,7 +10,8 @@ var Article = factfulModels.Article,
     Factcheck = factfulModels.Factcheck,
     FactcheckReq = factfulModels.FactcheckReq,
     Rel = factfulModels.Rel;
-    Budget = factfulModels.Budget;
+    Budget = factfulModels.Budget,
+    Service = factfulModels.Service;
 
 
 // Views
@@ -82,7 +83,43 @@ article.add = function(req, res){
     };
 
     var _category = parser.categorize(data.content);
-    console.log('\nArticle Category : ', _category);
+    console.log('\nArticle Category :', _category);
+
+    var _fuckingservice = parser.findServices(data.content);
+    var _services = _fuckingservice[0];
+    console.log('\nArticle Services :', _services);
+
+    // change category with services
+    var _ctg_cand = [], _ctg_cand_weight = [];
+    _fuckingservice[1].map(function(_obj){
+        if(_ctg_cand.indexOf(_obj) != -1){
+            _ctg_cand_weight.forEach(function(_v, _i, _arr){
+                if(_v[0] == _obj){
+                    _arr[_i][1] += 1;
+                }
+            });
+        }else{
+            _ctg_cand_weight.push([_obj, 1]);
+        }
+        _ctg_cand.push(_obj);
+    });
+    _ctg_cand_weight.sort(function(a, b){return b[1] - a[1]});
+    console.log(_ctg_cand_weight);
+    console.log(_category);
+    if(_ctg_cand_weight[0][1] != 1){
+        if(_ctg_cand_weight.length > 2){
+            if(_ctg_cand_weight[0][1] != _ctg_cand_weight[1][1]){
+                _category[0] = _ctg_cand_weight[0][0];
+            }else{
+                if(_ctg_cand_weight[0][0] != _category[0] && _ctg_cand_weight[1][0] != _category[0]){
+                    _category[0] = _ctg_cand_weight[0][0];
+                }
+            }
+        }else{
+            _category[0] = _ctg_cand_weight[0][0];
+        }
+    }
+    console.log(_category);
 
     // save Article
     var _article = new Article({
@@ -92,7 +129,8 @@ article.add = function(req, res){
         date: data.date,
         url: data.url,
         press: data.press,
-        category: _category
+        category: _category,
+        services: _services
     });
 
     _article.save(function (err){
@@ -124,6 +162,11 @@ article.add = function(req, res){
         console.log('money', moneyList);
         var _parserMoney = parser.findMoney(p, moneyList);
         var _range_list = _parserMoney[0], moneyList = _parserMoney[1];
+        var _fuckingMoney = parser.findFuckingMoney(p);
+        console.log('fuck', _fuckingMoney);
+        if(_fuckingMoney.length > 0){
+            _range_list = _range_list.concat(_fuckingMoney);
+        }
 
         _range_list.map(function(r){
             // save Range
@@ -371,6 +414,18 @@ comment.addComment = function(req, res){
             });
         }
     });
+
+    var _pc = Comment.findOne({'_id': _parentComment});
+    _pc.exec(function(err, _c){
+        if(err){
+            return handleError(err);
+        }else{
+            _c.child += 1;
+            _c.save(function(err){
+                if(err) return handleError(err);
+            });
+        }
+    });
 };
 
 // REST API
@@ -389,6 +444,7 @@ api.type = function(req, res){
         case 'cocomments': api.getCoComments(req, res);break;
         case 'rels': api.getRels(req, res);break;
         case 'budget': api.getBudget(req, res);break;
+        case 'services': api.getServices(req, res);break;
         default: res.send('factful restAPI Error: type(' + type + ')  doesn\'t exist');
     }
 };
@@ -620,6 +676,7 @@ api.getBudget = function(req, res){
                 var result = [];
                 _budgets.map(function(obj){
                     result.push({
+                        '_parent': obj._parent,
                         '_id': obj._id,
                         'year': obj.year,
                         'name': obj.name,
@@ -638,14 +695,37 @@ api.getBudget = function(req, res){
     }
 };
 
+api.getServices = function(req, res){
+    var _services = req.param('services');
+    var services = Service.find({$or:[
+        {'orig_name': _services[0]},
+        {'orig_name': _services[1]},
+        {'orig_name': _services[2]},
+        {'orig_name': _services[3]},
+        {'orig_name': _services[4]}
+    ]});
+    services.exec(function(err, obj){
+        var result = [];
+        _services.map(function(_service){
+            obj.map(function(_obj){
+                if(_obj.orig_name == _service){
+                    result.push(_obj);
+                }
+            });
+        });
+        console.log(_services, result);
+        res.json(200, result);
+    });
+};
+
 
 // routes initialize
 function setup(app){
     app.get('/factful', function(req, res){res.redirect('/factful/article/list')});
 
     // view
-    app.get('/factful/article/list', view.articleList);
-    app.get('/factful/article/item/:id', view.articleItem);
+    app.get('/factful/article/list', session.isAuth, view.articleList);
+    app.get('/factful/article/item/:id', session.isAuth, view.articleItem);
 
     // rest
     app.get('/factful/api', api.type);

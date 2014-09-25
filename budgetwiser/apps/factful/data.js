@@ -3,7 +3,7 @@ var express = require('express'),
     mongoose = require('mongoose'),
     factfulModels = require('./models');
 
-mongoose.connect('mongodb://localhost/budgetwiser');
+mongoose.connect('mongodb://localhost/budgetwiser_D');
 
 var Budget = factfulModels.Budget;
 var budgetData = [];
