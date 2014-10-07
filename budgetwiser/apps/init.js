@@ -71,7 +71,7 @@ db.once('open', function(){
     });
 });
 
-mongoose.connect('mongodb://localhost/budgetwiser');
+mongoose.connect('mongodb://localhost/budgetwiser_D');
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {

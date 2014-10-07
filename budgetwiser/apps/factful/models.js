@@ -10,11 +10,12 @@ var articleSchema = new Schema({
     _user: {type: ObjectId, ref: 'User'},
     title: String,
     subtitle: String,
-    date: Date,
+    date: String,
     url: String,
     press: String,
-    category: String,
-    upload: Date
+    category: [String],
+    upload: Date,
+    services: [String]
 });
 
 var paragraphSchema = new Schema({
@@ -33,7 +34,9 @@ var commentSchema = new Schema({
     _user: {type: ObjectId, ref: 'User'},
     _range: {type: ObjectId, ref: 'Range'},
     _comment: {type: ObjectId, ref: 'Comment'},
-    date: Date,
+    username: String,
+    nickname: String,
+    date: String,
     content: String,
     ref: String,
     symp: [String],
@@ -62,8 +65,25 @@ var budgetSchema = new Schema({
     _parent: ObjectId,
     year: Number,
     name: String,
-    category: {type: Number, min: 0, max: 3},
+    category: {type: Number, min: 1, max: 4},
     money: Number
+});
+
+var serviceSchema = new Schema({
+    _parent: String,
+    orig_name: String,
+    calc_name: [String],
+    money: Number,
+    ctg1: String,
+    ctg2: String,
+    ctg3: String,
+    part: String,
+    sibal: Number
+});
+
+var wordSchema = new Schema({
+    word: String,
+    weight: Number
 });
 
 
@@ -75,7 +95,9 @@ var Article = mongoose.model('Article', articleSchema),
     Factcheck= mongoose.model('Factcheck', factcheckSchema),
     FactcheckReq = mongoose.model('FactcheckReq', factcheckreqSchema),
     Rel = mongoose.model('Rel', relSchema),
-    Budget = mongoose.model('Budget', budgetSchema);
+    Budget = mongoose.model('Budget', budgetSchema),
+    Service = mongoose.model('Service', serviceSchema),
+    Word = mongoose.model('Word', wordSchema);
 
 module.exports = {
     Article: Article,
@@ -86,4 +108,6 @@ module.exports = {
     FactcheckReq: FactcheckReq,
     Rel: Rel,
     Budget: Budget,
+    Service: Service,
+    Word: Word
 };

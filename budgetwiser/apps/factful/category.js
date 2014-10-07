@@ -1,7 +1,7 @@
 var fs = require('fs'),
     parser = require('./parser');
 
-var year = '2013';
+var year = '2014';
 fs.readFile(__dirname + '/data/services_' + year + '.tsv', 'utf8', function(err, data){
     if(err) return console.log(err);
 
@@ -28,32 +28,6 @@ fs.readFile(__dirname + '/data/services_' + year + '.tsv', 'utf8', function(err,
             if(j!=4){
                 line[j].split(' ').map(function(word){
                     word = String(word).replace(/^\s+|\s+$/g, '');
-                    /*
-                    if(word.length != 0){
-                        for(var k=2; k<word.length; k++){
-                            var s_word = word.slice(0,k);
-                            var s_word_re = word.slice(-k);
-                            console.log(s_word, s_word_re);
-
-                            if(!regexp.test(s_word) && exc.indexOf(s_word) == -1 && output.keywords[category_index].indexOf(s_word) == -1){
-                                output.keywords[category_index].push(s_word);
-                            }
-                            if(!regexp.test(s_word_re) && exc.indexOf(s_word_re) == -1 && output.keywords[category_index].indexOf(s_word_re) == -1){
-                                output.keywords[category_index].push(s_word_re);
-                            }
-                        }
-                    }*/
-
-                    /*
-                    var word_list = word.match(/.{1,2}/g);
-                    if(word_list){
-                        word_list.map(function(word_item){
-                            word_item = String(word_item).replace(/^\s+|\s+$/g, '');
-                            if(!regexp.test(word_item) && exc.indexOf(word_item) == -1 && output.keywords[category_index].indexOf(word_item) == -1){
-                                output.keywords[category_index].push(word_item);
-                            }
-                        });
-                    }*/
 
                     var word_list = word.match(/[가-힣]+/g);
 
@@ -77,6 +51,7 @@ fs.readFile(__dirname + '/data/services_' + year + '.tsv', 'utf8', function(err,
         cleaned_keywords[i] = [];
         for(var j=0; j<output.keywords[i].length; j++){
             var word = output.keywords[i][j];
+            console.log(word);
             var count = 0;
             for(var k=0; k<output.keywords.length; k++){
                 if(i != k){
@@ -85,7 +60,7 @@ fs.readFile(__dirname + '/data/services_' + year + '.tsv', 'utf8', function(err,
                     }
                 }
             }
-            if(count < 3 && word.length > 1 && isNaN(parseInt(word))){
+            if(count < 4 && word.length > 1 && isNaN(parseInt(word))){
                 cleaned_keywords[i].push(word);
             }
         }
