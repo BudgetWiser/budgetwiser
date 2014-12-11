@@ -1,11 +1,16 @@
-var express = require('express');
+var express = require('express'),
+    random = require('./random');
 
 function isAuth(req, res, next){
     if(req.user){
         next();
     }else{
+        console.log(':::before random.register');
+        random.register(req, res);
+        /*
         var redirect = "/account/login?next=" + req.url;
         res.redirect(redirect);
+        */
     }
 }
 

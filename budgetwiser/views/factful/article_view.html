@@ -23,12 +23,14 @@
             <a href="/factful/article/list" class="header-back">기사 리스트</a>
         </div>
         <div class="header-right">
-            <a href="{{user.link}}" class="header-profile {{user._id}}">
+            <!--<a href="{{user.link}}" class="header-profile {{user._id}}">
                 <img src="/static/images/user/{{user.profile.image}}" alt="{{user.profile.nickname}}">
                 {{user.profile.nickname}}
             </a>
             <button class="header-bookmark">기사 즐겨찾기</button>
-            <button class="header-viewmode">보는 방식 바꾸기</button>
+            <button class="header-viewmode">보는 방식 바꾸기</button>-->
+            <button class="header-logout" onclick="window.location.assign('/account/logout')">로그아웃({{user.username}})</button>
+            <button class="header-helppage" onclick="window.open('https://docs.google.com/document/d/1Y5llB-dByUQ9dSzoTbi2ZIZqEdGfQhCm21m0ksxjvvA/pub')">도움말 보기</button>
         </div>
     </div>
 </div>

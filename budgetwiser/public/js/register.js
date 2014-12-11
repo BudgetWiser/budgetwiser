@@ -67,9 +67,9 @@ Account.register = function(){
     if($(Account.password[0]).val() != $(Account.password[1]).val()){
         pw_check = false;
     }
-    if(!Account.email_regexp.test(email)){
+    /*if(!Account.email_regexp.test(email)){
         email_check = false;
-    }
+    }*/
 
     if(check && pw_check && email_check){
         var url = '/account/register?next=' + next;
@@ -80,15 +80,15 @@ Account.register = function(){
             data: {
                 username: username,
                 password: password,
-                nickname: nickname,
-                email: email,
+                //nickname: nickname,
+                //email: email,
                 next: next
             },
             success: function(){
                 if(next){
                     window.location = next;
                 }else{
-                    window.location = '/';
+                    window.location = '/factful/';
                 }
             },
             error: function(xhr){

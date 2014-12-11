@@ -59,3 +59,53 @@ body{
     width: 1120px;
     margin: 30px auto 30px auto;
 }
+
+/* for live */
+
+.article-list-header{
+    width: 720px;
+    margin: 0 auto;
+    padding-bottom: 20px;
+}
+.article-list-title{
+    text-align: center;
+    font-size: 24px;
+    color: #fff;
+    margin: 8px;
+    font-weight: 700;
+    margin-top: 20px;
+    float: left;
+    display: inline-block;
+}
+.article-list-group{
+    padding-top: 20px;
+}
+.article-list{
+    width: 720px;
+    height: 50px;
+    margin: 0px auto 8px auto;
+    line-height: 50px;
+    font-size: 18px;
+    padding: 0 24px;
+    background: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 1px solid #555;
+    color: #222;
+    clear: both;
+}
+.article-list:hover{
+    background: #ddd;
+}
+.random-user{
+    text-align: center;
+    font-size: 12px;
+    color: #fff;
+    line-height: 24px;
+    margin: 8px;
+    font-weight: 400;
+    margin-top: 20px;
+    float: right;
+    display: inline-block;
+    background: transparent;
+}

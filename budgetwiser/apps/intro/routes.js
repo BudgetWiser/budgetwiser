@@ -19,7 +19,7 @@ function index(req, res){
 
 // routes initialize
 function setup(app){
-    app.get('/', index);
+    app.get('/', function(req, res){res.redirect('/factful/article/list')});
 }
 
 module.exports = setup;
