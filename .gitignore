@@ -28,4 +28,4 @@ node_modules
 .*.swp
 
 # nohup files
-nohup.out
+*/nohup.out
