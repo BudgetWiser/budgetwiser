@@ -15,6 +15,7 @@ Factful.Article = function(data){
         this.url = data.url;
         this.press = data.press;
         this.category = data.category;
+        this.services = data.services;
 
         this.paragraphs = [];
     }
@@ -780,4 +781,94 @@ Factful.Info.prototype.HSVtoRGB = function(h, s, v){
         case 5: r = v, g = p, b = q; break;
     }
     return [Math.floor(r * 255), Math.floor(g * 255), Math.floor(b * 255)];
-}
+};
+
+Factful.Services = function(data){
+    if(typeof(data) === 'object'){
+        this.list = data
+    }
+};
+
+Factful.Services.prototype.generateView = function(rightSide){
+    var _parentView = rightSide;
+    var _view = Factful.createElement('div');
+    _view.addClass('factful-article-services');
+
+    var _titleView = Factful.createElement('h4');
+    _titleView.addClass('factful-article-services-title');
+    _titleView.innerHTML = '기사와 관련된 서울시 사업';
+
+    var _foldBtn = Factful.createElement('button');
+    _foldBtn.addClass('factful-budget-fold to-close');
+    _foldBtn.innerHTML = '접기';
+
+    var _listView = Factful.createElement('ol');
+    _listView.addClass('factful-article-services-list');
+
+    this.list.map(function(item){
+        var _itemView = Factful.createElement('li');
+        _itemView.addClass('factful-article-services-item');
+
+        var _linkView = Factful.createElement('a');
+        _linkView.addClass('factful-article-services-item-link');
+        $(_linkView).attr({
+            'href': 'http://opengov.seoul.go.kr/search?searchKeyword=' + item.orig_name,
+            'target': '_blank'
+        });
+        _linkView.innerHTML = item.orig_name;
+
+        var _infoView = Factful.createElement('ul');
+        _infoView.addClass('factful-article-services-item-info');
+
+        var _cateView = Factful.createElement('li');
+        _cateView.addClass('factful-article-services-item-category');
+        _cateView.innerHTML = '분류 : ' + item.ctg1 + ' > ' + item.ctg3;
+
+        var _moneyView = Factful.createElement('li');
+        _moneyView.addClass('factful-article-services-item-money');
+        _moneyView.innerHTML = '금액 : ' + Factful.moneyToStr(parseInt(item.money));
+        if(_moneyView.innerHTML.length == 5){
+            _moneyView.innerHTML += '정보가 없습니다.';
+        }
+        var _sibalView = Factful.createElement('li');
+        _sibalView.addClass('factful-article-services-item-money');
+        console.log(item.sibal);
+        _sibalView.innerHTML = '예산 총액 : ' + Factful.moneyToStr(parseInt(item.sibal));
+        if(_sibalView.innerHTML.length == 8){
+            _sibalView.innerHTML += '정보가 없습니다.';
+        }
+
+        _infoView.appendChildren([
+            _cateView,
+            _moneyView,
+            _sibalView
+        ]);
+
+        _itemView.appendChildren([
+            _linkView,
+            _infoView
+        ]);
+
+        _listView.appendChild(_itemView);
+    });
+
+    _view.appendChildren([
+        _titleView,
+        _foldBtn,
+        _listView
+    ]);
+
+    $(_view).css('top', $(Factful.article.infoView_).position().top);
+
+    _parentView.appendChild(_view);
+
+    this.view_ = _view;
+    this.st = 'open';
+    this.oHeight = parseInt($(_view).height()) + 50;
+    this.foldBtn_ = _foldBtn;
+};
+
+Factful.Services.prototype.eventHandlers = function(){
+    var s = this;
+    $(this.foldBtn_).bind('click', { _services: s }, Factful.e.foldServices);
+};

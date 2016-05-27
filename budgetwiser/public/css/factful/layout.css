@@ -59,3 +59,79 @@ body{
     width: 1120px;
     margin: 30px auto 30px auto;
 }
+
+/* for live */
+
+.article-list-title{
+    text-align: center;
+    font-size: 24px;
+    color: #fff;
+    margin: 0px auto;
+    font-weight: 700;
+    margin-top: 20px;
+}
+.article-list-sub{
+text-align: center;
+font-size: 16px;
+color: rgba(255,255, 255,.7);
+line-height: 16px;
+margin: 4px auto;
+}
+.article-list{
+    width: 720px;
+    height: 50px;
+    margin: 0px auto 8px auto;
+    line-height: 50px;
+    font-size: 18px;
+    padding: 0 24px;
+    background: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 1px solid #555;
+    color: #222;
+}
+.article-list:hover{
+    background: #ddd;
+}
+.survey{
+width: 720px;
+margin: 0 auto;
+margin-top: 24px;
+}
+.survey a{
+width: 720px;
+color: black;
+background: orange;
+font-size: 18px;
+line-height: 50px;
+height: 50px;
+padding: 0 24px;
+border-radius: 4px;
+border: 1px solid rgb(192, 124, 0);
+}
+.survey a:hover{
+background: rgb(192, 124, 0);
+}
+.survey p{
+width: 100%;
+text-align: center;
+color: white;
+font-size: 14px;
+line-height: 20px;
+margin-top: 4px;
+}
+.friend{
+text-align:center;
+width: 720px;
+margin: 0 auto;
+margin-top: 40px;
+font-size: 14px;
+color: white;
+line-height: 20px;
+}
+.friend a{
+display:inline;
+background: orange;
+line-height: 30px;
+color: black;
+}

@@ -49,9 +49,9 @@ Factful.initUser = function(){
             Factful.User = {
                 _id: obj._id,
                 username: obj.username,
-                nickname: obj.profile.nickname,
-                image: '/static/images/user/' + obj.profile.image,
-                email: obj.profile.email
+                nickname: '',
+                image: '',
+                email: ''
             };
             console.log(Factful.User);
         },
@@ -77,6 +77,7 @@ Factful.initArticle = function(_id){
             Factful.article = new Factful.Article(obj);
             Factful.article.generateView(Factful.leftSide);
             Factful.initBudgetInfo(Factful.article.category);
+            Factful.initServiceInfo();
         },
         error: function(xhr){
             throw Error(xhr);
@@ -84,15 +85,32 @@ Factful.initArticle = function(_id){
     });
 };
 
-Factful.initBudgetInfo = function(ctg){
-    console.log(ctg);
+Factful.initServiceInfo = function(){
     $.ajax({
         url: '/factful/api',
         type: 'GET',
-        data: { type: 'budget', ctg: 'all', budget: ctg },
+        data: { type: 'services', services: Factful.article.services },
+        success: function(obj){
+            console.log(obj);
+            Factful.services = new Factful.Services(obj);
+            Factful.services.generateView(Factful.rightSide);
+            Factful.services.eventHandlers();
+        },
+        error: function(xhr){
+            throw Error(xhr);
+        }
+
+    });
+};
+
+Factful.initBudgetInfo = function(ctg){
+    $.ajax({
+        url: '/factful/api',
+        type: 'GET',
+        data: { type: 'budget', ctg: 'all', budget: ctg[0] },
         success: function(obj){
             var data = {
-                'name': ctg,
+                'name': ctg[0],
                 'ctg_1': obj.ctg_1,
                 'ctg_3': obj.ctg_3
             };
@@ -100,7 +118,29 @@ Factful.initBudgetInfo = function(ctg){
                 article = Factful.article;
 
             info.generateView(article.infoView_);
+            //Factful.initBudgetInfo2(ctg);
             Factful.initParagraphs(Factful.article._id);
+        },
+        error: function(xhr){
+            throw Error(xhr);
+        }
+    });
+};
+Factful.initBudgetInfo2 = function(ctg){
+    $.ajax({
+        url: '/factful/api',
+        type: 'GET',
+        data: { type: 'budget', ctg: 'all', budget: ctg[1] },
+        success: function(obj){
+            var data = {
+                'name': ctg[1],
+                'ctg_1': obj.ctg_1,
+                'ctg_3': obj.ctg_3
+            };
+            var info = new Factful.Info(data),
+                article = Factful.article;
+
+            info.generateView(article.infoView_);
         },
         error: function(xhr){
             throw Error(xhr);

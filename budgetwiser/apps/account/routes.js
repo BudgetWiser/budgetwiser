@@ -31,7 +31,7 @@ function login(req, res){
 
 function logout(req, res){
     req.logout();
-    res.redirect('/');
+    res.redirect('/factful');
 }
 
 function register_page(req, res){
@@ -44,16 +44,16 @@ function register_page(req, res){
 function register(req, res){
     var username = req.param('username'),
         password = req.param('password'),
-        nickname = req.param('nickname'),
-        email = req.param('email'),
+        //nickname = req.param('nickname'),
+        //email = req.param('email'),
         next = req.param('next');
 
     User.register(
         new User({
             username: username,
             profile: {
-                email: email,
-                nickname: nickname
+                email: '',
+                nickname: ''
             }
         }), password, function(err, account) {
         if (err) {

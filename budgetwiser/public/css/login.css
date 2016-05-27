@@ -81,6 +81,7 @@ body{
 .login-other a{
     color: rgba(255, 255, 255, .8);
     display: inline;
+    text-decoration: none;
 }
 .login-other a:hover{
     color: rgba(255, 255, 255, 1);

@@ -48,12 +48,17 @@ app.use(cookieParser());
 /// routes setup
 var apps = [
     'apps/account/routes',
-    'apps/budgetmap/routes',
+//    'apps/budgetmap/routes',
     'apps/factful/routes',
     'apps/intro/routes'
 ];
 apps.forEach(function(routePath){
     require(path.join(base_path, routePath))(app);
+});
+
+/// proxy setup for budgetmap
+app.get('/budgetmap', function(req, res){
+	res.redirect('http://budgetmap.budgetwiser.org/');
 });
 
 /// models setup
@@ -63,7 +68,7 @@ db.on('error', console.error.bind(console, 'connection error: '));
 db.once('open', function(){
     var models = [
         'apps/account/models',
-        'apps/budgetmap/models',
+//        'apps/budgetmap/models',
         'apps/factful/models'
     ];
     models.forEach(function(modelPath){
@@ -71,7 +76,7 @@ db.once('open', function(){
     });
 });
 
-mongoose.connect('mongodb://localhost/budgetwiser');
+mongoose.connect('mongodb://localhost:38716/budgetwiser_live');
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -12,24 +12,27 @@
 {{/yield-scripts}}
 {{#yield-contents}}
 <div id="wrapper-login">
-    <h1 class="project-logo">Budgetwiser</h1>
+    <h1 class="project-logo">Budgetwiser (Factful)</h1>
     <p class="login-desc">
-        For using our prototypes you need an account.<br>
-        Please sign in or register a new account, thank you.
+	안녕하세요. Factful 서비스입니다.<br>
+	정부 예산 이야기가 나오는 신문 기사는 읽기 힘들어서 그낭 지나쳐 오셨나요?<br>
+	팩트풀(Factful)과 함께라면 어렵지 않아요.<br>
+	기본 댓글 기능 뿐만 아니라 똑똑한 추가 정보와 사실 검증 기능을 통해<br>
+	새로운 온라인 토론을 경험해보세요! 
     </p>
     <form class="login-form" action="javascript:;" method="post">
         <input type="hidden" class="next" name="next" value="{{next}}">
-        <input class="input username" type="text" placeholder="username" name="username">
-        <input class="input password" type="password" placeholder="password" name="password">
-        <input class="submit" type="submit" value="sign in">
+        <input class="input username" type="text" placeholder="아이디" name="username">
+        <input class="input password" type="password" placeholder="비밀번호" name="password">
+        <input class="submit" type="submit" value="로그인">
     </form>
     <div class="login-other">
-        <a href="/account/forgot">Forgot your password?</a> or <a href="/account/register">Don't have an account?</a>
+        <a href="/account/register?next={{next}}">아이디가 없다면, 5초 만에 회원가입하세요!</a>
     </div>
 </div>
 <div id="wrapper-error">
     <p class="error-desc">
-        Please check your username or password
+	아이디 혹은 비밀번호가 잘못되었어요!
     </p>
 </div>
 {{/yield-contents}}

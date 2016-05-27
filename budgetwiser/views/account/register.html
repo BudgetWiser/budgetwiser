@@ -12,35 +12,25 @@
 {{/yield-scripts}}
 {{#yield-contents}}
 <div id="wrapper-register">
-    <h1 class="project-logo">Budgetwiser</h1>
+    <h1 class="project-logo">Budgetwiser (Factful)</h1>
     <p class="register-desc">
-        Register a new account.<br>
-        Please input all information, thank you.
+	계정을 만들어주세요!<br>
+	사용하실 아이디와 비밀번호만 입력해주세요. 감사합니다.
     </p>
     <form class="register-form" action="javascript:;" method="post">
         <input type="hidden" class="next" name="next" value="{{next}}">
         <div class="input-group">
             <div class="username">
                 <label class="label">Username</label>
-                <input class="input" type="text" placeholder="username" name="username">
+                <input class="input" type="text" placeholder="아이디" name="username">
             </div>
             <div class="password">
                 <label class="label">Password</label>
-                <input class="input" type="password" placeholder="password" name="password">
-                <input class="input" type="password" placeholder="password confirm" name="password">
+                <input class="input" type="password" placeholder="비밀번호" name="password">
+                <input class="input" type="password" placeholder="비밀번호 확인" name="password">
             </div>
         </div>
-        <div class="input-group">
-            <div class="nickname">
-                <label class="label">Nickname</label>
-                <input class="input" type="text" placeholder="nickname" name="nickname">
-            </div>
-            <div class="email">
-                <label class="label">Email (for finding missed password)</label>
-                <input class="input email" type="text" placeholder="email" name="email">
-            </div>
-        </div>
-        <input class="submit" type="submit" value="register">
+        <input class="submit" type="submit" value="등록하기">
     </form>
 </div>
 <div id="wrapper-error">

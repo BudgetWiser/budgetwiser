@@ -13,8 +13,9 @@ var articleSchema = new Schema({
     date: String,
     url: String,
     press: String,
-    category: String,
-    upload: Date
+    category: [String],
+    upload: Date,
+    services: [String]
 });
 
 var paragraphSchema = new Schema({
@@ -68,6 +69,23 @@ var budgetSchema = new Schema({
     money: Number
 });
 
+var serviceSchema = new Schema({
+    _parent: String,
+    orig_name: String,
+    calc_name: [String],
+    money: Number,
+    ctg1: String,
+    ctg2: String,
+    ctg3: String,
+    part: String,
+    sibal: Number
+});
+
+var wordSchema = new Schema({
+    word: String,
+    weight: Number
+});
+
 
 // DB model initialize
 var Article = mongoose.model('Article', articleSchema),
@@ -77,7 +95,9 @@ var Article = mongoose.model('Article', articleSchema),
     Factcheck= mongoose.model('Factcheck', factcheckSchema),
     FactcheckReq = mongoose.model('FactcheckReq', factcheckreqSchema),
     Rel = mongoose.model('Rel', relSchema),
-    Budget = mongoose.model('Budget', budgetSchema);
+    Budget = mongoose.model('Budget', budgetSchema),
+    Service = mongoose.model('Service', serviceSchema),
+    Word = mongoose.model('Word', wordSchema);
 
 module.exports = {
     Article: Article,
@@ -88,4 +108,6 @@ module.exports = {
     FactcheckReq: FactcheckReq,
     Rel: Rel,
     Budget: Budget,
+    Service: Service,
+    Word: Word
 };
