@@ -29,3 +29,6 @@ node_modules
 
 # nohup files
 */nohup.out
+
+# Private config
+config.js

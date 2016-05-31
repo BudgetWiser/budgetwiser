@@ -12,6 +12,8 @@ var express = require('express'),
     passport = require('passport'),
     LocalStrategy = require('passport-local').Strategy;
 
+var config = require('./config');
+
 var app = express();
 
 /// session setup
@@ -76,7 +78,9 @@ db.once('open', function(){
     });
 });
 
-mongoose.connect('mongodb://localhost:38716/budgetwiser_live');
+var url = "mongodb://" + config.mongo.username + ":" + config.mongo.password
+			+ "@localhost:" + config.mongo.port + "/" + config.mongo.db_name;
+mongoose.connect(url);
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {
